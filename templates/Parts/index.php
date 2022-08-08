@@ -5,19 +5,19 @@
  */
 ?>
 <div class="parts index content">
-    <?= $this->Html->link(__('New Part'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Parts') ?></h3>
+    <?= $this->Html->link(__('Nueva Parte'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Partes y Servicios') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('serial') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('money_id') ?></th>
-                    <th><?= $this->Paginator->sort('value') ?></th>
-                    <th><?= $this->Paginator->sort('amount') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th><?= $this->Paginator->sort('Serial') ?></th>
+                    <th><?= $this->Paginator->sort('Nombre') ?></th>
+                    <th><?= $this->Paginator->sort('Moneda') ?></th>
+                    <th><?= $this->Paginator->sort('Precio') ?></th>
+                    <th><?= $this->Paginator->sort('Cantidad') ?></th>
+                    <th class="actions"><?= __('Acciones') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,9 +30,9 @@
                     <td><?= $this->Number->format($part->value) ?></td>
                     <td><?= $this->Number->format($part->amount) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $part->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $part->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $part->id], ['confirm' => __('Are you sure you want to delete # {0}?', $part->id)]) ?>
+                        <?= $this->Html->link(__('Ver'), ['action' => 'view', $part->id]) ?>
+                        <?= $this->Html->link(__('Editar'), ['action' => 'edit', $part->id]) ?>
+                        <?= $this->Form->postLink(__('Borrar'), ['action' => 'delete', $part->id], ['confirm' => __('Are you sure you want to delete # {0}?', $part->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

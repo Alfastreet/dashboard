@@ -1,0 +1,42 @@
+@use 'variable' as v;
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    background-color: v.$white;
+    color: v.$black;
+    font-family: v.$principalFont;
+    font-size: 1.6rem;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+} 
+
+
+.container {
+    width: 95%;
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.imagen-small {
+    width: 20rem;
+}
+
+.ocult {
+    display: none;
+}

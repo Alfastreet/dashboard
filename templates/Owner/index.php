@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Owner[]|\Cake\Collection\CollectionInterface $owner
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="owner index content">
     <?= $this->Html->link(__('New Owner'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Owner') ?></h3>

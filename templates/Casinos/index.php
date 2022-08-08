@@ -4,55 +4,46 @@
  * @var \App\Model\Entity\Casino[]|\Cake\Collection\CollectionInterface $casinos
  */
 ?>
-<div class="casinos index content">
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
+<div class="newCasino">
     <?= $this->Html->link(__('New Casino'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+</div>
+
+<div class="AllCasinos">
     <h3><?= __('Casinos') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('phone') ?></th>
-                    <th><?= $this->Paginator->sort('address') ?></th>
-                    <th><?= $this->Paginator->sort('city_id') ?></th>
-                    <th><?= $this->Paginator->sort('state_id') ?></th>
-                    <th><?= $this->Paginator->sort('owner_id') ?></th>
-                    <th><?= $this->Paginator->sort('company_id') ?></th>
-                    <th><?= $this->Paginator->sort('image') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($casinos as $casino): ?>
-                <tr>
-                    <td><?= $this->Number->format($casino->id) ?></td>
-                    <td><?= h($casino->name) ?></td>
-                    <td><?= $this->Number->format($casino->phone) ?></td>
-                    <td><?= h($casino->address) ?></td>
-                    <td><?= $this->Number->format($casino->city_id) ?></td>
-                    <td><?= $this->Number->format($casino->state_id) ?></td>
-                    <td><?= $this->Number->format($casino->owner_id) ?></td>
-                    <td><?= $this->Number->format($casino->company_id) ?></td>
-                    <td><?= h($casino->image) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $casino->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $casino->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $casino->id], ['confirm' => __('Are you sure you want to delete # {0}?', $casino->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+
+    <div class="cardsCasinos">
+
+        <?php foreach($casinos as $casino): ?>
+    
+        <div class="card">
+            <?= $this->Html->image('Casinos/'.$casino->image) ?>
+            <!-- <div class="card-img-overlay">
+                <h3><?= $this->Number->format($casino->id) ?></h3>
+            </div> -->
+            <div class="card-header">
+                <h5 class="card-title"><?= h($casino->name) ?></h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Direccion: <span class="text-muted"><?= h($casino->address) ?></span></p>
+                <p class="card-text">Telefono: <span class="text-muted"><?= h($casino->phone) ?></span></p>
+                <p class="card-text">Ciudad: <span class="text-muted"><?= $casino->has('city') ? h($casino->city->name) :'' ?></span></p>
+                <p class="card-text">Departamento: <span class="text-muted"><?= $casino->has('state') ? h($casino->state->name) :'' ?></span></p>
+                <p class="card-text">Compañia: <span class="text-muted"><?= $casino->has('company') ? h($casino->company->name) :'' ?></span></p>
+                <p class="card-text">Dueño: <span class="text-muted"><?= $casino->has('owner') ? h($casino->owner->name) :'' ?></span></p>
+            </div>
+            <div class="card-footer actions">
+                <?= $this->Html->link(__('View'), ['action' => 'view', $casino->id] , ['class' => 'btn btn-primary view']) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $casino->id], ['class' => 'btn btn-info']) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $casino->id], ['confirm' => __('Are you sure you want to delete # {0}?', $casino->id)], ['class' => 'btn btn-info']) ?>
+            </div>
+        </div>
+    
+        <?php endforeach ?>
+
+        </div>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
+</div>
 </div>

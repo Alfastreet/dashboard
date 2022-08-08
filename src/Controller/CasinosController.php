@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\I18n\FrozenTime;
 
 /**
  * Casinos Controller
@@ -50,8 +51,26 @@ class CasinosController extends AppController
     public function add()
     {
         $casino = $this->Casinos->newEmptyEntity();
+
         if ($this->request->is('post')) {
+
             $casino = $this->Casinos->patchEntity($casino, $this->request->getData());
+
+            // Add image
+
+            $image = $this->request->getData('image');
+
+            if($image) {
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time. "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT."img/Casinos/".$nameImage;
+                $image->moveTo($destiny);
+                $casino->image = $nameImage;
+
+            }
+
+
             if ($this->Casinos->save($casino)) {
                 $this->Flash->success(__('The casino has been saved.'));
 
@@ -79,7 +98,31 @@ class CasinosController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $nameImageOld = $casino->image;
+            
             $casino = $this->Casinos->patchEntity($casino, $this->request->getData());
+
+            $image = $this->request->getData('image');
+
+            $casino->image = $nameImageOld;
+
+            if($image->getClientFileName()) {
+
+                if(file_exists(WWW_ROOT."img/Casinos/".$nameImageOld)){
+
+                    unlink(WWW_ROOT."img/Casinos/".$nameImageOld);
+        
+                }
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time. "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT."img/Casinos/".$nameImage;
+                $image->moveTo($destiny);
+                $casino->image = $nameImage;                
+
+            }
+
             if ($this->Casinos->save($casino)) {
                 $this->Flash->success(__('The casino has been saved.'));
 
@@ -105,6 +148,15 @@ class CasinosController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $casino = $this->Casinos->get($id);
+
+        // Delete file
+
+        if(file_exists(WWW_ROOT."img/Casinos/".$casino['image'])){
+
+            unlink(WWW_ROOT."img/Casinos/".$casino['image']);
+
+        }
+
         if ($this->Casinos->delete($casino)) {
             $this->Flash->success(__('The casino has been deleted.'));
         } else {

@@ -87,15 +87,33 @@ class QuotesTable extends Table
             ->notEmptyDateTime('date');
 
         $validator
-            ->scalar('total')
-            ->maxLength('total', 200)
-            ->requirePresence('total', 'create')
-            ->notEmptyString('total');
+            ->scalar('totalUSD')
+            ->maxLength('totalUSD', 200)
+            ->requirePresence('totalUSD', 'create')
+            ->notEmptyString('totalUSD');
+
+        $validator
+            ->scalar('totalEUR')
+            ->maxLength('totalEUR', 200)
+            ->requirePresence('totalEUR', 'create')
+            ->notEmptyString('totalEUR');
+
+        $validator
+            ->scalar('totalCOP')
+            ->maxLength('totalCOP', 200)
+            ->requirePresence('totalCOP', 'create')
+            ->notEmptyString('totalCOP');
 
         $validator
             ->integer('estatus_id')
             ->requirePresence('estatus_id', 'create')
             ->notEmptyString('estatus_id');
+
+        $validator
+            ->scalar('token')
+            ->maxLength('token', 255)
+            ->requirePresence('token', 'create')
+            ->notEmptyString('token');
 
         return $validator;
     }

@@ -57,8 +57,8 @@ class CompanyController extends AppController
             }
             $this->Flash->error(__('The company could not be saved. Please, try again.'));
         }
-        $businesses = $this->Company->Business->find('list', ['limit' => 200])->all();
-        $this->set(compact('company', 'businesses'));
+        $business_id = $this->Company->Business->find('list', ['limit' => 200])->all();
+        $this->set(compact('company', 'business_id'));
     }
 
     /**
@@ -82,8 +82,8 @@ class CompanyController extends AppController
             }
             $this->Flash->error(__('The company could not be saved. Please, try again.'));
         }
-        $businesses = $this->Company->Business->find('list', ['limit' => 200])->all();
-        $this->set(compact('company', 'businesses'));
+        $business_id = $this->Company->Business->find('list', ['limit' => 200])->all();
+        $this->set(compact('company', 'business_id'));
     }
 
     /**

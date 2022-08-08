@@ -61,7 +61,12 @@ class ClientController extends AppController
     {
         $client = $this->Client->newEmptyEntity();
         if ($this->request->is('post')) {
+            
             $client = $this->Client->patchEntity($client, $this->request->getData());
+
+            
+            $client->token = uniqid();
+            
             if ($this->Client->save($client)) {
                 $this->Flash->success(__('The client has been saved.'));
 
@@ -88,6 +93,7 @@ class ClientController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $client = $this->Client->patchEntity($client, $this->request->getData());
+            $client->token = uniqid();
             if ($this->Client->save($client)) {
                 $this->Flash->success(__('The client has been saved.'));
 

@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Quote[]|\Cake\Collection\CollectionInterface $quotes
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="quotes index content">
     <?= $this->Html->link(__('New Quote'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Quotes') ?></h3>
@@ -12,27 +15,30 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
-                    <th><?= $this->Paginator->sort('business_id') ?></th>
-                    <th><?= $this->Paginator->sort('date') ?></th>
-                    <th><?= $this->Paginator->sort('total') ?></th>
-                    <th><?= $this->Paginator->sort('estatus_id') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th><?= $this->Paginator->sort('Empresa Dirigida') ?></th>
+                    <th><?= $this->Paginator->sort('Creada') ?></th>
+                    <th><?= $this->Paginator->sort('Total en Dolares') ?></th>
+                    <th><?= $this->Paginator->sort('Total en Euros') ?></th>
+                    <th><?= $this->Paginator->sort('Total en Pesos') ?></th>
+                    <th><?= $this->Paginator->sort('Estado') ?></th>
+                    <th class="actions"><?= __('Acciones') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($quotes as $quote): ?>
+
                 <tr>
                     <td><?= $this->Number->format($quote->id) ?></td>
-                    <td><?= $quote->has('user') ? $this->Html->link($quote->user->name, ['controller' => 'Users', 'action' => 'view', $quote->user->id]) : '' ?></td>
-                    <td><?= $this->Number->format($quote->business_id) ?></td>
+                    <td><?= h($quote->business_id) ?></td>
                     <td><?= h($quote->date) ?></td>
-                    <td><?= h($quote->total) ?></td>
+                    <td><?= h($quote->totalUSD) ?></td>
+                    <td><?= h($quote->totalEUR) ?></td>
+                    <td><?= h($quote->totalCOP) ?></td>
                     <td><?= $this->Number->format($quote->estatus_id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $quote->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $quote->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $quote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $quote->id)]) ?>
+                        <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $quote->id]) ?> -->
+                        <?= $this->Html->link(__('Descargar'), ['action' => 'getpdf', $quote->id]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

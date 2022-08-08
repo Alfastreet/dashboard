@@ -39,5 +39,6 @@ class Client extends Entity
         'position' => true,
         'business' => true,
         'clientscasinos' => true,
+        'token' => true
     ];
 }

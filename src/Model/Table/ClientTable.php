@@ -92,6 +92,11 @@ class ClientTable extends Table
             ->requirePresence('business_id', 'create')
             ->notEmptyString('business_id');
 
+        $validator
+            ->scalar('token')
+            ->maxLength('token', 255)
+            ->notEmptyString('token');
+
         return $validator;
     }
 

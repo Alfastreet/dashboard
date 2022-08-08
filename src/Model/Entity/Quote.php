@@ -42,4 +42,8 @@ class Quote extends Entity
         'estatus' => true,
         'detailsquotes' => true,
     ];
+
+    protected $_hidden = [
+        'token',
+    ];
 }

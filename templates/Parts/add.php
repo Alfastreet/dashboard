@@ -15,13 +15,21 @@
         <div class="parts form content">
             <?= $this->Form->create($part) ?>
             <fieldset>
-                <legend><?= __('Add Part') ?></legend>
+                <legend><?= __('Añadir Parte') ?></legend>
                 <?php
                     echo $this->Form->control('serial');
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('money_id');
-                    echo $this->Form->control('value');
-                    echo $this->Form->control('amount');
+                    echo $this->Form->control('name' , [
+                        'label' => 'Nombre del producto'
+                    ]);
+                    echo $this->Form->control('money_id', [
+                        'label' => 'Tipo de Moneda'
+                    ]);
+                    echo $this->Form->control('value' , [
+                        'label' => 'Valor de la pieza'
+                    ]);
+                    echo $this->Form->control('amount' , [
+                        'label' => 'Cantidad disponible'
+                    ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

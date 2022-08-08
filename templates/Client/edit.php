@@ -25,8 +25,8 @@
                     echo $this->Form->control('name');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('email');
-                    echo $this->Form->control('position_id');
-                    echo $this->Form->control('business_id');
+                    echo $this->Form->control('position_id', ['required' => false]);
+                    echo $this->Form->control('business_id', ['required' => false]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

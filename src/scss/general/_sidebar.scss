@@ -1,0 +1,48 @@
+@use 'base/variable' as v;
+@use 'base/mixins' as m;
+
+.sidebar {
+    
+    background-color: v.$black;
+    padding: 2rem;
+    max-width: 250px;
+
+    h2 {
+        color: v.$white;
+        margin: 0;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: v.$bold;
+        margin-top: 2rem;
+        font-family: v.$secondFont;
+    }
+
+    .logoAlfa {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+}
+
+.sidebar-nav {
+
+    margin-top: 4rem;
+
+    a {
+        color: v.$white;
+        display: block;
+        margin-bottom: 1.5rem;
+        padding: .5rem;
+        transition-property: color;
+        transition-duration: 300ms;
+        font-size: 1.5rem;
+        font-weight: v.$bold;
+        font-family: v.$secondFont;
+
+
+        &:hover,
+        &:active {
+            color: v.$gold;
+        }
+    }
+}

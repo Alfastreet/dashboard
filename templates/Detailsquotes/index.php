@@ -16,6 +16,7 @@
                     <th><?= $this->Paginator->sort('typeProduct_id') ?></th>
                     <th><?= $this->Paginator->sort('product_id') ?></th>
                     <th><?= $this->Paginator->sort('amount') ?></th>
+                    <th><?= $this->Paginator->sort('money_id') ?></th>
                     <th><?= $this->Paginator->sort('value') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -28,6 +29,7 @@
                     <td><?= $this->Number->format($detailsquote->typeProduct_id) ?></td>
                     <td><?= $this->Number->format($detailsquote->product_id) ?></td>
                     <td><?= $this->Number->format($detailsquote->amount) ?></td>
+                    <td><?= $this->Number->format($detailsquote->money_id) ?></td>
                     <td><?= h($detailsquote->value) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $detailsquote->id]) ?>

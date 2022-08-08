@@ -4,8 +4,15 @@
  * @var \App\Model\Entity\Client[]|\Cake\Collection\CollectionInterface $client
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
+<div class="newClient">
+    <?= $this->Html->link(__('Nuevo Cliente'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+</div>
+
 <div class="client index content">
-    <?= $this->Html->link(__('New Client'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+
     <h3><?= __('Client') ?></h3>
     <div class="table-responsive">
         <table>

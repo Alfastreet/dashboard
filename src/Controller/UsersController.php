@@ -169,6 +169,23 @@ class UsersController extends AppController
     }
 
 
+    public function pdf($id = null)
+    {
+        $this->viewBuilder()->enableAutoLayout(false); 
+        $report = $this->Users->get($id);
+        $this->viewBuilder()->setClassName('CakePdf.Pdf');
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'portrait',
+                'download' => true, // This can be omitted if "filename" is specified.
+                'filename' => 'Report_' . $id . '.pdf' //// This can be omitted if you want file name based on URL.
+            ]
+        );
+        $this->set('report', $report);
+    }
+
+
     /*public function login() {
 
         $this->request->allowMethod(['get', 'post']);

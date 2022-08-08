@@ -8,10 +8,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Quote'), ['action' => 'edit', $quote->id], ['class' => 'side-nav-item']) ?>
+            <!-- <?= $this->Html->link(__('Edit Quote'), ['action' => 'edit', $quote->id], ['class' => 'side-nav-item']) ?> -->
             <?= $this->Form->postLink(__('Delete Quote'), ['action' => 'delete', $quote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $quote->id), 'class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('List Quotes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Quote'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Download PDF'), ['action' => 'getpdf', $quote->id ]) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
@@ -55,7 +56,7 @@
                             <th><?= __('Product Id') ?></th>
                             <th><?= __('Amount') ?></th>
                             <th><?= __('Value') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <!-- <th class="actions"><?= __('Actions') ?></th> -->
                         </tr>
                         <?php foreach ($quote->detailsquotes as $detailsquotes) : ?>
                         <tr>
@@ -66,9 +67,9 @@
                             <td><?= h($detailsquotes->amount) ?></td>
                             <td><?= h($detailsquotes->value) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Detailsquotes', 'action' => 'view', $detailsquotes->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Detailsquotes', 'action' => 'edit', $detailsquotes->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Detailsquotes', 'action' => 'delete', $detailsquotes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $detailsquotes->id)]) ?>
+                                <!-- <?= $this->Html->link(__('View'), ['controller' => 'Detailsquotes', 'action' => 'view', $detailsquotes->id]) ?> -->
+                                <!-- <?= $this->Html->link(__('Edit'), ['controller' => 'Detailsquotes', 'action' => 'edit', $detailsquotes->id]) ?> -->
+                                <!-- <?= $this->Form->postLink(__('Delete'), ['controller' => 'Detailsquotes', 'action' => 'delete', $detailsquotes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $detailsquotes->id)]) ?> -->
                             </td>
                         </tr>
                         <?php endforeach; ?>

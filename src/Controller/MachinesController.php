@@ -138,4 +138,38 @@ class MachinesController extends AppController
 
         }
     }
+
+
+    // public  function search ($colunm = '', $value = '') {
+        
+    //     $query = 
+
+    //     if(!$query->num_rows){
+    //         echo 'error';
+    //         return $query;
+    //     }
+
+    //     return array_shift($query);
+    //     return $query;
+
+    // }
+
+    public  function searchPart() {
+
+        $id = $_GET['id'];
+
+        $machine = $this->db->execute('SELECT m.name as machineName, m.serial, m.id, c.name FROM machines m INNER JOIN casinos c ON m.casino_id = c.id WHERE  c.id  = "' .$id. '" ')->fetchAll('assoc');
+
+        if($machine){
+            echo json_encode($machine);
+            die;
+
+
+        } else {
+            
+            echo json_encode('error');    
+            die;       
+        }
+    }
+
 }

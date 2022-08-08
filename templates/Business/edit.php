@@ -20,14 +20,14 @@
         <div class="business form content">
             <?= $this->Form->create($busines) ?>
             <fieldset>
-                <legend><?= __('Edit Busines') ?></legend>
+                <legend><?= __('Editar Empresa') ?></legend>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('nit');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('address');
                     echo $this->Form->control('email');
-                    echo $this->Form->control('owner_id');
+                    echo $this->Form->control('owner_id' , ['options' => $owner]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

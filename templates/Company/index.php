@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Company[]|\Cake\Collection\CollectionInterface $company
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="company index content">
     <?= $this->Html->link(__('New Company'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Company') ?></h3>

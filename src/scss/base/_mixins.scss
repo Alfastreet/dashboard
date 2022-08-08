@@ -1,0 +1,120 @@
+@use 'variable' as v;
+
+/** Media Queries **/
+@mixin telefono {
+    @media (min-width: v.$mobile) {
+        @content;
+    }
+}
+@mixin tablet {
+    @media (min-width: v.$tablet) {
+        @content;
+    }
+}
+@mixin desktop {
+    @media (min-width: v.$desktop) {
+        @content;
+    }
+}
+
+@mixin desktopLG {
+    @media (min-width: v.$desktopLG) {
+        @content;
+    }
+}
+
+
+@mixin boton($bgColor, $textColor) {
+    background-color: $bgColor;
+    padding: 1.5rem 4rem;
+    color: $textColor;
+    margin-top: 2rem;
+    font-size: 2rem;
+    font-weight: 400;
+    display: inline-block;
+    font-weight: 700;
+    border: none;
+    transition-property: background-color;
+    transition-duration: .3s;
+    text-align: center;
+    display: block;
+    margin: 5rem 0;
+
+    @include tablet {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+    &:hover {
+        background-color: darken( $bgColor, 10% );
+        cursor: pointer;
+    }
+}
+
+@mixin grid($column, $space ) {
+    display: grid;
+    gap: $space;
+    grid-template-columns: repeat($column, 1fr);
+}
+
+@mixin card {
+
+    .card-img-overlay {
+        
+        display: flex;
+        flex-direction: row-reverse;
+
+
+        h3 {
+            font-size: 2rem;
+            font-weight: v.$bold;
+            font-family: v.$secondFont;
+        }
+
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: v.$bold;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-around;
+
+        a {
+            font-size: 2rem;
+            padding: .5rem 1.5rem;
+            border: none;
+            transition-property: background-color;
+            transition-duration: .3s;
+
+            &:hover {
+                background-color: v.$gold;
+            }
+
+        }
+    }
+
+    
+}
+
+@mixin buttonNew {
+    display: flex;
+    flex-direction: row-reverse;
+
+    a {
+        background-color: v.$black;
+        padding: 1.2rem;
+        border-radius: .5rem;
+        color: v.$white;
+        transition-property: color background-color;
+        transition-duration: 300ms;
+        font-weight: v.$bold;
+
+        &:hover {
+            color: v.$black;
+            background-color: v.$gold;
+        }
+    }
+}

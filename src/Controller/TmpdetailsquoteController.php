@@ -71,14 +71,22 @@ class TmpdetailsquoteController extends AppController
             $amount = $data['amount'];
             $value = $data['value'];
             $token = md5($data['token']);
+            $money_id = $data['money_id'];
 
-            $query = $this->db->execute('CALL add_detalle_temp ('.$typeProducts.', '.$idProduct.' , '.$amount.', "'.$token.'", "'.$value.'")')->fetchAll('assoc');
+            $query = $this->db->execute('CALL add_detalle_temp ('.$typeProducts.', '.$idProduct.' , '.$amount.', "'.$token.'", "'.$value.'", '.$money_id.')')->fetchAll('assoc');
                         
             echo json_encode($query);
+
+
+
                       
         }
         
     }
+
+
+    
+
 
     
 }

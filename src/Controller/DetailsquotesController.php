@@ -36,7 +36,7 @@ class DetailsquotesController extends AppController
     public function view($id = null)
     {
         $detailsquote = $this->Detailsquotes->get($id, [
-            'contain' => ['Quotes', 'TypeProduct', 'Parts'],
+            'contain' => ['Quotes', 'TypeProduct', 'Parts', 'Money'],
         ]);
 
         $this->set(compact('detailsquote'));
@@ -60,9 +60,10 @@ class DetailsquotesController extends AppController
             $this->Flash->error(__('The detailsquote could not be saved. Please, try again.'));
         }
         $quotes = $this->Detailsquotes->Quotes->find('list', ['limit' => 200])->all();
+        $money = $this->Detailsquotes->Money->find('list', ['limit' => 200])->all();
         $typeProducts = $this->Detailsquotes->TypeProduct->find('list', ['limit' => 200])->all();
         $products = $this->Detailsquotes->Parts->find('list', ['limit' => 200])->all();
-        $this->set(compact('detailsquote', 'quotes', 'typeProducts', 'products'));
+        $this->set(compact('detailsquote', 'quotes', 'typeProducts', 'products', 'money'));
     }
 
     /**
@@ -87,9 +88,10 @@ class DetailsquotesController extends AppController
             $this->Flash->error(__('The detailsquote could not be saved. Please, try again.'));
         }
         $quotes = $this->Detailsquotes->Quotes->find('list', ['limit' => 200])->all();
+        $money = $this->Detailsquotes->Money->find('list', ['limit' => 200])->all();
         $typeProducts = $this->Detailsquotes->TypeProduct->find('list', ['limit' => 200])->all();
         $products = $this->Detailsquotes->Parts->find('list', ['limit' => 200])->all();
-        $this->set(compact('detailsquote', 'quotes', 'typeProducts', 'products'));
+        $this->set(compact('detailsquote', 'quotes', 'typeProducts', 'products', 'money'));
     }
 
     /**

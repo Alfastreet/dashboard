@@ -52,6 +52,10 @@ class TmpdetailsquoteTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Money', [
+            'foreignKey' => 'money_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**
@@ -78,6 +82,11 @@ class TmpdetailsquoteTable extends Table
             ->notEmptyString('amount');
 
         $validator
+            ->integer('money_id')
+            ->requirePresence('money_id', 'create')
+            ->notEmptyString('money_id');
+
+        $validator
             ->scalar('value')
             ->maxLength('value', 255)
             ->requirePresence('value', 'create')
@@ -88,6 +97,7 @@ class TmpdetailsquoteTable extends Table
             ->maxLength('token', 255)
             ->requirePresence('token', 'create')
             ->notEmptyString('token');
+            
 
         return $validator;
     }

@@ -1,0 +1,29 @@
+@use 'variable' as v;
+
+h1, h2, h3 {
+    font-family: v.$principalFont;
+    margin: 0 0 calc(v.$padding / 2) 0;
+    font-weight: v.$black;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 3.6rem;
+}
+
+h3 {
+    font-size: 3rem;
+    text-align: center;
+    font-weight: v.$bold;
+}
+
+p {
+    font-family: v.$secondFont;
+    color: v.$white;
+    font-size: 2rem;
+    font-weight: v.$normal;
+}

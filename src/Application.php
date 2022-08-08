@@ -69,6 +69,7 @@ class Application extends BaseApplication //implements AuthenticationServiceProv
         }
 
         // Load more plugins here
+        $this->addPlugin('CakePdf');
     }
 
     /**

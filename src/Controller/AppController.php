@@ -56,4 +56,5 @@ class AppController extends Controller
     /*public function isAutorized($user) {
         return true;
     }*/
+
 }

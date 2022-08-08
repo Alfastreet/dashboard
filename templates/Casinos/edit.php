@@ -18,7 +18,7 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="casinos form content">
-            <?= $this->Form->create($casino) ?>
+            <?= $this->Form->create($casino, ['type' => 'file']) ?>
             <fieldset>
                 <legend><?= __('Edit Casino') ?></legend>
                 <?php
@@ -29,7 +29,8 @@
                     echo $this->Form->control('state_id');
                     echo $this->Form->control('owner_id');
                     echo $this->Form->control('company_id');
-                    echo $this->Form->control('image');
+                    echo $this->Form->control('image' , ['type' => 'file' , 'required' => false ]);
+                    echo $this->Html->image('Casinos/'.$casino->image , ['width' => 100]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

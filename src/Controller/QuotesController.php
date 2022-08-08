@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Quotes Controller
@@ -11,6 +12,15 @@ namespace App\Controller;
  */
 class QuotesController extends AppController
 {
+
+    private $db;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->db = ConnectionManager::get("default");
+    }
+
     /**
      * Index method
      *
@@ -127,4 +137,79 @@ class QuotesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    public function pdf()
+    {
+
+        $this->autoRender = false;
+
+        if($this->request->is('ajax')) {
+
+            $data = $_POST;
+
+            if(empty($data['codClient'])) {
+                $clientId = 1;
+            } 
+
+            $clientId = $data['codClient'];
+
+            $token = md5($data['token']);
+            $user = 2;
+
+            $query = $this->db->execute('SELECT * FROM tmpdetailsquote WHERE token = "'.$token.'"')->fetchAll('assoc');
+
+            
+            if($query) {
+                
+                $queryPros = $this->db->execute('CALL procesar_cotizacion('.$user.', '.$clientId.', "'.$token.'")')->fetchAll('assoc');
+                
+                echo json_encode($queryPros, JSON_UNESCAPED_UNICODE);
+
+            } else {
+                echo 'error';
+            }
+
+        }
+
+        
+    }
+
+
+    public function getpdf($id = null) {
+
+
+
+        $this->viewBuilder()->enableAutoLayout(false); 
+        $quote = $this->Quotes->get($id);
+
+        $client = $this->db->execute('SELECT q.id, q.date, q.totalUSD, q.totalEUR, q.totalCOP, q.token, u.name as userName, u.lastName as userLastName, dq.amount, dq.value as subtotal, p.serial, p.name as partName, p.value as unitPrice, cl.name as clientName, cl.phone, cl.email, bs.name as businessName, m.shortcode as moneyName FROM 
+        quotes q INNER JOIN 
+        users u ON q.user_id = u.id 
+        INNER JOIN detailsquotes dq ON dq.quote_id = q.id 
+        INNER JOIN parts p ON dq.product_id = p.id 
+        INNER JOIN status s  ON q.estatus_id = s.id
+        INNER JOIN client cl ON q.business_id = cl.id
+        INNER JOIN business bs ON cl.business_id = bs.id
+        INNER JOIN money m ON dq.money_id = m.id
+        WHERE q.id = '.$quote->id.'')->fetchAll('assoc');
+
+        // print_r($client);
+        // exit;
+
+        $this->viewBuilder()->setClassName('CakePdf.Pdf');
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'letter',
+                'download' => true, // This can be omitted if "filename" is specified.
+                'filename' => 'Report_' . $id . '.pdf', //// This can be omitted if you want file name based on URL.
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true
+            ]
+        );
+        $this->set('quote', $client);
+    }
+
+
 }

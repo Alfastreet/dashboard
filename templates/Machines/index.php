@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Machine[]|\Cake\Collection\CollectionInterface $machines
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="machines index content">
     <?= $this->Html->link(__('New Machine'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Machines') ?></h3>
@@ -35,8 +38,10 @@
                     <td><?= $this->Number->format($machine->id) ?></td>
                     <td><?= h($machine->serial) ?></td>
                     <td><?= h($machine->name) ?></td>
-                    <td><?= $this->Number->format($machine->yearModel) ?></td>
-                    <td><?= $this->Number->format($machine->model_id) ?></td>
+                    <td><?= $this->Number->format($machine->yearModel) ?>
+                        
+                    </td>
+                    <td><?= $machine->has('model') ? $this->Html->link($machine->model->name, ['controller' => 'model', 'action' => 'view', $machine->model->id]) : '' ?></td>
                     <td><?= $this->Number->format($machine->maker_id) ?></td>
                     <td><?= h($machine->warranty) ?></td>
                     <td><?= h($machine->image) ?></td>

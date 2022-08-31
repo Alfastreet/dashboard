@@ -10,44 +10,42 @@
 <?php include_once __DIR__.'/../layout/templates/header.php' ?>
 
 <div class="row">
-    <div class="title">
-        <h3>Contadores del Casino <?= h($nameCasino) ?></h3>
-    </div>
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Html->link(__('List Accountants'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
     <div class="column-responsive column-80">
-        <div class="machinesCasinos">
-
-            <?php foreach($machines as $machine): ?> 
-                <div class="card">
-                    <!--Imagen de la maquina-->
-
-                    <div class="card-header">
-                        <h5 class="card-title"><?= h($machine->name) ?></h5>
+        <div class="accountants form content">
+            <?= $this->Form->create($accountant, ['type' => 'file']) ?>
+            <fieldset>
+                <legend><?= __('Add Accountant') ?></legend>
+                <div class="row">
+                    <div class="col">
+                    <?php
+                        echo $this->Form->control('machine_id' ,[ 'required' => false, 'disabled' => true, 'class' => 'form-control']);
+                        echo $this->Form->control('casino_id', ['required' => false, 'disabled' => true, 'class' => 'form-control'] );
+                        echo $this->Form->control('day_init', ['disabled' => true, 'id' => 'dayInit', 'class' => 'form-control']);
+                        echo $this->Form->control('day_end', ['disabled' => true, 'id' => 'dayEnd', 'class' => 'form-control']);
+                        echo $this->Form->control('cashin', ['disabled' => true, 'id' => 'cashin', 'class' => 'form-control']);
+                        echo $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control']);
+                        echo $this->Form->control('bet', ['disabled' => true, 'id' => 'bet', 'class' => 'form-control']);
+                        echo $this->Form->control('win', ['disabled' => true, 'id' => 'win', 'class' => 'form-control']);
+                        echo $this->Form->control('jackpot', ['disabled' => true, 'id' => 'jackpot', 'class' => 'form-control']);
+                        echo $this->Form->control('gamesplayed', ['disabled' => true, 'id' => 'gamesplayed', 'class' => 'form-control']); ?>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Serial de la maquina: <span class="text-muted"><?= h($machine->serial) ?></span></p>
-                        <p class="card-text">Año: <span class="text-muted"><?= h($machine->yearModel) ?></span></p>
-                        <p class="card-text">Garantia: <span class="text-muted"><?= h($machine->warranty) ?></span></p>
-                        <p class="card-text">Modelo: <span class="text-muted"><?= h($machine->modelName)?></span></p>
-                        <p class="card-text">Marca: <span class="text-muted"><?= h($machine->nameMark)?></span></p>
-                        <p class="card-text">Fecha de Instalacion: <span class="text-muted"><?= h($machine->dateInstalling)?></span></p>
-                        <p class="card-text">Monitor: <span class="text-muted"><?= h($machine->display)?></span></p>
-                    </div>
-                    <div class="card-footer">
-                        <?= $this->Html->link(__('Generar Contador'), ['controller' => 'detailsaccountants', 'action' => 'add', '?' => ['id' => $_GET['id'], 'casinoid' => $_GET['casinoid'], 'machineid' => $machine->id, 'token' => $_GET['token']]], ['class' => 'btn btn-primary']) ?>
+                    <div class="col">
+                        <?php echo $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image']);?>
+                        <img id="file">
                     </div>
                 </div>
-            <?php endforeach ?> 
-
-
-            <!-- <?= $this->Form->create($accountant, ['type' => 'file']) ?>
-            <fieldset>
-                <legend><?= __('Añadir Contador') ?></legend>                                
-
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?> -->
+            <?= $this->Form->button(__('Submit'
+            )) ?>
+            <?= $this->Form->end() ?>
         </div>
     </div>
 </div>
 
-<script src="http://localhost/alfastreet/webroot/js/accountants.js"></script>
+<?= $this->Html->Script('accounts') ?>

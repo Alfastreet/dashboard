@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MachinesTable&\Cake\ORM\Association\BelongsTo $Machines
  * @property \App\Model\Table\CasinosTable&\Cake\ORM\Association\BelongsTo $Casinos
- * @property \App\Model\Table\AccountantsstatusesTable&\Cake\ORM\Association\BelongsTo $Accountantsstatuses
  *
  * @method \App\Model\Entity\Accountant newEmptyEntity()
  * @method \App\Model\Entity\Accountant newEntity(array $data, array $options = [])
@@ -53,10 +52,10 @@ class AccountantsTable extends Table
             'foreignKey' => 'casino_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Accountantsstatus', [
-            'foreignKey' => 'accountantsstatus_id',
-            'joinType' => 'INNER',
-        ]);
+        // $this->belongsTo('Months', [
+        //     'foreignKey' => 'month_id',
+        //     'joinType' => 'INNER',
+        // ]);
     }
 
     /**
@@ -78,31 +77,99 @@ class AccountantsTable extends Table
             ->notEmptyString('casino_id');
 
         $validator
-            ->integer('month')
-            ->requirePresence('month', 'create')
-            ->notEmptyString('month');
+            ->scalar('day_init')
+            ->maxLength('day_init', 255)
+            ->requirePresence('day_init', 'create')
+            ->notEmptyString('day_init');
 
         $validator
-            ->integer('year')
+            ->scalar('day_end')
+            ->maxLength('day_end', 255)
+            ->requirePresence('day_end', 'create')
+            ->notEmptyString('day_end');
+
+        $validator
+            ->integer('month_id')
+            ->requirePresence('month_id', 'create')
+            ->notEmptyString('month_id');
+
+        $validator
+            ->scalar('year')
+            ->maxLength('year', 255)
             ->requirePresence('year', 'create')
             ->notEmptyString('year');
 
         $validator
-            ->scalar('total_prof')
-            ->maxLength('total_prof', 255)
-            ->requirePresence('total_prof', 'create')
-            ->notEmptyString('total_prof');
+            ->scalar('cashin')
+            ->maxLength('cashin', 255)
+            ->requirePresence('cashin', 'create')
+            ->notEmptyString('cashin');
 
         $validator
-            ->scalar('token')
-            ->maxLength('token', 255)
-            ->requirePresence('token', 'create')
-            ->notEmptyString('token');
+            ->scalar('cashout')
+            ->maxLength('cashout', 255)
+            ->requirePresence('cashout', 'create')
+            ->notEmptyString('cashout');
 
         $validator
-            ->integer('accountantsstatus_id')
-            ->requirePresence('accountantsstatus_id', 'create')
-            ->notEmptyString('accountantsstatus_id');
+            ->scalar('bet')
+            ->maxLength('bet', 255)
+            ->requirePresence('bet', 'create')
+            ->notEmptyString('bet');
+
+        $validator
+            ->scalar('win')
+            ->maxLength('win', 255)
+            ->requirePresence('win', 'create')
+            ->notEmptyString('win');
+
+        $validator
+            ->scalar('profit')
+            ->maxLength('profit', 255)
+            ->requirePresence('profit', 'create')
+            ->notEmptyString('profit');
+
+        $validator
+            ->scalar('jackpot')
+            ->maxLength('jackpot', 255)
+            ->requirePresence('jackpot', 'create')
+            ->notEmptyString('jackpot');
+
+        $validator
+            ->scalar('gamesplayed')
+            ->maxLength('gamesplayed', 255)
+            ->requirePresence('gamesplayed', 'create')
+            ->notEmptyString('gamesplayed');
+
+        $validator
+            ->scalar('coljuegos')
+            ->maxLength('coljuegos', 255)
+            ->requirePresence('coljuegos', 'create')
+            ->notEmptyString('coljuegos');
+
+        $validator
+            ->scalar('admin')
+            ->maxLength('admin', 255)
+            ->requirePresence('admin', 'create')
+            ->notEmptyString('admin');
+
+        $validator
+            ->scalar('total')
+            ->maxLength('total', 255)
+            ->requirePresence('total', 'create')
+            ->notEmptyString('total');
+
+        $validator
+            ->scalar('alfastreet')
+            ->maxLength('alfastreet', 255)
+            ->requirePresence('alfastreet', 'create')
+            ->notEmptyString('alfastreet');
+
+        $validator
+            ->scalar('image')
+            ->maxLength('image', 255)
+            ->requirePresence('image', 'create')
+            ->notEmptyFile('image');
 
         return $validator;
     }
@@ -118,7 +185,7 @@ class AccountantsTable extends Table
     {
         $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
         $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
-        $rules->add($rules->existsIn('accountantsstatus_id', 'Accountantsstatus'), ['errorField' => 'accountantsstatus_id']);
+        // $rules->add($rules->existsIn('month_id', 'Months'), ['errorField' => 'month_id']);
 
         return $rules;
     }

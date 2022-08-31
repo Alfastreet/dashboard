@@ -73,10 +73,12 @@ class ClientTable extends Table
             ->notEmptyString('name');
 
         $validator
-            ->integer('phone')
+            ->scalar('phone')
+            ->maxLength('phone', 255)
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 
+       
         $validator
             ->email('email')
             ->requirePresence('email', 'create')

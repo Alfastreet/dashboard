@@ -3,11 +3,12 @@
 
 .dashboard {
     background-color: lighten(v.$black, 95%);
-
+    
     @include m.tablet {
         display: flex;
         height: 100vh;
     }
+
 
     .principal {
         flex: 1;

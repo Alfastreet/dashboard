@@ -1,0 +1,15 @@
+@use 'base/variable' as v;
+@use 'base/mixins' as m;
+
+.form-group {
+    margin: 1.5rem 0;
+}
+
+.center-form {
+    margin: 0 auto;
+
+    .file-image {
+        width: 50%;
+        margin: 5rem;
+    }
+}

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\FrozenTime;
 
 /**
  * Detailsaccountants Controller
@@ -102,7 +103,7 @@ class DetailsaccountantsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($id = null, $token = null)
     {
         $detailsaccountant = $this->Detailsaccountants->get($id, [
             'contain' => [],
@@ -139,4 +140,8 @@ class DetailsaccountantsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    
+
 }
+

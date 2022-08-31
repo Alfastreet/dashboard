@@ -29,12 +29,14 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
     <?= $this->Html->meta('icon') ?>
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <?= $this->Html->css(['bootstrap.min', 'app.css']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <?php  echo $this->Html->meta("myToken", $this->request->getAttribute("csrfToken")); ?>
 </head>
 
 <body>

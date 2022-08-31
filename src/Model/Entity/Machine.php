@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * Machine Entity
  *
  * @property int $id
+ * @property int|null $idint
  * @property string $serial
  * @property string $name
  * @property int $yearModel
@@ -23,12 +24,16 @@ use Cake\ORM\Entity;
  * @property int $casino_id
  * @property int $owner_id
  * @property int $company_id
+ * @property int $contract_id
+ * @property int $accountants_id
  *
  * @property \App\Model\Entity\Model $model
  * @property \App\Model\Entity\Maker $maker
  * @property \App\Model\Entity\Casino $casino
  * @property \App\Model\Entity\Owner $owner
  * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\Contract $contract
+ * @property \App\Model\Entity\Accountant[] $accountants
  * @property \App\Model\Entity\Machinepart[] $machinepart
  */
 class Machine extends Entity
@@ -43,6 +48,7 @@ class Machine extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'idint' => true,
         'serial' => true,
         'name' => true,
         'yearModel' => true,
@@ -57,11 +63,13 @@ class Machine extends Entity
         'casino_id' => true,
         'owner_id' => true,
         'company_id' => true,
+        'contract_id' => true,
         'model' => true,
         'maker' => true,
         'casino' => true,
         'owner' => true,
         'company' => true,
+        'contract' => true,
         'machinepart' => true,
     ];
 }

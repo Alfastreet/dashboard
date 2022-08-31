@@ -4,41 +4,59 @@
  * @var \App\Model\Entity\Accountant[]|\Cake\Collection\CollectionInterface $accountants
  */
 ?>
-
 <?php include_once __DIR__.'/../layout/templates/header.php' ?>
 
 <div class="accountants index content">
-    <!-- <?= $this->Html->link(__('New Accountant'), ['action' => 'add'], ['class' => 'button float-right']) ?> -->
     <h3><?= __('Accountants') ?></h3>
     <div class="table-responsive">
-        <table>
-            <thead>
+        <table class="table table-responsive table-striped table-bordered text-center">
+            <thead class="thead-dark">
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('machine_id') ?></th>
-                    <th><?= $this->Paginator->sort('casino_id') ?></th>
-                    <th><?= $this->Paginator->sort('month') ?></th>
-                    <th><?= $this->Paginator->sort('year') ?></th>
-                    <th><?= $this->Paginator->sort('total_prof') ?></th>
-                    <th><?= $this->Paginator->sort('accountantsstatus_id') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('machine_id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('casino_id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('day_init') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('day_end') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('month') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('year') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('cashin') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('cashout') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('bet') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('win') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('profit') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('jackpot') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('gamesplayed') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('coljuegos') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('admin') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('total') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('alfastreet') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('image') ?></th>
+
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($accountants as $accountant): ?>
                 <tr>
-                    <td><?= $this->Number->format($accountant->id) ?></td>
+                    <td scope="row"><?= $this->Number->format($accountant->id) ?></td>
                     <td><?= $accountant->has('machine') ? $this->Html->link($accountant->machine->name, ['controller' => 'Machines', 'action' => 'view', $accountant->machine->id]) : '' ?></td>
                     <td><?= $accountant->has('casino') ? $this->Html->link($accountant->casino->name, ['controller' => 'Casinos', 'action' => 'view', $accountant->casino->id]) : '' ?></td>
-                    <td><?= $this->Number->format($accountant->month) ?></td>
-                    <td><?= $this->Number->format($accountant->year) ?></td>
-                    <td><?= h($accountant->total_prof) ?></td>
-                    <td><?= $this->Number->format($accountant->accountantsstatus_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $accountant->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $accountant->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $accountant->id], ['confirm' => __('Are you sure you want to delete # {0}?', $accountant->id)]) ?>
-                    </td>
+                    <td><?= h($accountant->day_init) ?></td>
+                    <td><?= h($accountant->day_end) ?></td>
+                    <td><?= h($accountant->month_id) ?></td>
+                    <td><?= h($accountant->year) ?></td>
+                    <td><?= $this->Number->currency($accountant->cashin, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->cashout, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->bet, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->win, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->profit, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->jackpot, 'USD') ?></td>
+                    <td><?= h($accountant->gamesplayed) ?></td>
+                    <td><?= $this->Number->currency($accountant->coljuegos, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->admin, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->total, 'USD') ?></td>
+                    <td><?= $this->Number->currency($accountant->alfastreet, 'USD') ?></td>
+                    <td><?= $this->Html->image('Accountants/'.$accountant->image) ?></td>
+                    
                 </tr>
                 <?php endforeach; ?>
             </tbody>

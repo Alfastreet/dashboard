@@ -4,14 +4,17 @@
  * @var \App\Model\Entity\Part[]|\Cake\Collection\CollectionInterface $parts
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="parts index content">
     <?= $this->Html->link(__('Nueva Parte'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Partes y Servicios') ?></h3>
     <div class="table-responsive">
-        <table>
+        <table class="table-responsive text-center">
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= __('') ?></th>
                     <th><?= $this->Paginator->sort('Serial') ?></th>
                     <th><?= $this->Paginator->sort('Nombre') ?></th>
                     <th><?= $this->Paginator->sort('Moneda') ?></th>
@@ -23,10 +26,10 @@
             <tbody>
                 <?php foreach ($parts as $part): ?>
                 <tr>
-                    <td><?= $this->Number->format($part->id) ?></td>
+                    <td class="image"><?= $this->Html->image('Parts/'.$part->image, ['class' => 'image-index']) ?></td>
                     <td><?= h($part->serial) ?></td>
                     <td><?= h($part->name) ?></td>
-                    <td><?= $this->Number->format($part->money_id) ?></td>
+                    <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
                     <td><?= $this->Number->format($part->value) ?></td>
                     <td><?= $this->Number->format($part->amount) ?></td>
                     <td class="actions">

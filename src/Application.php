@@ -39,7 +39,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication //implements AuthenticationServiceProviderInterface
+class Application extends BaseApplication  // implements AuthenticationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -97,7 +97,7 @@ class Application extends BaseApplication //implements AuthenticationServiceProv
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
-            //->add(new AuthenticationMiddleware($this))
+            // ->add(new AuthenticationMiddleware($this))
 
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
@@ -140,31 +140,4 @@ class Application extends BaseApplication //implements AuthenticationServiceProv
 
         // Load more plugins here
     }
-
-    /*public function getAuthenticationService(ServerRequestInterface  $request): AuthenticationServiceInterface
-    {
-        $authenticationServices =  new AuthenticationService([
-            'unauthenticatedRedirect' => 'users/login',
-            'queryParam' => 'redirect'
-        ]);
-
-        $authenticationServices->loadIdentifier( 'Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ]
-        ]);
-
-        $authenticationServices->loadAuthenticator('Authentication.Session');
-
-        $authenticationServices->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
-            'loginUrl' => 'users/login'
-        ]);
-
-        return $authenticationServices;
-    }*/
 }

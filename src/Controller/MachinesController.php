@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use Cake\Datasource\ConnectionManager;
 
 /**
  * Machines Controller
@@ -12,15 +11,6 @@ use Cake\Datasource\ConnectionManager;
  */
 class MachinesController extends AppController
 {
-
-    private $db;
-
-    public function initialize(): void
-    {
-        parent::initialize();
-        $this->db = ConnectionManager::get("default");
-    }
-
     /**
      * Index method
      *
@@ -29,7 +19,7 @@ class MachinesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company'],
+            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
         ];
         $machines = $this->paginate($this->Machines);
 
@@ -46,7 +36,7 @@ class MachinesController extends AppController
     public function view($id = null)
     {
         $machine = $this->Machines->get($id, [
-            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Machinepart'],
+            'contain' => ['Models', 'Makers', 'Casinos', 'Owners', 'Companies', 'Contracts', 'Accountants', 'Machinepart'],
         ]);
 
         $this->set(compact('machine'));
@@ -74,7 +64,8 @@ class MachinesController extends AppController
         $casinos = $this->Machines->Casinos->find('list', ['limit' => 200])->all();
         $owners = $this->Machines->Owner->find('list', ['limit' => 200])->all();
         $companies = $this->Machines->Company->find('list', ['limit' => 200])->all();
-        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies'));
+        $contracts = $this->Machines->Contract->find('list', ['limit' => 200])->all();
+        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
     }
 
     /**
@@ -103,7 +94,8 @@ class MachinesController extends AppController
         $casinos = $this->Machines->Casinos->find('list', ['limit' => 200])->all();
         $owners = $this->Machines->Owner->find('list', ['limit' => 200])->all();
         $companies = $this->Machines->Company->find('list', ['limit' => 200])->all();
-        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies'));
+        $contracts = $this->Machines->Contract->find('list', ['limit' => 200])->all();
+        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
     }
 
     /**
@@ -125,51 +117,4 @@ class MachinesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
-    public function getMachine() {
-        if($this->request->is('ajax')) {
-            
-            $casino_id = $this->request->getQuery('casino_id');
-
-            $machine = $this->db->execute('SELECT m.id, m.serial, m.name, c.id FROM machines m INNER JOIN casinos c ON m.casino_id = c.id WHERE c.id = '.$casino_id)->fetchAll('assoc');
-
-            echo json_encode($machine);
-            die;
-
-        }
-    }
-
-
-    // public  function search ($colunm = '', $value = '') {
-        
-    //     $query = 
-
-    //     if(!$query->num_rows){
-    //         echo 'error';
-    //         return $query;
-    //     }
-
-    //     return array_shift($query);
-    //     return $query;
-
-    // }
-
-    public  function searchPart() {
-
-        $id = $_GET['id'];
-
-        $machine = $this->db->execute('SELECT m.name as machineName, m.serial, m.id, c.name FROM machines m INNER JOIN casinos c ON m.casino_id = c.id WHERE  c.id  = "' .$id. '" ')->fetchAll('assoc');
-
-        if($machine){
-            echo json_encode($machine);
-            die;
-
-
-        } else {
-            
-            echo json_encode('error');    
-            die;       
-        }
-    }
-
 }

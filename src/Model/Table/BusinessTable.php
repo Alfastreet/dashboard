@@ -64,12 +64,14 @@ class BusinessTable extends Table
             ->notEmptyString('name');
 
         $validator
-            ->integer('nit')
+            ->scalar('nit')
+            ->maxLength('nit', 255)
             ->requirePresence('nit', 'create')
             ->notEmptyString('nit');
-
+            
         $validator
-            ->integer('phone')
+            ->scalar('phone')
+            ->maxLength('phone', 255)
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 

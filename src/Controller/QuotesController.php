@@ -28,6 +28,8 @@ class QuotesController extends AppController
      */
     public function index()
     {
+
+        
         $this->paginate = [
             'contain' => ['Users', 'Business', 'Status'],
         ];
@@ -155,7 +157,7 @@ class QuotesController extends AppController
             $clientId = $data['codClient'];
 
             $token = md5($data['token']);
-            $user = 2;
+            $user = 8;
 
             $query = $this->db->execute('SELECT * FROM tmpdetailsquote WHERE token = "'.$token.'"')->fetchAll('assoc');
 

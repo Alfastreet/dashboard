@@ -23,7 +23,7 @@
                     echo $this->Form->control('city_id');
                     echo $this->Form->control('state_id');
                     echo $this->Form->control('owner_id');
-                    echo $this->Form->control('company_id');
+                    echo $this->Form->control('business_id', ['options' => $business]);
                     echo $this->Form->control('image', ['type' => 'file']);
                 ?>
             </fieldset>

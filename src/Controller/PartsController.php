@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\FrozenTime;
 
 /**
  * Parts Controller
@@ -61,9 +62,24 @@ class PartsController extends AppController
     {
         $part = $this->Parts->newEmptyEntity();
         if ($this->request->is('post')) {
+
             $part = $this->Parts->patchEntity($part, $this->request->getData());
+
+            $image =  $this->request->getData('image');
+
+            if($image) {
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time. "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT."img/Parts/".$nameImage;
+                $image->moveTo($destiny);
+                $part->image = $nameImage;
+
+            }
+
+
             if ($this->Parts->save($part)) {
-                $this->Flash->success(__('The part has been saved.'));
+                //$this->Flash->success(__('The part has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -86,9 +102,33 @@ class PartsController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $nameImageOld = $part->image;
+
             $part = $this->Parts->patchEntity($part, $this->request->getData());
+
+            $image = $this->request->getData('image');
+
+            $part->image = $nameImageOld;
+
+            if($image->getClientFileName()) {
+
+                if(file_exists(WWW_ROOT."img/Parts/".$nameImageOld)){
+
+                    unlink(WWW_ROOT."img/Parts/".$nameImageOld);
+        
+                }
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time. "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT."img/Parts/".$nameImage;
+                $image->moveTo($destiny);
+                $part->image = $nameImage;                
+
+            }
+
             if ($this->Parts->save($part)) {
-                $this->Flash->success(__('The part has been saved.'));
+                // $this->Flash->success(__('The part has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -109,8 +149,15 @@ class PartsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $part = $this->Parts->get($id);
+
+        if(file_exists(WWW_ROOT."img/Parts/".$part['image'])){
+
+            unlink(WWW_ROOT."img/Parts/".$part['image']);
+
+        }
+
         if ($this->Parts->delete($part)) {
-            $this->Flash->success(__('The part has been deleted.'));
+            // $this->Flash->success(__('The part has been deleted.'));
         } else {
             $this->Flash->error(__('The part could not be deleted. Please, try again.'));
         }

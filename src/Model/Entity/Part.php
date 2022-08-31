@@ -37,5 +37,6 @@ class Part extends Entity
         'amount' => true,
         'money' => true,
         'machinepart' => true,
+        'image' => true,
     ];
 }

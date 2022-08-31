@@ -28,6 +28,8 @@ class MachinesControllerTest extends TestCase
         'app.Casinos',
         'app.Owners',
         'app.Companies',
+        'app.Contracts',
+        'app.Accountants',
         'app.Machinepart',
     ];
 

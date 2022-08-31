@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Busines $busines
  */
 ?>
+
+<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">

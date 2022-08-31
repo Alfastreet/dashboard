@@ -88,6 +88,12 @@ class PartsTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmptyString('amount');
 
+        $validator
+            ->scalar('image')
+            ->maxLength('image', 255)
+            ->requirePresence('image', 'create')
+            ->notEmptyString('image');
+
         return $validator;
     }
 

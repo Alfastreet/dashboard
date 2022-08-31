@@ -56,7 +56,7 @@ h3 {
 }
 
 h3 span {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 400;
 }
 
@@ -146,13 +146,13 @@ table thead tr td {
         <div class="datos-basicos ">
             <div class="datos-cliente ">
                 <h3>Cliente: <span> <?= $quote[0]['businessName'] ?> </span> </h3>
-                <h3>Contacto: <span> <?= $quote[0]['clientName'] ?> </span> </h3>
-                <h3>Telefono: <span> <?= $quote[0]['phone'] ?> </span> </h3>
+                <h3>Contácto: <span> <?= $quote[0]['clientName'] ?> </span> </h3>
+                <h3>Teléfono: <span> <?= $quote[0]['phone'] ?> </span> </h3>
                 <h3>Correo: <span> <?= $quote[0]['email'] ?> </span> </h3>
             </div>
             <div class="datos-cotizacion ">
                 <h2>Cotizacion N°: <span>AC-<?= $quote[0]['id']?>-<?=date('Y')?></span></h2>
-                <h2>Fecha: <span><?= $quote[0]['date'] ?></span></h2>
+                <h2>Fecha: <span><?= date('Y-m-d') ?></span></h2>
             </div>
         </div>
 
@@ -186,7 +186,7 @@ table thead tr td {
                     <div>
                         <!--Dolars -->
 
-                        <h3>Total en Dolares</h3>
+                        <h3>Total USD</h3>
                         <h4>Subtotal:
                             <?php if($quote[0]['totalUSD'] === 'NULL'){ ?>
                                 0
@@ -215,7 +215,7 @@ table thead tr td {
                     <!--Euros-->
 
                     <div>
-                        <h3>Total en Euros</h3>
+                        <h3>Total EUR</h3>
 
                         <h4>Subtotal:
                             <?php if($quote[0]['totalEUR'] === 'NULL'){ ?>
@@ -246,7 +246,7 @@ table thead tr td {
                     <!--Colombian Peso-->
 
                     <div <?php if($quote[0]['totalCOP'] !== 'NULL') { ?> style="display: block;" <?php }else { ?> style="display: none;" <?php } ?>>
-                        <h3>Total en Pesos Colombianos</h3>
+                        <h3>Total COP</h3>
                         <h4>Subtotal: 
                         
                             <?php if($quote[0]['totalCOP'] === 'NULL'){ ?>
@@ -278,10 +278,12 @@ table thead tr td {
 
                 </div>
                 <div class="dataText">
-                    <h5>Favor únicamente girar en chequoe o consignar en:</h5>
+                    <h5>Favor únicamente girar en cheque o consignar en:</h5>
                     <p>Banco BBVA - Cuenta Corriente</p>
                     <p>Beneficiario <span>ALFASTREET COLOMBIA S.A.S</span></p>
-                    <p>Cuenta N°: <span>171026180</span></p>
+                    <p>Cuenta 10 Digitos: <span>0171026180</span> </p>
+                    <p>Cuenta 15 Digitos: <span>0171000100026180</span> </p>
+                    <p>Cuenta 20 Digitos: <span>00130171000100026180</span> </p>
                     <br>
 
                     <h5>Tiempo de entrega: <span>INMEDIATO</span></h5>

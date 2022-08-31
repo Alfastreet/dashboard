@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use Cake\I18n\FrozenTime;
-
 /**
  * Casinos Controller
  *
@@ -20,7 +19,7 @@ class CasinosController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['City', 'State', 'Owner', 'Company'],
+            'contain' => ['City', 'State', 'Owner', 'Business'],
         ];
         $casinos = $this->paginate($this->Casinos);
 
@@ -34,13 +33,28 @@ class CasinosController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($id = null, $token = null)
     {
-        $casino = $this->Casinos->get($id, [
-            'contain' => ['City', 'State', 'Owner', 'Company', 'Clientscasinos', 'Machines'],
-        ]);
 
-        $this->set(compact('casino'));
+        $token = $_GET['token'];
+
+        
+        
+        $casino = $this->Casinos->get($id, [
+            'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
+        ]);
+        
+
+        if($token !== $casino->token){
+            return $this->redirect(['action' => 'error']);
+        }
+
+
+        $machines = $this->fetchTable('machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
+        $accountants = $this->fetchTable('accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
+        $lastaccountants = $this->fetchTable('accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        
+        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants'));
     }
 
     /**
@@ -50,6 +64,9 @@ class CasinosController extends AppController
      */
     public function add()
     {
+
+        
+
         $casino = $this->Casinos->newEmptyEntity();
 
         if ($this->request->is('post')) {
@@ -70,6 +87,8 @@ class CasinosController extends AppController
 
             }
 
+            $casino->token = uniqid();
+
 
             if ($this->Casinos->save($casino)) {
                 $this->Flash->success(__('The casino has been saved.'));
@@ -81,8 +100,12 @@ class CasinosController extends AppController
         $cities = $this->Casinos->City->find('list', ['limit' => 200])->all();
         $states = $this->Casinos->State->find('list', ['limit' => 200])->all();
         $owners = $this->Casinos->Owner->find('list', ['limit' => 200])->all();
-        $companies = $this->Casinos->Company->find('list', ['limit' => 200])->all();
-        $this->set(compact('casino', 'cities', 'states', 'owners', 'companies'));
+        $business = $this->Casinos->Business->find('list', ['limit' => 200])->all();
+
+        
+        
+
+        $this->set(compact('casino', 'cities', 'states', 'owners', 'business'));
     }
 
     /**
@@ -123,6 +146,8 @@ class CasinosController extends AppController
 
             }
 
+            $casino->token = uniqid();
+
             if ($this->Casinos->save($casino)) {
                 $this->Flash->success(__('The casino has been saved.'));
 
@@ -133,8 +158,15 @@ class CasinosController extends AppController
         $cities = $this->Casinos->City->find('list', ['limit' => 200])->all();
         $states = $this->Casinos->State->find('list', ['limit' => 200])->all();
         $owners = $this->Casinos->Owner->find('list', ['limit' => 200])->all();
-        $companies = $this->Casinos->Company->find('list', ['limit' => 200])->all();
-        $this->set(compact('casino', 'cities', 'states', 'owners', 'companies'));
+        $business = $this->Casinos->Business->find('list', ['limit' => 200])->all();
+
+        $casino = $this->Casinos->get($id, [
+            'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
+        ]);
+        $this->set(compact('casino', 'cities', 'states', 'owners', 'business'));
+
+
+        
     }
 
     /**
@@ -164,5 +196,9 @@ class CasinosController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function error() {
+        
     }
 }

@@ -27,24 +27,72 @@
                     <td><?= $accountant->has('casino') ? $this->Html->link($accountant->casino->name, ['controller' => 'Casinos', 'action' => 'view', $accountant->casino->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Total Prof') ?></th>
-                    <td><?= h($accountant->total_prof) ?></td>
+                    <th><?= __('Day Init') ?></th>
+                    <td><?= h($accountant->day_init) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Day End') ?></th>
+                    <td><?= h($accountant->day_end) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Month') ?></th>
+                    <td><?= h($accountant->month) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Year') ?></th>
+                    <td><?= h($accountant->year) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Cashin') ?></th>
+                    <td><?= h($accountant->cashin) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Cashout') ?></th>
+                    <td><?= h($accountant->cashout) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Bet') ?></th>
+                    <td><?= h($accountant->bet) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Win') ?></th>
+                    <td><?= h($accountant->win) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Profit') ?></th>
+                    <td><?= h($accountant->profit) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Jackpot') ?></th>
+                    <td><?= h($accountant->jackpot) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Gamesplayed') ?></th>
+                    <td><?= h($accountant->gamesplayed) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Coljuegos') ?></th>
+                    <td><?= h($accountant->coljuegos) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Admin') ?></th>
+                    <td><?= h($accountant->admin) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Total') ?></th>
+                    <td><?= h($accountant->total) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Alfastreet') ?></th>
+                    <td><?= h($accountant->alfastreet) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Image') ?></th>
+                    <td><?= h($accountant->image) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($accountant->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Month') ?></th>
-                    <td><?= $this->Number->format($accountant->month) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Year') ?></th>
-                    <td><?= $this->Number->format($accountant->year) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Accountantsstatus Id') ?></th>
-                    <td><?= $this->Number->format($accountant->accountantsstatus_id) ?></td>
                 </tr>
             </table>
         </div>

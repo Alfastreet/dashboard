@@ -63,7 +63,7 @@
                             <td><?= h($clientscasinos->id) ?></td>
                             <td><?= h($clientscasinos->client_id) ?></td>
                             <td><?= h($clientscasinos->casino_id) ?></td>
-                            <td><?= $this->Html->link(__('Añadir Contador'), ['controller' => 'Accountants', 'action' => 'add' , '?' => ['id' => $client->id, 'casinoid' => $clientscasinos->casino_id, 'token' => $client->token]], ['class' => 'side-nav-item']) ?></td>
+                            <td></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Clientscasinos', 'action' => 'view', $clientscasinos->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Clientscasinos', 'action' => 'edit', $clientscasinos->id]) ?>

@@ -26,11 +26,22 @@
                 <?php
                     echo $this->Form->control('machine_id', ['options' => $machines]);
                     echo $this->Form->control('casino_id', ['options' => $casinos]);
+                    echo $this->Form->control('day_init');
+                    echo $this->Form->control('day_end');
                     echo $this->Form->control('month');
                     echo $this->Form->control('year');
-                    echo $this->Form->control('total_prof');
-                    echo $this->Form->control('token');
-                    echo $this->Form->control('accountantsstatus_id');
+                    echo $this->Form->control('cashin');
+                    echo $this->Form->control('cashout');
+                    echo $this->Form->control('bet');
+                    echo $this->Form->control('win');
+                    echo $this->Form->control('profit');
+                    echo $this->Form->control('jackpot');
+                    echo $this->Form->control('gamesplayed');
+                    echo $this->Form->control('coljuegos');
+                    echo $this->Form->control('admin');
+                    echo $this->Form->control('total');
+                    echo $this->Form->control('alfastreet');
+                    echo $this->Form->control('image');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

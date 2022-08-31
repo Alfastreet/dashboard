@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use Cake\Datasource\ConnectionManager;
+use Cake\I18n\FrozenTime;
 
 /**
  * Accountants Controller
@@ -12,15 +12,6 @@ use Cake\Datasource\ConnectionManager;
  */
 class AccountantsController extends AppController
 {
-
-    private $db;
-
-    public function initialize(): void
-    {
-        parent::initialize();
-        $this->db = ConnectionManager::get("default");
-    }
-
     /**
      * Index method
      *
@@ -29,7 +20,7 @@ class AccountantsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Machines', 'Casinos', 'Accountantsstatus'],
+            'contain' => ['Machines', 'Casinos'],
         ];
         $accountants = $this->paginate($this->Accountants);
 
@@ -46,7 +37,7 @@ class AccountantsController extends AppController
     public function view($id = null)
     {
         $accountant = $this->Accountants->get($id, [
-            'contain' => ['Machines', 'Casinos', 'Accountantsstatus'],
+            'contain' => ['Machines', 'Casinos'],
         ]);
 
         $this->set(compact('accountant'));
@@ -57,34 +48,50 @@ class AccountantsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add($id = null, $casinoid = null, $token = null)
+   
+    public function add( $casinoid = null )
     {
 
-        
-        $id = $_GET['id'];
-        $casinoid = $_GET['casinoid'];
-        $token = $_GET['token'];
-        
-        $client = $this->db->execute('SELECT token FROM client WHERE id = '.$id)->fetchAll('assoc');
-        $tokenConfirm = $client[0]['token'];
+        //$this->autoRender = false;
 
-        if($token !== $tokenConfirm){
-            return $this->redirect(['controller' => 'client', 'action' => 'index' ]);
-        }
-        if(isset($id) && isset($casinoid) &&  empty($token)) {            
-            return $this->redirect(['controller' => 'client', 'action' => 'index' ]);
-        }
+        $casinoid = $_GET['casinoid'];
 
         $accountant = $this->Accountants->newEmptyEntity();
-        $casinos = $this->db->execute('SELECT c.id, c.name FROM clientscasinos clcs INNER JOIN casinos c ON clcs.casino_id = c.id WHERE clcs.client_id = '.$id.' AND c.id = '.$casinoid)->fetchAll('assoc');
-        $nameCasino = $casinos[0]['name'];
-        $machines = $this->db->execute('SELECT m.*, mo.name AS modelName, ma.name AS nameMark FROM machines m INNER JOIN model mo ON mo.id = m.model_id INNER JOIN maker ma ON m.maker_id = ma.id WHERE m.casino_id = '.$casinoid)->fetchAll('obj');
-        // print_r($machines);
-        // exit;
+                
+        $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
 
-        $this->set(compact('accountant' , 'casinos', 'nameCasino', 'machines'));
+
+        $accountant->profit = $accountant->cashin - $accountant-> cashout;
+        $accountant->coljuegos = $accountant->profit * 0.12;
+        $accountant->admin = $accountant->coljuegos *0.01;
+        $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - 144415;
+        $accountant->alfastreet = $accountant->total * 0.40;
+        $accountant->casino_id = $casinoid;
+        $accountant->month_id = date('m', strtotime(date('d-m-Y')."- 1 month"));
+        $accountant->year = date('Y');
+        $accountant->casino_id = $casinoid;
         
+        $image = $this->request->getData('image');
+        
+        if($image) {
+            
+            $time =  FrozenTime::now()->toUnixString();
+            $nameImage = $time. "_" . $image->getClientFileName();
+            $destiny = WWW_ROOT."img/Accountants/".$nameImage;
+            $image->moveTo($destiny);
+            $accountant->image = $nameImage;
+            
+        }
+
+        if ($this->Accountants->save($accountant)) {
+            $this->Flash->success(__('The accountant has been saved.'));
+
+            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid]);
+        }
+        $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
+
     }
+    
 
     /**
      * Edit method
@@ -109,8 +116,8 @@ class AccountantsController extends AppController
         }
         $machines = $this->Accountants->Machines->find('list', ['limit' => 200])->all();
         $casinos = $this->Accountants->Casinos->find('list', ['limit' => 200])->all();
-        $accountantsstatuses = $this->Accountants->Accountantsstatus->find('list', ['limit' => 200])->all();
-        $this->set(compact('accountant', 'machines', 'casinos', 'accountantsstatuses'));
+        $months = $this->Accountants->Months->find('list', ['limit' => 200])->all();
+        $this->set(compact('accountant', 'machines', 'casinos'));
     }
 
     /**

@@ -16,6 +16,9 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\CasinosTable&\Cake\ORM\Association\BelongsTo $Casinos
  * @property \App\Model\Table\OwnersTable&\Cake\ORM\Association\BelongsTo $Owners
  * @property \App\Model\Table\CompaniesTable&\Cake\ORM\Association\BelongsTo $Companies
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \App\Model\Table\AccountantsTable&\Cake\ORM\Association\BelongsTo $Accountants
+ * @property \App\Model\Table\AccountantsTable&\Cake\ORM\Association\HasMany $Accountants
  * @property \App\Model\Table\MachinepartTable&\Cake\ORM\Association\HasMany $Machinepart
  *
  * @method \App\Model\Entity\Machine newEmptyEntity()
@@ -68,6 +71,14 @@ class MachinesTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Contract', [
+            'foreignKey' => 'contract_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Accountants', [
+            'foreignKey' => 'accountants_id',
+            'joinType' => 'INNER',
+        ]);
         $this->hasMany('Machinepart', [
             'foreignKey' => 'machine_id',
         ]);
@@ -81,6 +92,10 @@ class MachinesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+        $validator
+            ->integer('idint')
+            ->allowEmptyString('idint');
+
         $validator
             ->scalar('serial')
             ->maxLength('serial', 255)
@@ -158,6 +173,11 @@ class MachinesTable extends Table
             ->requirePresence('company_id', 'create')
             ->notEmptyString('company_id');
 
+        $validator
+            ->integer('contract_id')
+            ->requirePresence('contract_id', 'create')
+            ->notEmptyString('contract_id');
+
         return $validator;
     }
 
@@ -175,6 +195,8 @@ class MachinesTable extends Table
         $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
         $rules->add($rules->existsIn('owner_id', 'Owner'), ['errorField' => 'owner_id']);
         $rules->add($rules->existsIn('company_id', 'Company'), ['errorField' => 'company_id']);
+        $rules->add($rules->existsIn('contract_id', 'Contract'), ['errorField' => 'contract_id']);
+        $rules->add($rules->existsIn('accountants_id', 'Accountants'), ['errorField' => 'accountants_id']);
 
         return $rules;
     }

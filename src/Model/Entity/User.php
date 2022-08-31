@@ -63,7 +63,7 @@ class User extends Entity
     ];
 
 
-    protected function _setPassword($password) 
+    protected function _setPassword(String $password) : ?string
     {
 
         if(strlen($password) > 0) {

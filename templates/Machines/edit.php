@@ -19,10 +19,11 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="machines form content">
-            <?= $this->Form->create($machine) ?>
+            <?= $this->Form->create($machine, ['type' => 'file']) ?>
             <fieldset>
                 <legend><?= __('Edit Machine') ?></legend>
                 <?php
+                    echo $this->Form->control('idint');
                     echo $this->Form->control('serial');
                     echo $this->Form->control('name');
                     echo $this->Form->control('yearModel');
@@ -37,6 +38,8 @@
                     echo $this->Form->control('casino_id', ['options' => $casinos]);
                     echo $this->Form->control('owner_id');
                     echo $this->Form->control('company_id');
+                    echo $this->Form->control('contract_id');
+                    echo $this->Form->control('accountants_id');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

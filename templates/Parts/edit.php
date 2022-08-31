@@ -18,7 +18,7 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="parts form content">
-            <?= $this->Form->create($part) ?>
+            <?= $this->Form->create($part, ['type' => 'file']) ?>
             <fieldset>
                 <legend><?= __('Editar parte') ?></legend>
                 <?php
@@ -35,6 +35,9 @@
                     echo $this->Form->control('amount' , [
                         'label' => 'Cantidad disponible'
                     ]);
+                    echo $this->Form->control('image', [
+                        'type' => 'file'
+                    ])
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Enviar')) ?>

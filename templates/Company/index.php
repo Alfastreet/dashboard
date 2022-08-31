@@ -10,8 +10,8 @@
 <div class="company index content">
     <?= $this->Html->link(__('New Company'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Company') ?></h3>
-    <div class="table-responsive">
-        <table>
+    <div>
+        <table class="table table-bordered table-striped table-responsive text-center table-hover">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
@@ -33,23 +33,30 @@
                     <td><?= h($company->email) ?></td>
                     <td><?= $this->Number->format($company->business_id) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $company->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $company->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $company->id], ['confirm' => __('Are you sure you want to delete # {0}?', $company->id)]) ?>
+                    <?= $this->Html->link(
+                                $this->Html->image("eye-fill.svg", ["alt" => "View"]),
+                                "/company/view/".$company->id,
+                                ['escape' => false],
+                            ); ?>
+                            
+                        <?= $this->Html->link(
+                                $this->Html->image("pencil-fill.svg", ["alt" => "Edit"]),
+                                "/company/edit/".$company->id,
+                                ['escape' => false],
+                            ); ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <div class="paginator">
+    <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <li><?= $this->Paginator->first('<< ' . __('first')) ?></li>
             <?= $this->Paginator->prev('< ' . __('previous')) ?>
             <?= $this->Paginator->numbers() ?>
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
+    </nav>
 </div>

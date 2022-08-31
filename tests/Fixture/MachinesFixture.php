@@ -20,6 +20,7 @@ class MachinesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'idint' => 1,
                 'serial' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'yearModel' => 1,
@@ -30,10 +31,12 @@ class MachinesFixture extends TestFixture
                 'height' => 'Lorem ipsum dolor sit amet',
                 'width' => 'Lorem ipsum dolor sit amet',
                 'display' => 'Lorem ipsum dolor sit amet',
-                'dateInstalling' => '2022-07-15 13:57:15',
+                'dateInstalling' => '2022-08-10 16:37:39',
                 'casino_id' => 1,
                 'owner_id' => 1,
                 'company_id' => 1,
+                'contract_id' => 1,
+                'accountants_id' => 1,
             ],
         ];
         parent::init();

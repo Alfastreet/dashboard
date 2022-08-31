@@ -60,8 +60,8 @@ class CasinosTable extends Table
             'foreignKey' => 'owner_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Company', [
-            'foreignKey' => 'company_id',
+        $this->belongsTo('Business', [
+            'foreignKey' => 'business_id',
             'joinType' => 'INNER',
         ]);
         $this->hasMany('Clientscasinos', [
@@ -87,7 +87,8 @@ class CasinosTable extends Table
             ->notEmptyString('name');
 
         $validator
-            ->integer('phone')
+            ->scalar('phone')
+            ->maxLength('phone', 255)
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 
@@ -113,15 +114,21 @@ class CasinosTable extends Table
             ->notEmptyString('owner_id');
 
         $validator
-            ->integer('company_id')
-            ->requirePresence('company_id', 'create')
-            ->notEmptyString('company_id');
+            ->integer('business_id')
+            ->requirePresence('business_id', 'create')
+            ->notEmptyString('business_id');
 
         $validator
             ->scalar('image')
             ->maxLength('image', 255)
             ->requirePresence('image', 'create')
             ->notEmptyFile('image');
+
+        $validator
+            ->scalar('token')
+            ->maxLength('token', 255)
+            ->requirePresence('token', 'create')
+            ->notEmptyFile('token');
 
         return $validator;
     }
@@ -138,7 +145,7 @@ class CasinosTable extends Table
         $rules->add($rules->existsIn('city_id', 'City'), ['errorField' => 'city_id']);
         $rules->add($rules->existsIn('state_id', 'State'), ['errorField' => 'state_id']);
         $rules->add($rules->existsIn('owner_id', 'Owner'), ['errorField' => 'owner_id']);
-        $rules->add($rules->existsIn('company_id', 'Company'), ['errorField' => 'company_id']);
+        $rules->add($rules->existsIn('business_id', 'Business'), ['errorField' => 'company_id']);
 
         return $rules;
     }

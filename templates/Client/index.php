@@ -14,8 +14,8 @@
 <div class="client index content">
 
     <h3><?= __('Client') ?></h3>
-    <div class="table-responsive">
-        <table>
+    
+        <table class="table table-bordered table-striped table-responsive text-center table-hover">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
@@ -32,20 +32,30 @@
                 <tr>
                     <td><?= $this->Number->format($client->id) ?></td>
                     <td><?= h($client->name) ?></td>
-                    <td><?= $this->Number->format($client->phone) ?></td>
+                    <td><?= h($client->phone) ?></td>
                     <td><?= h($client->email) ?></td>
-                    <td><?= $this->Number->format($client->position_id) ?></td>
-                    <td><?= $this->Number->format($client->business_id) ?></td>
+                    <td><?= $client->has('clientposition') ? h($client->clientposition->position) : '' ?></td>
+                    <td><?= $client->has('busines') ? h ($client->busines->name) : '' ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $client->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $client->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $client->id], ['confirm' => __('Are you sure you want to delete # {0}?', $client->id)]) ?>
+
+                        <?= $this->Html->link(
+                                $this->Html->image("eye-fill.svg", ["alt" => "View"]),
+                                "/client/view/".$client->id,
+                                ['escape' => false],
+                            ); ?>
+                            
+                        <?= $this->Html->link(
+                                $this->Html->image("pencil-fill.svg", ["alt" => "Edit"]),
+                                "/client/edit/".$client->id,
+                                ['escape' => false],
+                            ); ?>
+
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
+    
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>

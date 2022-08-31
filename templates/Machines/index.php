@@ -4,9 +4,6 @@
  * @var \App\Model\Entity\Machine[]|\Cake\Collection\CollectionInterface $machines
  */
 ?>
-
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
-
 <div class="machines index content">
     <?= $this->Html->link(__('New Machine'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Machines') ?></h3>
@@ -15,6 +12,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('idint') ?></th>
                     <th><?= $this->Paginator->sort('serial') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('yearModel') ?></th>
@@ -29,6 +27,8 @@
                     <th><?= $this->Paginator->sort('casino_id') ?></th>
                     <th><?= $this->Paginator->sort('owner_id') ?></th>
                     <th><?= $this->Paginator->sort('company_id') ?></th>
+                    <th><?= $this->Paginator->sort('contract_id') ?></th>
+                    <th><?= $this->Paginator->sort('accountants_id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -36,12 +36,11 @@
                 <?php foreach ($machines as $machine): ?>
                 <tr>
                     <td><?= $this->Number->format($machine->id) ?></td>
+                    <td><?= $machine->idint === null ? '' : $this->Number->format($machine->idint) ?></td>
                     <td><?= h($machine->serial) ?></td>
                     <td><?= h($machine->name) ?></td>
-                    <td><?= $this->Number->format($machine->yearModel) ?>
-                        
-                    </td>
-                    <td><?= $machine->has('model') ? $this->Html->link($machine->model->name, ['controller' => 'model', 'action' => 'view', $machine->model->id]) : '' ?></td>
+                    <td><?= $this->Number->format($machine->yearModel) ?></td>
+                    <td><?= $this->Number->format($machine->model_id) ?></td>
                     <td><?= $this->Number->format($machine->maker_id) ?></td>
                     <td><?= h($machine->warranty) ?></td>
                     <td><?= h($machine->image) ?></td>
@@ -52,6 +51,8 @@
                     <td><?= $machine->has('casino') ? $this->Html->link($machine->casino->name, ['controller' => 'Casinos', 'action' => 'view', $machine->casino->id]) : '' ?></td>
                     <td><?= $this->Number->format($machine->owner_id) ?></td>
                     <td><?= $this->Number->format($machine->company_id) ?></td>
+                    <td><?= $this->Number->format($machine->contract_id) ?></td>
+                    <td><?= $this->Number->format($machine->accountants_id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $machine->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $machine->id]) ?>

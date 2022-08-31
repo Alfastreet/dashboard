@@ -11,15 +11,26 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $machine_id
  * @property int $casino_id
- * @property int $month
- * @property int $year
- * @property string $total_prof
- * @property string $token
- * @property int $accountantsstatus_id
+ * @property string $day_init
+ * @property string $day_end
+ * @property int $month_id
+ * @property string $year
+ * @property string $cashin
+ * @property string $cashout
+ * @property string $bet
+ * @property string $win
+ * @property string $profit
+ * @property string $jackpot
+ * @property string $gamesplayed
+ * @property string $coljuegos
+ * @property string $admin
+ * @property string $total
+ * @property string $alfastreet
+ * @property string $image
  *
  * @property \App\Model\Entity\Machine $machine
  * @property \App\Model\Entity\Casino $casino
- * @property \App\Model\Entity\Accountantsstatus $accountantsstatus
+ * @property \App\Model\Entity\Month $month
  */
 class Accountant extends Entity
 {
@@ -35,22 +46,24 @@ class Accountant extends Entity
     protected $_accessible = [
         'machine_id' => true,
         'casino_id' => true,
-        'month' => true,
+        'day_init' => true,
+        'day_end' => true,
+        'month_id' => true,
         'year' => true,
-        'total_prof' => true,
-        'token' => true,
-        'accountantsstatus_id' => true,
+        'cashin' => true,
+        'cashout' => true,
+        'bet' => true,
+        'win' => true,
+        'profit' => true,
+        'jackpot' => true,
+        'gamesplayed' => true,
+        'coljuegos' => true,
+        'admin' => true,
+        'total' => true,
+        'alfastreet' => true,
+        'image' => true,
         'machine' => true,
         'casino' => true,
-        'accountantsstatus' => true,
-    ];
-
-    /**
-     * Fields that are excluded from JSON versions of the entity.
-     *
-     * @var array<string>
-     */
-    protected $_hidden = [
-        'token',
+        'month' => true,
     ];
 }

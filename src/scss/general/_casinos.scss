@@ -14,7 +14,7 @@
     }
 
     .card {
-        max-width: 32.5rem;
+        max-width: 40rem;
 
         h5, p {
             color: v.$black;
@@ -28,7 +28,7 @@
 
     @include m.tablet {
         
-        @include m.grid(3 , 1);
+        @include m.grid(3 , 2rem);
     }
 
     img {

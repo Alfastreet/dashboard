@@ -19,6 +19,10 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+
+
+    
+
     public function index()
     {
         $this->paginate = [
@@ -185,45 +189,4 @@ class UsersController extends AppController
         $this->set('report', $report);
     }
 
-
-    /*public function login() {
-
-        $this->request->allowMethod(['get', 'post']);
-        $result = $this->Authentication->getResult();
-        
-
-        if($result->isValid()){
-            var_dump($_POST);
-            exit;
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Users',
-                'action' => 'index'
-            ]);
-
-            return $this->redirect($redirect);
-        }
-
-        if($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error('Datos Invalidos');
-        }
-        
-    }
-
-
-    public function beforeFilter(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-
-        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
-    }
-
-    public function logout() {
-
-        $result = $this->Authentication->getResult();
-
-        if($result->isValid()) {
-            $this->Authentication->logout();
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-        }
-    }*/
 }

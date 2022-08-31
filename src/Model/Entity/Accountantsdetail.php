@@ -31,5 +31,6 @@ class Accountantsdetail extends Entity
         'details_id' => true,
         'accountant' => true,
         'detail' => true,
+        'client_id' => true,
     ];
 }

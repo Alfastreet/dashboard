@@ -26,7 +26,7 @@
                     echo $this->Form->control('phone');
                     echo $this->Form->control('address');
                     echo $this->Form->control('email');
-                    echo $this->Form->control('business_id', ['options' => $businesses]);
+                    echo $this->Form->control('business_id', ['options' => $business_id]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

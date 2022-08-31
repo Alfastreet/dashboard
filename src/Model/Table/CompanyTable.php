@@ -73,9 +73,10 @@ class CompanyTable extends Table
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
-
+        
         $validator
-            ->integer('phone')
+            ->scalar('phone')
+            ->maxLength('phone', 255)
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 

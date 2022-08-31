@@ -43,13 +43,14 @@ class Casino extends Entity
         'city_id' => true,
         'state_id' => true,
         'owner_id' => true,
-        'company_id' => true,
+        'business_id' => true,
         'image' => true,
         'city' => true,
         'state' => true,
         'owner' => true,
-        'company' => true,
+        'busines' => true,
         'clientscasinos' => true,
         'machines' => true,
+        'token' => true,
     ];
 }

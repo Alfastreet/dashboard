@@ -53,7 +53,7 @@ class BusinessController extends AppController
         if ($this->request->is('post')) {
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
             if ($this->Business->save($busines)) {
-                $this->Flash->success(__('The busines has been saved.'));
+                
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -78,7 +78,7 @@ class BusinessController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
             if ($this->Business->save($busines)) {
-                $this->Flash->success(__('The busines has been saved.'));
+                
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -100,7 +100,7 @@ class BusinessController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $busines = $this->Business->get($id);
         if ($this->Business->delete($busines)) {
-            $this->Flash->success(__('The busines has been deleted.'));
+            
         } else {
             $this->Flash->error(__('The busines could not be deleted. Please, try again.'));
         }

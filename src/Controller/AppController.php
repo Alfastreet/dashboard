@@ -39,20 +39,11 @@ class AppController extends Controller
      */
     public function initialize(): void
     {
-        // parent::initialize();
+        parent::initialize();
 
-        // $this->loadComponent('RequestHandler');
-        // $this->loadComponent('Flash');
-        // $this->loadComponent('Auth', [
-        //     'loginRedirect' => [
-        //         'controller' => 'Casinos',
-        //         'action' => 'index'
-        //     ],
-        //     'logoutRedirect' => [
-        //         'controller' => 'Users',
-        //         'action' => 'login'
-        //     ]
-        // ]);
+        $this->loadComponent('RequestHandler');
+        $this->loadComponent('Flash');
+        //$this->loadComponent('Authentication.Authentication');
         
 
         /*
@@ -62,13 +53,5 @@ class AppController extends Controller
         //$this->loadComponent('FormProtection');
     }
 
-    // public function beforeFilter(Event $event) 
-    // {
-    //     $this->Auth->allow(['index', 'view', 'display']);
-    // }
-
-    // public function isAutorized($user) {
-    //     return true;
-    // }
 
 }

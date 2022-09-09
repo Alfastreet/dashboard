@@ -77,7 +77,7 @@ class QuotesController extends AppController
             $quote->status_id = $statusNow;
 
             if ($this->Quotes->save($quote)) {
-                $this->Flash->success(__('The quote has been saved.'));
+                
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -107,7 +107,7 @@ class QuotesController extends AppController
             $quote = $this->Quotes->patchEntity($quote, $this->request->getData());
 
             if ($this->Quotes->save($quote)) {
-                $this->Flash->success(__('The quote has been saved.'));
+                
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -132,7 +132,7 @@ class QuotesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $quote = $this->Quotes->get($id);
         if ($this->Quotes->delete($quote)) {
-            $this->Flash->success(__('The quote has been deleted.'));
+            
         } else {
             $this->Flash->error(__('The quote could not be deleted. Please, try again.'));
         }
@@ -205,12 +205,51 @@ class QuotesController extends AppController
             [
                 'orientation' => 'letter',
                 'download' => true, // This can be omitted if "filename" is specified.
-                'filename' => 'Report_' . $id . '.pdf', //// This can be omitted if you want file name based on URL.
+                'filename' => '0' . $id . '.pdf', //// This can be omitted if you want file name based on URL.
                 'isHtml5ParserEnabled' => true,
                 'isRemoteEnabled' => true
             ]
         );
         $this->set('quote', $client);
+    }
+
+
+    public function search () {
+        $this->autoRender = false;
+            
+        $business_id = $this->request->getQuery("business_id");
+
+        $user = $this->db->execute("SELECT c.id, c.name, cp.position FROM client c INNER JOIN clientposition cp ON c.position_id = cp.id WHERE c.business_id = ".$business_id)->fetchAll('assoc');
+
+        if($user !== null || $user !== ['']) {
+            echo json_encode($user);
+            die;
+        }
+    }
+
+    public function getCasino() {
+
+        $this->autoRender = false;
+     
+        $client_id = $this->request->getQuery('client_id');
+
+        $casino = $this->db->execute('SELECT cs.id, cs.name FROM clientscasinos clcs  INNER JOIN casinos cs ON clcs.casino_id = cs.id WHERE clcs.client_id = '.$client_id)->fetchAll('assoc');
+
+        echo json_encode($casino);
+        die;        
+    }
+
+    public function getPart() {
+
+        $this->autoRender = false;
+
+        $serial_id = $this->request->getQuery('serial_id');
+
+        $serial = $this->db->execute("SELECT * FROM parts WHERE serial = '" .$serial_id."'")->fetchAll('assoc');
+
+        echo json_encode($serial);
+        die;
+        
     }
 
 

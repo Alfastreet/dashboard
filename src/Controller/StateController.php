@@ -50,7 +50,7 @@ class StateController extends AppController
         if ($this->request->is('post')) {
             $state = $this->State->patchEntity($state, $this->request->getData());
             if ($this->State->save($state)) {
-                $this->Flash->success(__('The state has been saved.'));
+                 (__('The state has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class StateController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $state = $this->State->patchEntity($state, $this->request->getData());
             if ($this->State->save($state)) {
-                $this->Flash->success(__('The state has been saved.'));
+                 (__('The state has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class StateController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $state = $this->State->get($id);
         if ($this->State->delete($state)) {
-            $this->Flash->success(__('The state has been deleted.'));
+             (__('The state has been deleted.'));
         } else {
             $this->Flash->error(__('The state could not be deleted. Please, try again.'));
         }

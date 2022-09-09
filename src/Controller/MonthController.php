@@ -50,7 +50,7 @@ class MonthController extends AppController
         if ($this->request->is('post')) {
             $month = $this->Month->patchEntity($month, $this->request->getData());
             if ($this->Month->save($month)) {
-                $this->Flash->success(__('The month has been saved.'));
+                 (__('The month has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class MonthController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $month = $this->Month->patchEntity($month, $this->request->getData());
             if ($this->Month->save($month)) {
-                $this->Flash->success(__('The month has been saved.'));
+                 (__('The month has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class MonthController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $month = $this->Month->get($id);
         if ($this->Month->delete($month)) {
-            $this->Flash->success(__('The month has been deleted.'));
+             (__('The month has been deleted.'));
         } else {
             $this->Flash->error(__('The month could not be deleted. Please, try again.'));
         }

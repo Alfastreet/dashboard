@@ -49,7 +49,7 @@ class ContractController extends AppController
         if ($this->request->is('post')) {
             $contract = $this->Contract->patchEntity($contract, $this->request->getData());
             if ($this->Contract->save($contract)) {
-                $this->Flash->success(__('The contract has been saved.'));
+                 (__('The contract has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -73,7 +73,7 @@ class ContractController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contract = $this->Contract->patchEntity($contract, $this->request->getData());
             if ($this->Contract->save($contract)) {
-                $this->Flash->success(__('The contract has been saved.'));
+                 (__('The contract has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -94,7 +94,7 @@ class ContractController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $contract = $this->Contract->get($id);
         if ($this->Contract->delete($contract)) {
-            $this->Flash->success(__('The contract has been deleted.'));
+             (__('The contract has been deleted.'));
         } else {
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }

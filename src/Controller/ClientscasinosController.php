@@ -63,7 +63,7 @@ class ClientscasinosController extends AppController
         if ($this->request->is('post')) {
             $clientscasino = $this->Clientscasinos->patchEntity($clientscasino, $this->request->getData());
             if ($this->Clientscasinos->save($clientscasino)) {
-                $this->Flash->success(__('The clientscasino has been saved.'));
+                 (__('The clientscasino has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -89,7 +89,7 @@ class ClientscasinosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $clientscasino = $this->Clientscasinos->patchEntity($clientscasino, $this->request->getData());
             if ($this->Clientscasinos->save($clientscasino)) {
-                $this->Flash->success(__('The clientscasino has been saved.'));
+                 (__('The clientscasino has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -112,7 +112,7 @@ class ClientscasinosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $clientscasino = $this->Clientscasinos->get($id);
         if ($this->Clientscasinos->delete($clientscasino)) {
-            $this->Flash->success(__('The clientscasino has been deleted.'));
+             (__('The clientscasino has been deleted.'));
         } else {
             $this->Flash->error(__('The clientscasino could not be deleted. Please, try again.'));
         }

@@ -53,7 +53,7 @@ class CityController extends AppController
         if ($this->request->is('post')) {
             $city = $this->City->patchEntity($city, $this->request->getData());
             if ($this->City->save($city)) {
-                $this->Flash->success(__('The city has been saved.'));
+                 (__('The city has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -78,7 +78,7 @@ class CityController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->City->patchEntity($city, $this->request->getData());
             if ($this->City->save($city)) {
-                $this->Flash->success(__('The city has been saved.'));
+                 (__('The city has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -100,7 +100,7 @@ class CityController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $city = $this->City->get($id);
         if ($this->City->delete($city)) {
-            $this->Flash->success(__('The city has been deleted.'));
+             (__('The city has been deleted.'));
         } else {
             $this->Flash->error(__('The city could not be deleted. Please, try again.'));
         }

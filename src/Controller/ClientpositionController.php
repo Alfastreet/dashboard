@@ -52,7 +52,7 @@ class ClientpositionController extends AppController
             
             $clientposition = $this->Clientposition->patchEntity($clientposition, $this->request->getData());
             if ($this->Clientposition->save($clientposition)) {
-                $this->Flash->success(__('The clientposition has been saved.'));
+                 (__('The clientposition has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -76,7 +76,7 @@ class ClientpositionController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $clientposition = $this->Clientposition->patchEntity($clientposition, $this->request->getData());
             if ($this->Clientposition->save($clientposition)) {
-                $this->Flash->success(__('The clientposition has been saved.'));
+                 (__('The clientposition has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -97,7 +97,7 @@ class ClientpositionController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $clientposition = $this->Clientposition->get($id);
         if ($this->Clientposition->delete($clientposition)) {
-            $this->Flash->success(__('The clientposition has been deleted.'));
+             (__('The clientposition has been deleted.'));
         } else {
             $this->Flash->error(__('The clientposition could not be deleted. Please, try again.'));
         }

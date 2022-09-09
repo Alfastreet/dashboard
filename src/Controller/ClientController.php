@@ -68,7 +68,7 @@ class ClientController extends AppController
             $client->token = uniqid();
             
             if ($this->Client->save($client)) {
-                $this->Flash->success(__('The client has been saved.'));
+                 (__('The client has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class ClientController extends AppController
             $client = $this->Client->patchEntity($client, $this->request->getData());
             $client->token = uniqid();
             if ($this->Client->save($client)) {
-                $this->Flash->success(__('The client has been saved.'));
+                 (__('The client has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -118,7 +118,7 @@ class ClientController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $client = $this->Client->get($id);
         if ($this->Client->delete($client)) {
-            $this->Flash->success(__('The client has been deleted.'));
+             (__('The client has been deleted.'));
         } else {
             $this->Flash->error(__('The client could not be deleted. Please, try again.'));
         }

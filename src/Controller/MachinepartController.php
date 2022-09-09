@@ -53,7 +53,7 @@ class MachinepartController extends AppController
         if ($this->request->is('post')) {
             $machinepart = $this->Machinepart->patchEntity($machinepart, $this->request->getData());
             if ($this->Machinepart->save($machinepart)) {
-                $this->Flash->success(__('The machinepart has been saved.'));
+                 (__('The machinepart has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -79,7 +79,7 @@ class MachinepartController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $machinepart = $this->Machinepart->patchEntity($machinepart, $this->request->getData());
             if ($this->Machinepart->save($machinepart)) {
-                $this->Flash->success(__('The machinepart has been saved.'));
+                 (__('The machinepart has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -102,7 +102,7 @@ class MachinepartController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $machinepart = $this->Machinepart->get($id);
         if ($this->Machinepart->delete($machinepart)) {
-            $this->Flash->success(__('The machinepart has been deleted.'));
+             (__('The machinepart has been deleted.'));
         } else {
             $this->Flash->error(__('The machinepart could not be deleted. Please, try again.'));
         }

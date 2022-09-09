@@ -50,7 +50,7 @@ class TypeproductController extends AppController
         if ($this->request->is('post')) {
             $typeproduct = $this->Typeproduct->patchEntity($typeproduct, $this->request->getData());
             if ($this->Typeproduct->save($typeproduct)) {
-                $this->Flash->success(__('The typeproduct has been saved.'));
+                 (__('The typeproduct has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class TypeproductController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $typeproduct = $this->Typeproduct->patchEntity($typeproduct, $this->request->getData());
             if ($this->Typeproduct->save($typeproduct)) {
-                $this->Flash->success(__('The typeproduct has been saved.'));
+                 (__('The typeproduct has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class TypeproductController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $typeproduct = $this->Typeproduct->get($id);
         if ($this->Typeproduct->delete($typeproduct)) {
-            $this->Flash->success(__('The typeproduct has been deleted.'));
+             (__('The typeproduct has been deleted.'));
         } else {
             $this->Flash->error(__('The typeproduct could not be deleted. Please, try again.'));
         }

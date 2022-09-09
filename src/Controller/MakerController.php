@@ -50,7 +50,7 @@ class MakerController extends AppController
         if ($this->request->is('post')) {
             $maker = $this->Maker->patchEntity($maker, $this->request->getData());
             if ($this->Maker->save($maker)) {
-                $this->Flash->success(__('The maker has been saved.'));
+                 (__('The maker has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class MakerController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $maker = $this->Maker->patchEntity($maker, $this->request->getData());
             if ($this->Maker->save($maker)) {
-                $this->Flash->success(__('The maker has been saved.'));
+                 (__('The maker has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class MakerController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $maker = $this->Maker->get($id);
         if ($this->Maker->delete($maker)) {
-            $this->Flash->success(__('The maker has been deleted.'));
+             (__('The maker has been deleted.'));
         } else {
             $this->Flash->error(__('The maker could not be deleted. Please, try again.'));
         }

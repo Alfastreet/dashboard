@@ -50,7 +50,7 @@ class OwnerController extends AppController
         if ($this->request->is('post')) {
             $owner = $this->Owner->patchEntity($owner, $this->request->getData());
             if ($this->Owner->save($owner)) {
-                $this->Flash->success(__('The owner has been saved.'));
+                 (__('The owner has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class OwnerController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $owner = $this->Owner->patchEntity($owner, $this->request->getData());
             if ($this->Owner->save($owner)) {
-                $this->Flash->success(__('The owner has been saved.'));
+                 (__('The owner has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class OwnerController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $owner = $this->Owner->get($id);
         if ($this->Owner->delete($owner)) {
-            $this->Flash->success(__('The owner has been deleted.'));
+             (__('The owner has been deleted.'));
         } else {
             $this->Flash->error(__('The owner could not be deleted. Please, try again.'));
         }

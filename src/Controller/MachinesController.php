@@ -53,7 +53,7 @@ class MachinesController extends AppController
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
             if ($this->Machines->save($machine)) {
-                $this->Flash->success(__('The machine has been saved.'));
+                 (__('The machine has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -83,7 +83,7 @@ class MachinesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
             if ($this->Machines->save($machine)) {
-                $this->Flash->success(__('The machine has been saved.'));
+                 (__('The machine has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -110,7 +110,7 @@ class MachinesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $machine = $this->Machines->get($id);
         if ($this->Machines->delete($machine)) {
-            $this->Flash->success(__('The machine has been deleted.'));
+             (__('The machine has been deleted.'));
         } else {
             $this->Flash->error(__('The machine could not be deleted. Please, try again.'));
         }

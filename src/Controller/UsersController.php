@@ -77,7 +77,7 @@ class UsersController extends AppController
 
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                 (__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -134,7 +134,7 @@ class UsersController extends AppController
             }
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                 (__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -164,7 +164,7 @@ class UsersController extends AppController
                 unlink($destiny);
             }
 
-            $this->Flash->success(__('The user has been deleted.'));
+             (__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
@@ -188,5 +188,42 @@ class UsersController extends AppController
         );
         $this->set('report', $report);
     }
+
+    // public function login() 
+    // {
+    //     $this->request->allowMethod(['get', 'post']);
+
+    //     $result = $this->Authentication->getResult();
+
+    //     if($result->isValid()) {
+    //         $redirect = $this->request->getQuery('redirect', [
+    //             'controller' => 'Users',
+    //             'action' => 'index',
+    //         ]);
+
+    //         return $this->redirect($redirect);
+
+    //     } 
+
+    //     if($this->request->is('post') && !$result->isValid()) {
+    //         $this->Flash->error('Credenciales Invalidas, por favor revisa de nuevo');
+    //     }
+    // }
+
+
+    // public function logout()
+    // {
+    //     $result = $this->Authentication->getResult();
+    //     if($result->isValid()){
+    //         $this->Authentication->logout();
+    //         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+    //     }
+    // }
+
+    // public function beforeFilter(EventInterface $event)
+    // {
+    //     parent::beforeFilter($event);
+    //     $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+    // }
 
 }

@@ -79,7 +79,7 @@ class PartsController extends AppController
 
 
             if ($this->Parts->save($part)) {
-                //$this->Flash->success(__('The part has been saved.'));
+                // (__('The part has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -128,7 +128,7 @@ class PartsController extends AppController
             }
 
             if ($this->Parts->save($part)) {
-                // $this->Flash->success(__('The part has been saved.'));
+                //  (__('The part has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -157,7 +157,7 @@ class PartsController extends AppController
         }
 
         if ($this->Parts->delete($part)) {
-            // $this->Flash->success(__('The part has been deleted.'));
+            //  (__('The part has been deleted.'));
         } else {
             $this->Flash->error(__('The part could not be deleted. Please, try again.'));
         }

@@ -84,7 +84,7 @@ class AccountantsController extends AppController
         }
 
         if ($this->Accountants->save($accountant)) {
-            $this->Flash->success(__('The accountant has been saved.'));
+            
 
             return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid]);
         }
@@ -108,7 +108,7 @@ class AccountantsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
             if ($this->Accountants->save($accountant)) {
-                $this->Flash->success(__('The accountant has been saved.'));
+                
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -132,7 +132,7 @@ class AccountantsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $accountant = $this->Accountants->get($id);
         if ($this->Accountants->delete($accountant)) {
-            $this->Flash->success(__('The accountant has been deleted.'));
+              
         } else {
             $this->Flash->error(__('The accountant could not be deleted. Please, try again.'));
         }

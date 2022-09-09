@@ -14,5 +14,6 @@
         <?= $this->Html->link('Maquinas', ['controller' => 'machines', 'action' => 'index']) ?>
         <?= $this->Html->link('Contadores', ['controller' => 'accountants', 'action' => 'index']) ?>
         <?= $this->Html->link('Partes o Repuestos', ['controller' => 'parts', 'action' => 'index']) ?>
+        <?= $this->Html->link('Usuarios', ['controller' => 'users', 'action' => 'index']) ?>
     </nav>
 </aside>

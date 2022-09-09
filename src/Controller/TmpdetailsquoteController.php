@@ -73,17 +73,22 @@ class TmpdetailsquoteController extends AppController
             $token = md5($data['token']);
             $money_id = $data['money_id'];
 
-            $query = $this->db->execute('CALL add_detalle_temp ('.$typeProducts.', '.$idProduct.' , '.$amount.', "'.$token.'", "'.$value.'", '.$money_id.')')->fetchAll('assoc');
-                        
-            echo json_encode($query);
-                      
+            $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, token, value, money_id) VALUES ('.$typeProducts.', '.$idProduct.' , '.$amount.', "'.$token.'", "'.$value.'", '.$money_id.')')->fetchAll('assoc');
+            echo json_encode('ok');
+
         }
         
     }
 
 
-    
+    public function tokenget() {
+        $this->autoRender = false;
 
+        if($this->request->is('ajax')) {
+            $query = $this->db->execute('SELECT * FROM tmpdetailsquote');
 
+            echo json_encode($query);
+        }
+    }
     
 }

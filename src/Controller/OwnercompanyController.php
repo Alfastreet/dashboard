@@ -53,7 +53,7 @@ class OwnercompanyController extends AppController
         if ($this->request->is('post')) {
             $ownercompany = $this->Ownercompany->patchEntity($ownercompany, $this->request->getData());
             if ($this->Ownercompany->save($ownercompany)) {
-                $this->Flash->success(__('The ownercompany has been saved.'));
+                 (__('The ownercompany has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -79,7 +79,7 @@ class OwnercompanyController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ownercompany = $this->Ownercompany->patchEntity($ownercompany, $this->request->getData());
             if ($this->Ownercompany->save($ownercompany)) {
-                $this->Flash->success(__('The ownercompany has been saved.'));
+                 (__('The ownercompany has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -102,7 +102,7 @@ class OwnercompanyController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $ownercompany = $this->Ownercompany->get($id);
         if ($this->Ownercompany->delete($ownercompany)) {
-            $this->Flash->success(__('The ownercompany has been deleted.'));
+             (__('The ownercompany has been deleted.'));
         } else {
             $this->Flash->error(__('The ownercompany could not be deleted. Please, try again.'));
         }

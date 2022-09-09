@@ -53,7 +53,7 @@ class DetailsquotesController extends AppController
         if ($this->request->is('post')) {
             $detailsquote = $this->Detailsquotes->patchEntity($detailsquote, $this->request->getData());
             if ($this->Detailsquotes->save($detailsquote)) {
-                $this->Flash->success(__('The detailsquote has been saved.'));
+                 (__('The detailsquote has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -81,7 +81,7 @@ class DetailsquotesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $detailsquote = $this->Detailsquotes->patchEntity($detailsquote, $this->request->getData());
             if ($this->Detailsquotes->save($detailsquote)) {
-                $this->Flash->success(__('The detailsquote has been saved.'));
+                 (__('The detailsquote has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -106,7 +106,7 @@ class DetailsquotesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $detailsquote = $this->Detailsquotes->get($id);
         if ($this->Detailsquotes->delete($detailsquote)) {
-            $this->Flash->success(__('The detailsquote has been deleted.'));
+             (__('The detailsquote has been deleted.'));
         } else {
             $this->Flash->error(__('The detailsquote could not be deleted. Please, try again.'));
         }

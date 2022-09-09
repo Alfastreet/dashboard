@@ -50,7 +50,7 @@ class AccountantsstatusController extends AppController
         if ($this->request->is('post')) {
             $accountantsstatus = $this->Accountantsstatus->patchEntity($accountantsstatus, $this->request->getData());
             if ($this->Accountantsstatus->save($accountantsstatus)) {
-                $this->Flash->success(__('The accountantsstatus has been saved.'));
+                 (__('The accountantsstatus has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class AccountantsstatusController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $accountantsstatus = $this->Accountantsstatus->patchEntity($accountantsstatus, $this->request->getData());
             if ($this->Accountantsstatus->save($accountantsstatus)) {
-                $this->Flash->success(__('The accountantsstatus has been saved.'));
+                 (__('The accountantsstatus has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class AccountantsstatusController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $accountantsstatus = $this->Accountantsstatus->get($id);
         if ($this->Accountantsstatus->delete($accountantsstatus)) {
-            $this->Flash->success(__('The accountantsstatus has been deleted.'));
+             (__('The accountantsstatus has been deleted.'));
         } else {
             $this->Flash->error(__('The accountantsstatus could not be deleted. Please, try again.'));
         }

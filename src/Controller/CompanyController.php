@@ -51,7 +51,7 @@ class CompanyController extends AppController
         if ($this->request->is('post')) {
             $company = $this->Company->patchEntity($company, $this->request->getData());
             if ($this->Company->save($company)) {
-                $this->Flash->success(__('The company has been saved.'));
+                 (__('The company has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -76,7 +76,7 @@ class CompanyController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $company = $this->Company->patchEntity($company, $this->request->getData());
             if ($this->Company->save($company)) {
-                $this->Flash->success(__('The company has been saved.'));
+                 (__('The company has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -98,7 +98,7 @@ class CompanyController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $company = $this->Company->get($id);
         if ($this->Company->delete($company)) {
-            $this->Flash->success(__('The company has been deleted.'));
+             (__('The company has been deleted.'));
         } else {
             $this->Flash->error(__('The company could not be deleted. Please, try again.'));
         }

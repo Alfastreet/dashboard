@@ -91,7 +91,7 @@ class CasinosController extends AppController
 
 
             if ($this->Casinos->save($casino)) {
-                $this->Flash->success(__('The casino has been saved.'));
+                 (__('The casino has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -149,7 +149,7 @@ class CasinosController extends AppController
             $casino->token = uniqid();
 
             if ($this->Casinos->save($casino)) {
-                $this->Flash->success(__('The casino has been saved.'));
+                 (__('The casino has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -190,7 +190,7 @@ class CasinosController extends AppController
         }
 
         if ($this->Casinos->delete($casino)) {
-            $this->Flash->success(__('The casino has been deleted.'));
+             (__('The casino has been deleted.'));
         } else {
             $this->Flash->error(__('The casino could not be deleted. Please, try again.'));
         }

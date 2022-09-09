@@ -53,7 +53,7 @@ class LiquidationController extends AppController
         if ($this->request->is('post')) {
             $liquidation = $this->Liquidation->patchEntity($liquidation, $this->request->getData());
             if ($this->Liquidation->save($liquidation)) {
-                $this->Flash->success(__('The liquidation has been saved.'));
+                 (__('The liquidation has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -79,7 +79,7 @@ class LiquidationController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $liquidation = $this->Liquidation->patchEntity($liquidation, $this->request->getData());
             if ($this->Liquidation->save($liquidation)) {
-                $this->Flash->success(__('The liquidation has been saved.'));
+                 (__('The liquidation has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -102,7 +102,7 @@ class LiquidationController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $liquidation = $this->Liquidation->get($id);
         if ($this->Liquidation->delete($liquidation)) {
-            $this->Flash->success(__('The liquidation has been deleted.'));
+             (__('The liquidation has been deleted.'));
         } else {
             $this->Flash->error(__('The liquidation could not be deleted. Please, try again.'));
         }

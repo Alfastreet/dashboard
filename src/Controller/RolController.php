@@ -50,7 +50,7 @@ class RolController extends AppController
         if ($this->request->is('post')) {
             $rol = $this->Rol->patchEntity($rol, $this->request->getData());
             if ($this->Rol->save($rol)) {
-                $this->Flash->success(__('The rol has been saved.'));
+                 (__('The rol has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class RolController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $rol = $this->Rol->patchEntity($rol, $this->request->getData());
             if ($this->Rol->save($rol)) {
-                $this->Flash->success(__('The rol has been saved.'));
+                 (__('The rol has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class RolController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $rol = $this->Rol->get($id);
         if ($this->Rol->delete($rol)) {
-            $this->Flash->success(__('The rol has been deleted.'));
+             (__('The rol has been deleted.'));
         } else {
             $this->Flash->error(__('The rol could not be deleted. Please, try again.'));
         }

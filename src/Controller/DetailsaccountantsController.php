@@ -85,7 +85,7 @@ class DetailsaccountantsController extends AppController
         // if ($this->request->is('post')) {
         //     $detailsaccountant = $this->Detailsaccountants->patchEntity($detailsaccountant, $this->request->getData());
         //     if ($this->Detailsaccountants->save($detailsaccountant)) {
-        //         $this->Flash->success(__('The detailsaccountant has been saved.'));
+        //          (__('The detailsaccountant has been saved.'));
 
         //         return $this->redirect(['action' => 'index']);
         //     }
@@ -111,7 +111,7 @@ class DetailsaccountantsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $detailsaccountant = $this->Detailsaccountants->patchEntity($detailsaccountant, $this->request->getData());
             if ($this->Detailsaccountants->save($detailsaccountant)) {
-                $this->Flash->success(__('The detailsaccountant has been saved.'));
+                 (__('The detailsaccountant has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -133,7 +133,7 @@ class DetailsaccountantsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $detailsaccountant = $this->Detailsaccountants->get($id);
         if ($this->Detailsaccountants->delete($detailsaccountant)) {
-            $this->Flash->success(__('The detailsaccountant has been deleted.'));
+             (__('The detailsaccountant has been deleted.'));
         } else {
             $this->Flash->error(__('The detailsaccountant could not be deleted. Please, try again.'));
         }

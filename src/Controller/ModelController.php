@@ -50,7 +50,7 @@ class ModelController extends AppController
         if ($this->request->is('post')) {
             $model = $this->Model->patchEntity($model, $this->request->getData());
             if ($this->Model->save($model)) {
-                $this->Flash->success(__('The model has been saved.'));
+                 (__('The model has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class ModelController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $model = $this->Model->patchEntity($model, $this->request->getData());
             if ($this->Model->save($model)) {
-                $this->Flash->success(__('The model has been saved.'));
+                 (__('The model has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class ModelController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $model = $this->Model->get($id);
         if ($this->Model->delete($model)) {
-            $this->Flash->success(__('The model has been deleted.'));
+             (__('The model has been deleted.'));
         } else {
             $this->Flash->error(__('The model could not be deleted. Please, try again.'));
         }

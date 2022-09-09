@@ -34,6 +34,10 @@ body {
     width: 50%;
 }
 
+.datos-cliente h3{
+    line-height : 25px;
+}
+
 .datos-cotizacion {
     float: right;
     width: 50%;

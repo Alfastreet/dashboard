@@ -50,7 +50,7 @@ class MoneyController extends AppController
         if ($this->request->is('post')) {
             $money = $this->Money->patchEntity($money, $this->request->getData());
             if ($this->Money->save($money)) {
-                $this->Flash->success(__('The money has been saved.'));
+                 (__('The money has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -74,7 +74,7 @@ class MoneyController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $money = $this->Money->patchEntity($money, $this->request->getData());
             if ($this->Money->save($money)) {
-                $this->Flash->success(__('The money has been saved.'));
+                 (__('The money has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -95,7 +95,7 @@ class MoneyController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $money = $this->Money->get($id);
         if ($this->Money->delete($money)) {
-            $this->Flash->success(__('The money has been deleted.'));
+             (__('The money has been deleted.'));
         } else {
             $this->Flash->error(__('The money could not be deleted. Please, try again.'));
         }

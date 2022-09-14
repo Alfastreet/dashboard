@@ -5,8 +5,6 @@
  */
 ?>
 
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
-
 <div class="newClient">
     <?= $this->Html->link(__('Nuevo Cliente'), ['action' => 'add'], ['class' => 'button float-right']) ?>
 </div>

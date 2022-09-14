@@ -5,7 +5,6 @@
  */
 ?>
 
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
 
 <div class="newCasino">
     <?= $this->Html->link(__('New Casino'), ['action' => 'add'], ['class' => 'button float-right']) ?>

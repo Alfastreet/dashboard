@@ -5,8 +5,6 @@
  */
 ?>
 
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
-
 <div class="quotes index content">
     <?= $this->Html->link(__('New Quote'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Quotes') ?></h3>

@@ -30,29 +30,56 @@ if (!Configure::read('debug')) :
 endif;
 
 ?>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-    <?= $this->Html->charset() ?>
+    <base href="./">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        Sistema de Gestion AlfaStreet:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
 
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <!-- Option 1: CoreUI for Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
 
-    <?= $this->Html->css(['bootstrap.min' , 'app.css']) ?>
+    <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
+    <link rel="stylesheet" href="css/vendors/simplebar.css">
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/examples.css" rel="stylesheet">
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KX4JH47');
+    </script>
+    <link href="vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+
+    <title><?= $cakeDescription ?></title>
 </head>
 <body>
-   
 
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+<?php include_once __DIR__.'/../layout/sidebar.php' ?>
+    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+        <?php include_once __DIR__.'/../layout/header.php' ?>
+
+        <div class="body flex-grow-1 px-3">
+            <div class="container-lg">
+                
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

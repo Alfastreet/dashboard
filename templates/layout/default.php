@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -17,41 +18,70 @@
 $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 ?>
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-    <?= $this->Html->charset() ?>
+    <base href="./">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
 
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Option 1: CoreUI for Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
 
-    <?= $this->Html->css(['bootstrap.min', 'app.css']) ?>
+    <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
+    <link rel="stylesheet" href="css/vendors/simplebar.css">
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-    <?= $this->Html->script("https://cdn.jsdelivr.net/npm/sweetalert2@11") ?>
-    <?php  echo $this->Html->meta("myToken", $this->request->getAttribute("csrfToken")); ?>
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/examples.css" rel="stylesheet">
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KX4JH47');
+    </script>
+    <link href="vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+
+    <title><?= $cakeDescription ?></title>
 </head>
 
 <body>
+    <?php include_once __DIR__.'/sidebar.php' ?>
+    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+        <?php include_once __DIR__.'/header.php' ?>
 
-    <div class="all">
-
-        <div class="content">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
+        <div class="body flex-grow-1 px-3">
+            <div class="container-lg">
+                <?= $this->Flash->render() ?>
+                <?= $this->fetch('content') ?>
+            </div>
         </div>
-        
     </div>
-
-    
-    <?php include_once __DIR__.'/templates/footer.php'?>
 </body>
+
+
+<script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+<script src="vendors/simplebar/js/simplebar.min.js"></script>
+<!-- Plugins and scripts required by this view-->
+<script src="vendors/chart.js/js/chart.min.js"></script>
+<script src="vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
+<script src="vendors/@coreui/utils/js/coreui-utils.js"></script>
+<script src="js/main.js"></script>
 </html>
+
+
+<div class="content">
+
+</div>

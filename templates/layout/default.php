@@ -24,18 +24,16 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 <head>
     <base href="./">
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <?= $this->Html->charset('utf-8') ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Option 1: CoreUI for Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+    <?= $this->Html->css('https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css') ?>
+    <?= $this->Html->css('vendors/simplebar/css/simplebar.css') ?>
+    <?= $this->Html->css('css/vendors/simplebar.css') ?>
+    <?= $this->Html->css(['style', 'examples']) ?>
+    <?= $this->Html->css('vendors/@coreui/chartjs/css/coreui-chartjs.css') ?>
 
-    <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
-    <link rel="stylesheet" href="css/vendors/simplebar.css">
-
-    <link href="css/style.css" rel="stylesheet">
-
-    <link href="css/examples.css" rel="stylesheet">
     <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
@@ -52,8 +50,6 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-KX4JH47');
     </script>
-    <link href="vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
-
     <title><?= $cakeDescription ?></title>
 </head>
 

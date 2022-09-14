@@ -4,12 +4,11 @@
  * @var \App\Model\Entity\Accountant[]|\Cake\Collection\CollectionInterface $accountants
  */
 ?>
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
 
 <div class="accountants index content">
-    <h3><?= __('Accountants') ?></h3>
+    <h2 class="text-center"><?= __('Seguimiento de Participaciones') ?></h2>
     <div class="table-responsive">
-        <table class="table table-responsive table-striped table-bordered text-center">
+        <table class="table table-responsive table-striped table-hover table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col"><?= $this->Paginator->sort('id') ?></th>
@@ -34,10 +33,10 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 <?php foreach ($accountants as $accountant): ?>
                 <tr>
-                    <td scope="row"><?= $this->Number->format($accountant->id) ?></td>
+                    <th scope="row"><?= $this->Number->format($accountant->id) ?></th>
                     <td><?= $accountant->has('machine') ? $this->Html->link($accountant->machine->name, ['controller' => 'Machines', 'action' => 'view', $accountant->machine->id]) : '' ?></td>
                     <td><?= $accountant->has('casino') ? $this->Html->link($accountant->casino->name, ['controller' => 'Casinos', 'action' => 'view', $accountant->casino->id]) : '' ?></td>
                     <td><?= h($accountant->day_init) ?></td>

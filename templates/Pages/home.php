@@ -32,7 +32,7 @@ endif;
 $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <base href="./">
@@ -46,9 +46,8 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
     <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
     <link rel="stylesheet" href="css/vendors/simplebar.css">
 
-    <link href="css/style.css" rel="stylesheet">
+    <?= $this->Html->css(['style', 'examples']) ?>
 
-    <link href="css/examples.css" rel="stylesheet">
     <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
@@ -83,4 +82,13 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
     </div>
 
 </body>
+
+<script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+<script src="vendors/simplebar/js/simplebar.min.js"></script>
+<!-- Plugins and scripts required by this view-->
+<script src="vendors/chart.js/js/chart.min.js"></script>
+<script src="vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
+<script src="vendors/@coreui/utils/js/coreui-utils.js"></script>
+<script src="js/main.js"></script>
+
 </html>

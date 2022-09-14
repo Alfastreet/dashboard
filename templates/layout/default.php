@@ -36,6 +36,7 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <?= $this->Html->script("https://cdn.jsdelivr.net/npm/sweetalert2@11") ?>
     <?php  echo $this->Html->meta("myToken", $this->request->getAttribute("csrfToken")); ?>
 </head>
 

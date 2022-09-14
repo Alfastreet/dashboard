@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </fieldset>
-            <?= $this->Form->button(__('Agregar') , ['id' => 'añadir']) ?>
+            <?= $this->Form->button(__('Agregar') , ['id' => 'añadir', 'type' => 'button']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

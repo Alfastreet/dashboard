@@ -9,7 +9,7 @@ html {
 body {
     min-height: 100%;
     background-color: v.$white;
-    color: v.$black;
+    color: lighten(v.$black, 10%) ;
     font-family: v.$principalFont;
     font-size: 1.6rem;
 }
@@ -20,7 +20,7 @@ body {
 
 
 .container {
-    width: 95%;
+    width: 100%;
     max-width: 120rem;
     margin: 0 auto;
 }

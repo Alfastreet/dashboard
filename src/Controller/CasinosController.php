@@ -201,4 +201,8 @@ class CasinosController extends AppController
     public function error() {
         
     }
+
+    public function thanks() {
+        
+    }
 }

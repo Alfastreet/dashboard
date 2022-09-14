@@ -36,6 +36,7 @@ class QuotesController extends AppController
         $quotes = $this->paginate($this->Quotes);
 
         $this->set(compact('quotes'));
+        
     }
 
     /**
@@ -185,19 +186,13 @@ class QuotesController extends AppController
         $this->viewBuilder()->enableAutoLayout(false); 
         $quote = $this->Quotes->get($id);
 
-        $client = $this->db->execute('SELECT q.id, q.date, q.totalUSD, q.totalEUR, q.totalCOP, q.token, u.name as userName, u.lastName as userLastName, dq.amount, dq.value as subtotal, p.serial, p.name as partName, p.value as unitPrice, cl.name as clientName, cl.phone, cl.email, bs.name as businessName, m.shortcode as moneyName FROM 
-        quotes q INNER JOIN 
-        users u ON q.user_id = u.id 
-        INNER JOIN detailsquotes dq ON dq.quote_id = q.id 
-        INNER JOIN parts p ON dq.product_id = p.id 
-        INNER JOIN status s  ON q.estatus_id = s.id
-        INNER JOIN client cl ON q.business_id = cl.id
-        INNER JOIN business bs ON cl.business_id = bs.id
-        INNER JOIN money m ON dq.money_id = m.id
-        WHERE q.id = '.$quote->id.'')->fetchAll('assoc');
-
-        // print_r($client);
-        // exit;
+        $client = $this->db->execute('SELECT q.id, q.date, q.totalUSD, q.totalEUR, q.totalCOP, dq.typeProduct_id, dq.product_id, dq.amount, dq.value AS subtotal, p.name AS pname, p.serial, p.value AS valorUnidad, b.nit, b.phone, b.email, b.name AS bName, m.shortcode
+            FROM quotes q 
+            INNER JOIN detailsquotes dq ON dq.quote_id = q.id 
+            INNER JOIN parts p ON dq.product_id = p.id 
+            INNER JOIN business b ON q.business_id = b.id
+            INNER JOIN money m ON dq.money_id = m.id
+            WHERE q.id = '.$quote->id.'')->fetchAll('obj');
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
         $this->viewBuilder()->setOption(
@@ -251,6 +246,76 @@ class QuotesController extends AppController
         die;
         
     }
+    
+    public function addTmpQuote() {
 
+        $this->autoRender = false;
+
+        $data = $_POST;
+
+        $token = rand();
+        
+        $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, money_id, value, token) VALUES ('.$data['typeProduct_id'].', '.$data['product_id'].', '.$data['amount'].', '.$data['money_id'].', '.$data['value'].', '.$token.')');
+        if($query) {
+            echo json_encode('ok');
+        }
+    }
+
+    public function detailsQuote(){
+
+        $this->autoRender = false;
+
+        $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN money m ON p.money_id = m.id')->fetchAll('assoc');
+
+        echo json_encode($query);
+    }
+
+    public function dataQuote() {
+
+        $this->autoRender = false;
+        
+        $register = $this->db->execute('SELECT * FROM tmpdetailsquote')->fetchAll('assoc');
+        
+        
+        if($register){
+            $data = $_POST;
+            $insertQuoteP1 = $this->db->execute('INSERT INTO quotes(user_id, business_id) VALUES ('.$data['user_id'].', '.$data['business_id'].')');
+
+            if($insertQuoteP1){
+                $selectLast = $this->db->execute('SELECT * FROM quotes ORDER BY ID DESC LIMIT 1')->fetchAll('assoc');
+
+                if($selectLast) {
+                    foreach ($register as $res ){
+                        $insertDetails = $this->db->execute('INSERT INTO detailsquotes(quote_id, typeProduct_id, product_id, amount, money_id, value) VALUES ('.$selectLast[0]['id'].', '.$res['typeProduct_id'].', '.$res['product_id'].', '.$res['amount'].', '.$res['money_id'].', '.$res['value'].')');
+                        
+                        if($insertDetails){
+                            $sumDollars = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 1')->fetchAll('assoc');
+                            $resDollars = $sumDollars[0]['SUM(value)']  > 0 ? $sumDollars[0]['SUM(value)'] : '0';
+                            $sumEur = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 2')->fetchAll('assoc');
+                            $resEur = $sumEur[0]['SUM(value)']  > 0 ? $sumEur[0]['SUM(value)'] : '0';
+                            $sumCop = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 3')->fetchAll('assoc');
+                            $resCop = $sumCop[0]['SUM(value)']  > 0 ? $sumCop[0]['SUM(value)'] : '0';
+                            
+                            $insertPrices = $this->db->execute('UPDATE quotes SET totalUSD = '.$resDollars.', totalEUR = '.$resEur.', totalCOP = '.$resCop.'');
+                            
+                            if($insertPrices) {
+                                echo json_encode('ok');
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+
+    public function deleteTmp() {
+        $this->autoRender = false;
+
+        $delete = $this->db->execute('DELETE FROM tmpdetailsquote');
+
+        echo json_encode('delete');
+    }
 
 }

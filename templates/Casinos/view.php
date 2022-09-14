@@ -8,26 +8,35 @@
 
 <div class="container">
 
-    <h3><?= h($casino->name) ?></h3>
-
-    <div class="row">
-        <div class="col">
-            <?= h($casino->address) ?>
-            <?= $this->Number->format($casino->phone) ?>
-            <?= $casino->has('city') ? h($casino->city->name) :'' ?>
-            <?= $casino->has('state') ? h($casino->state->name) :'' ?>
-        </div>
-        <div class="col">
-            <?= $this->Html->image('Casinos/'.$casino->image) ?>
-        </div>
+<div class="row">
+    <div class="col">
+        <h3><?= h($casino->name) ?></h3>
     </div>
-
+    <div class="col">
+        <ul class="unorderlist" style="text-align: right;">
+            <li>Direccion: <span><?= h($casino->address) ?></span></li>
+            <li>Telefono: <span><?= h($casino->phone) ?></span></li>
+            <li>Ciudad: <?= $casino->has('city') ? h($casino->city->name) :'' ?></li>
+            <li>Departamento: <?= $casino->has('state') ? h($casino->state->name) :'' ?> </li>
+        </ul>
+    </div>
+</div>
+<div>
+    
+    
 </div>
 
-
-<div class="container">
-
   <div class="row">
+
+    <div class="col">
+            <div class="col">
+                <?php echo $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image']);?>
+            </div>
+            <div class="col">
+                <img id="file">
+            </div>
+        
+            </div>
 
     <div class="col">
 
@@ -35,58 +44,56 @@
             <div class="accountants form content">
                 <?= $this->Form->create($accountants, ['type' => 'file', 'url' => ['controller' => 'accountants', 'action' => 'add', '?' => ['casinoid' => $casino->id]]]) ?>
                 <fieldset>
-                    <legend><?= __('Añadir Contador') ?></legend>
                     <div class="row">
                         <div class="col">
-                        <?php
-                            echo $this->Form->control('machine_id' ,[ 'required' => false, 'disabled' => false, 'class' => 'form-control']);
-                            echo $this->Form->control('day_init', ['disabled' => true, 'id' => 'dayInit', 'class' => 'form-control']);
-                            echo $this->Form->control('day_end', ['disabled' => true, 'id' => 'dayEnd', 'class' => 'form-control']);
-                            echo $this->Form->control('cashin', ['disabled' => true, 'id' => 'cashin', 'class' => 'form-control']);
-                            echo $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control']);
-                            echo $this->Form->control('bet', ['disabled' => true, 'id' => 'bet', 'class' => 'form-control']);
-                            echo $this->Form->control('win', ['disabled' => true, 'id' => 'win', 'class' => 'form-control']);
-                            echo $this->Form->control('jackpot', ['disabled' => true, 'id' => 'jackpot', 'class' => 'form-control']);
-                            echo $this->Form->control('gamesplayed', ['disabled' => true, 'id' => 'gamesplayed', 'class' => 'form-control']); 
-                        ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image']);?>
-                            <img id="file">
+                            <?= $this->Form->control('machine_id' ,[ 'required' => false, 'disabled' => false, 'class' => 'form-control', 'label' => 'Selecciona la maquina']); ?>
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('day_init', ['disabled' => true, 'id' => 'dayInit', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia de inicio del Contador, INSERTAR SOLO EL NUMERO DEL DIA']);?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('day_end', ['disabled' => true, 'id' => 'dayEnd', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia final del Contador, INSERTAR SOLO EL NUMERO DEL DIA']); ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('cashin', ['disabled' => true, 'id' => 'cashin', 'class' => 'form-control']); ?>
+                                </div>
+                                <div class="col">
+                                    <?=$this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control']); ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('bet', ['disabled' => true, 'id' => 'bet', 'class' => 'form-control']); ?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('win', ['disabled' => true, 'id' => 'win', 'class' => 'form-control']); ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('jackpot', ['disabled' => true, 'id' => 'jackpot', 'class' => 'form-control']);  ?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('gamesplayed', ['disabled' => true, 'id' => 'gamesplayed', 'class' => 'form-control']);  ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </fieldset>
-                <?= $this->Form->button(__('Submit')) ?>
-                <?= $this->Form->end() ?>
+                
             </div>
         </div>
-
+        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->end() ?>
+        
     </div>
 
-    <div class="col">
-      
-        <?php if(!empty($casino->machines)): ?>
-            <table class="table-responsive">
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <th><?= __('Serial') ?></th>
-                    <th><?= __('Nombre') ?></th>
-                    <th><?= __('Casino') ?></th>
-                    <th><?= __('Tipo de Contrato') ?></th>
-                </tr>
-                <?php foreach($casino->machines as $machine): ?>
-                <tr>
-                    <td><?= h($machine->id) ?></td>
-                    <td><?= h($machine->serial) ?></td>
-                    <td><?= h($machine->name) ?></td>
-                    <td><?= h($casino->name) ?></td>
-                    <td><?= h($machine->contract_id) ?></td>
-                </tr>
-                <?php endforeach ?>
-            </table>
-        <?php endif; ?>
+    
 
-    </div>
+
+
   </div>
 </div>
 

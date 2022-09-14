@@ -149,13 +149,12 @@ table thead tr td {
     <div class="contenedor ">
         <div class="datos-basicos ">
             <div class="datos-cliente ">
-                <h3>Cliente: <span> <?= $quote[0]['businessName'] ?> </span> </h3>
-                <h3>Contácto: <span> <?= $quote[0]['clientName'] ?> </span> </h3>
-                <h3>Teléfono: <span> <?= $quote[0]['phone'] ?> </span> </h3>
-                <h3>Correo: <span> <?= $quote[0]['email'] ?> </span> </h3>
+                <h3>Cliente: <span> <?= $quote[0]->bName ?> </span> </h3>
+                <h3>Teléfono: <span> <?= $quote[0]->phone ?> </span> </h3>
+                <h3>Correo: <span> <?= $quote[0]->email ?> </span> </h3>
             </div>
             <div class="datos-cotizacion ">
-                <h2>Cotizacion N°: <span>AC-<?= $quote[0]['id']?>-<?=date('Y')?></span></h2>
+                <h2>Cotizacion N°: <span>AC-<?= $quote[0]->id?>-<?=date('Y')?></span></h2>
                 <h2>Fecha: <span><?= date('Y-m-d') ?></span></h2>
             </div>
         </div>
@@ -175,12 +174,12 @@ table thead tr td {
                 <tbody class="data">
                     <?php foreach($quote as $q): ?>
                     <tr>
-                        <td><?= $q['serial'] ?></td>
-                        <td class="namePart"><?= $q['partName'] ?></td>
-                        <td><?= $q['amount'] ?> UND</td>
-                        <td>$<?= number_format($q['unitPrice'] , 2 , ',', '.')  ?></td>
-                        <td>$<?=  number_format($q['subtotal'] , 2 , ',' , '.')  ?></td>
-                        <td><?= $q['moneyName'] ?></td>
+                        <td><?= $q->serial ?></td>
+                        <td class="namePart"><?= $q->pname ?></td>
+                        <td><?= $q->amount ?> UND</td>
+                        <td>$<?= number_format($q->valorUnidad , 2 , ',', '.')  ?></td>
+                        <td>$<?=  number_format($q->subtotal , 2 , ',' , '.')  ?></td>
+                        <td><?= $q->shortcode ?></td>
                     </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -192,24 +191,24 @@ table thead tr td {
 
                         <h3>Total USD</h3>
                         <h4>Subtotal:
-                            <?php if($quote[0]['totalUSD'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalUSD === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( $quote[0]['totalUSD'] ,2 );
+                                echo '$'.number_format( $quote[0]->totalUSD ,2 );
                             } ?>
                         </h4>
                         <h4>IVA: 
-                            <?php if($quote[0]['totalUSD'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalUSD === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( $quote[0]['totalUSD'] * 0.19, 2 );
+                                echo '$'.number_format( $quote[0]->totalUSD * 0.19, 2 );
                             } ?>
                         </h4>
                         <h4>Total:
-                            <?php if($quote[0]['totalUSD'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalUSD === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( ($quote[0]['totalUSD'] + ($quote[0]['totalUSD'] * 0.19)) , 2 );
+                                echo '$'.number_format( ($quote[0]->totalUSD + ($quote[0]->totalUSD * 0.19)) , 2 );
                             } ?>
                         </h4>
                         <p>Favor Utilizar la TRM del dia de Pago</p>
@@ -222,25 +221,25 @@ table thead tr td {
                         <h3>Total EUR</h3>
 
                         <h4>Subtotal:
-                            <?php if($quote[0]['totalEUR'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalEUR === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format($quote[0]['totalEUR'] , 2 ,',', '.');
+                                echo '$'.number_format($quote[0]->totalEUR , 2 ,',', '.');
                             } ?>
                         </h4>
 
                         <h4>IVA:
-                            <?php if($quote[0]['totalEUR'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalEUR === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( $quote[0]['totalEUR'] * 0.19, 2 );
+                                echo '$'.number_format( $quote[0]->totalEUR * 0.19, 2 );
                             } ?>
                         </h4>
                         <h4>Total:
-                            <?php if($quote[0]['totalEUR'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalEUR === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( ($quote[0]['totalEUR'] + ($quote[0]['totalEUR'] * 0.19)) , 2 );
+                                echo '$'.number_format( ($quote[0]->totalEUR + ($quote[0]->totalEUR * 0.19)) , 2 );
                             } ?>
                         </h4>
                         <p>Favor usar la taza de cambio actualizada</p>
@@ -249,31 +248,31 @@ table thead tr td {
 
                     <!--Colombian Peso-->
 
-                    <div <?php if($quote[0]['totalCOP'] !== 'NULL') { ?> style="display: block;" <?php }else { ?> style="display: none;" <?php } ?>>
+                    <div <?php if($quote[0]->totalCOP !== 'NULL') { ?> style="display: block;" <?php }else { ?> style="display: none;" <?php } ?>>
                         <h3>Total COP</h3>
                         <h4>Subtotal: 
                         
-                            <?php if($quote[0]['totalCOP'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalCOP === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format($quote[0]['totalCOP']);
+                                echo '$'.number_format($quote[0]->totalCOP);
                             } ?>
     
                         </h4>
                         <h4>IVA:
-                            <?php if($quote[0]['totalCOP'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalCOP === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( $quote[0]['totalCOP'] * 0.19, 2 );
+                                echo '$'.number_format( $quote[0]->totalCOP * 0.19, 2 );
                             } ?>
                         
                         
                         </h4>
                         <h4>Total:
-                            <?php if($quote[0]['totalCOP'] === 'NULL'){ ?>
+                            <?php if($quote[0]->totalCOP === 'NULL'){ ?>
                                 0
                             <?php }else {
-                                echo '$'.number_format( ($quote[0]['totalCOP'] + ($quote[0]['totalCOP'] * 0.19)) , 2 ) ;
+                                echo '$'.number_format( ($quote[0]->totalCOP + ($quote[0]->totalCOP * 0.19)) , 2 ) ;
                             } ?>
                         </h4>
                     </div>
@@ -292,7 +291,7 @@ table thead tr td {
 
                     <h5>Tiempo de entrega: <span>INMEDIATO</span></h5>
                     <h5>Lugar de entrega: <span>SEGUN LO CONVENIDO</span></h5>
-                    <h5>Vencimiento: <?= date('d-m-Y', strtotime($quote[0]['date'] . " +1 week" )) ?></h5>
+                    <h5>Vencimiento: <?= date('d-m-Y', strtotime($quote[0]->date . " +1 week" )) ?></h5>
                     <br>
 
                     <h5>Cordialmente, </h5>

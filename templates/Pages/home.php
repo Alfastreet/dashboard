@@ -29,6 +29,7 @@ if (!Configure::read('debug')) :
     );
 endif;
 
+$cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 ?>
 <!doctype html>
 <html lang="en">

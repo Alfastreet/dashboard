@@ -34,8 +34,22 @@ if (Configure::read('debug')) :
 $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
+<!-- <h2><?= h($message) ?></h2>
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
-</p>
+</p> -->
+
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="clearfix">
+              <h1 class="float-start display-3 me-4">400</h1>
+              <h4 class="pt-3">Bad Request!.</h4>
+              <p class="text-medium-emphasis">Hubo un error en la petición, po favor intente mas tarde.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -205,4 +205,6 @@ class CasinosController extends AppController
     public function thanks() {
         
     }
+
+    
 }

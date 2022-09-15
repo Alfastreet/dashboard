@@ -7,5 +7,5 @@
 
 
 <div class="error">
-    <h3>Acceso Denegado, No tienes los permisos necesarios para acceder a estaseccion</h3>
+    <h3>Acceso Denegado, No tienes los permisos necesarios para acceder a esta sección</h3>
 </div>

@@ -41,28 +41,5 @@
         </div>
     </div>
 </div>
-<?php 
 
-    $paginator = $this->Paginator->setTemplates([
-        'prevActive' => '<li class="page-item"><a class="page-link" href="{{url}}">&lt;</a></li>',
-        'number' => '<li class="page-item"><a class="page-link" href="{{url}}">{{text}}</a></li>',
-        'current' => '<li class="page-item active"><a class="page-link" href="{{url}}">{{text}}</a></li>',
-        'first' => '<li class="page-item"><a class="page-link" href="{{url}}">&laquo;</a></li>',
-        'last' => '<li class="page-item"><a class="page-link" href="{{url}}">&raquo;</a></li>',
-        'nextActive' => '<li class="page-item"><a class="page-link" href="{{url}}">&gt
-        ;</a></li>',
-    ])
-
-?>
-
-<div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
-</div>
+<?php include_once __DIR__.'/../layout/paginator.php' ?>

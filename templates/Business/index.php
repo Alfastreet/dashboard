@@ -1,57 +1,58 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Busines[]|\Cake\Collection\CollectionInterface $business
  */
 ?>
 
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Empresas') ?></h3>
+                    <p class="small text-medium-emphasis">Empresas de los clientes agregados a la fecha</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Agregar una Empresa'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
 
-<div class="business index content">
-    <?= $this->Html->link(__('New Busines'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Business') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('nit') ?></th>
-                    <th><?= $this->Paginator->sort('phone') ?></th>
-                    <th><?= $this->Paginator->sort('address') ?></th>
-                    <th><?= $this->Paginator->sort('email') ?></th>
-                    <th><?= $this->Paginator->sort('owner_id') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($business as $busines): ?>
-                <tr>
-                    <td><?= $this->Number->format($busines->id) ?></td>
-                    <td><?= h($busines->name) ?></td>
-                    <td><?= $this->Number->format($busines->nit) ?></td>
-                    <td><?= $this->Number->format($busines->phone) ?></td>
-                    <td><?= h($busines->address) ?></td>
-                    <td><?= h($busines->email) ?></td>
-                    <td><?= $this->Number->format($busines->owner_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $busines->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $busines->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+            <div class="table-responsive">
+                <table class="table  table-responsive table-striped table-hover table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th><?= __('Nombre') ?></th>
+                            <th><?= __('N.I.T') ?></th>
+                            <th><?= __('Teléfono') ?></th>
+                            <th><?= __('Dirección') ?></th>
+                            <th><?= __('Correo Electronico') ?></th>
+                            <th><?= __('Dueño') ?></th>
+                            <th class="actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($business as $busines) : ?>
+                            <tr>
+                                <td><?= h($busines->name) ?></td>
+                                <td><?= h($busines->nit) ?></td>
+                                <td><?= $this->Number->format($busines->phone) ?></td>
+                                <td><?= h($busines->address) ?></td>
+                                <td><?= h($busines->email) ?></td>
+                                <td><?= $this->Number->format($busines->owner_id) ?></td>
+                                <td class="actions">
+                                    <?= $this->Html->link(__('View'), ['action' => 'view', $busines->id]) ?>
+                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $busines->id]) ?>
+                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id)]) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<?php include_once __DIR__ . '/../layout/paginator.php' ?>

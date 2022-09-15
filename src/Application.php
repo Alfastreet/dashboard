@@ -70,6 +70,7 @@ class Application extends BaseApplication // implements AuthenticationServicePro
 
         // Load more plugins here
         $this->addPlugin('CakePdf');
+        $this->addPlugin('CsvView');
     }
 
     /**

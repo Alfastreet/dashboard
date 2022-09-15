@@ -19,12 +19,7 @@ class AccountantsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Machines', 'Casinos'],
-        ];
-        $accountants = $this->paginate($this->Accountants);
-
-        $this->set(compact('accountants'));
+        
     }
 
     /**
@@ -138,5 +133,25 @@ class AccountantsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function general() {
+        $this->paginate = [
+            'contain' => ['Machines', 'Casinos'],
+        ];
+        $accountants = $this->paginate($this->Accountants);
+
+        $this->set(compact('accountants'));
+    }
+
+    public function csv() {
+        $this->response = $this->response->withDownload('participaciones.csv');
+        $data = $this->Accountants->find();
+        $_serialize = 'data';
+        $_header = ['ID', 'Maquina', 'Casino', 'Dia inicio', 'Dia fin', 'Mes', 'Año', 'CashIn', 'CashOut', 'Bet', 'Win', 'Profit', 'Jackpot', 'Total Juegos', 'Coljuegos', 'Admin', 'Total', 'AlfaStreet'];
+        $_extract = ['id', 'machine_id', 'casino_id', 'day_init', 'day_end', 'month_id', 'year', 'cashin', 'cashout', 'bet', 'win', 'profit', 'jackpot', 'gamesplayed', 'coljuegos', 'admin', 'total', 'alfastreet'];
+
+        $this->viewBuilder()->setClassName('CsvView.Csv');
+        $this->set(compact('data', '_serialize', '_header', '_extract'));
     }
 }

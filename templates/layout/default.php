@@ -29,10 +29,10 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 
     <!-- Option 1: CoreUI for Bootstrap CSS -->
     <?= $this->Html->css('https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css') ?>
-    <?= $this->Html->css('vendors/simplebar/css/simplebar.css') ?>
-    <?= $this->Html->css('css/vendors/simplebar.css') ?>
+    <?= $this->Html->css('/vendors/simplebar/css/simplebar.css') ?>
+    <?= $this->Html->css('/css/vendors/simplebar.css') ?>
     <?= $this->Html->css(['style', 'examples']) ?>
-    <?= $this->Html->css('vendors/@coreui/chartjs/css/coreui-chartjs.css') ?>
+    <?= $this->Html->css('/vendors/@coreui/chartjs/css/coreui-chartjs.css') ?>
 
     <script>
         (function(w, d, s, l, i) {
@@ -60,21 +60,17 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 
         <div class="body flex-grow-1 px-3">
             <div class="container-lg">
-                <?= $this->Flash->render() ?>
-                <?= $this->fetch('content') ?>
+                <div class="row">
+                    <?= $this->Flash->render() ?>
+                    <?= $this->fetch('content') ?>
+                </div>
             </div>
         </div>
     </div>
 </body>
 
+<?php include_once __DIR__.'/scripts.php' ?>
 
-<script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
-<script src="vendors/simplebar/js/simplebar.min.js"></script>
-<!-- Plugins and scripts required by this view-->
-<script src="vendors/chart.js/js/chart.min.js"></script>
-<script src="vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
-<script src="vendors/@coreui/utils/js/coreui-utils.js"></script>
-<script src="js/main.js"></script>
 </html>
 
 

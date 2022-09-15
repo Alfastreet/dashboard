@@ -189,26 +189,26 @@ class UsersController extends AppController
         $this->set('report', $report);
     }
 
-    // public function login() 
-    // {
-    //     $this->request->allowMethod(['get', 'post']);
+    public function login() 
+    {
+        // $this->request->allowMethod(['get', 'post']);
 
-    //     $result = $this->Authentication->getResult();
+        // $result = $this->Authentication->getResult();
 
-    //     if($result->isValid()) {
-    //         $redirect = $this->request->getQuery('redirect', [
-    //             'controller' => 'Users',
-    //             'action' => 'index',
-    //         ]);
+        // if($result->isValid()) {
+        //     $redirect = $this->request->getQuery('redirect', [
+        //         'controller' => 'Users',
+        //         'action' => 'index',
+        //     ]);
 
-    //         return $this->redirect($redirect);
+        //     return $this->redirect($redirect);
 
-    //     } 
+        // } 
 
-    //     if($this->request->is('post') && !$result->isValid()) {
-    //         $this->Flash->error('Credenciales Invalidas, por favor revisa de nuevo');
-    //     }
-    // }
+        // if($this->request->is('post') && !$result->isValid()) {
+        //     $this->Flash->error('Credenciales Invalidas, por favor revisa de nuevo');
+        // }
+    }
 
 
     // public function logout()

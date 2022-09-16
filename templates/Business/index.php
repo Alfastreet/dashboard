@@ -40,11 +40,21 @@
                                 <td><?= $this->Number->format($busines->phone) ?></td>
                                 <td><?= h($busines->address) ?></td>
                                 <td><?= h($busines->email) ?></td>
-                                <td><?= $this->Number->format($busines->owner_id) ?></td>
+                                <td><?= $busines->has('owner') ? h($busines->owner->name) : '' ?></td>
                                 <td class="actions">
-                                    <?= $this->Html->link(__('View'), ['action' => 'view', $busines->id]) ?>
-                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $busines->id]) ?>
-                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id)]) ?>
+                                    <div class="btn-group btn-group-toggle mx-3">
+                                        <a class="nav-link nav-group-toggle" href="/business/edit/<?=$busines->id?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/business/view/<?=$busines->id?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                            </svg>
+                                        </a>                                       
+                                        <?= $this->Form->postLink( __('delete'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id)]) ?>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

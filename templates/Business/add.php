@@ -11,8 +11,8 @@
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h3 class="card-title mb-0"><?= __('Inscribir Empresa') ?></h3>
-                    <p class="small text-medium-emphasis">Inscripcion de la Empresa</p>
+                    <h3 class="card-title mb-0"><?= __('Registrar Empresa') ?></h3>
+                    <p class="small text-medium-emphasis">&nbsp;</p>
                 </div>
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Volver al Listado'), ['action' => 'index'], ['class' => 'btn btn-primary']) ?>
@@ -21,26 +21,39 @@
 
             <div class="column-responsive column-80">
                 <div class="business form content">
-                    <?= $this->Form->create($busines, ['novalidate' => true, 'class' => 'row g-3 needs-validation'] ) ?>
-                    <fieldset>
-                        <legend><?= __('Add Busines') ?></legend>
-                        <div class="row g-2">
-  <div class="col-md">
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="mdo@example.com">
-      <label for="floatingInputGrid">Email address</label>
-    </div>
-  </div>
-                        <?php
-                        echo $this->Form->control('name');
-                        echo $this->Form->control('nit');
-                        echo $this->Form->control('phone');
-                        echo $this->Form->control('address');
-                        echo $this->Form->control('email');
-                        echo $this->Form->control('owner_id', ['options' => $owner]);
-                        ?>
-                    </fieldset>
-                    <?= $this->Form->button(__('Submit')) ?>
+                    <?= $this->Form->create($busines, ['novalidate' => true, 'class' => 'row g-3 needs-validation']) ?>
+                        
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <?= $this->Form->control('owner_id', ['options' => $owner, 'class' =>'form-control', 'placeholder' => 'Razon Social', 'label' => false, 'require' => true]) ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('name', ['class' =>'form-control', 'placeholder' => 'Razon Social', 'label' => false]) ?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('nit', ['class' => 'form-control', 'placeholder' => 'Nit', 'label' => false]) ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col">
+                                    <?= $this->Form->control('email', ['class' =>'form-control', 'placeholder' => 'Correo Electronico', 'label' => false]) ?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('phone', ['class' =>'form-control', 'placeholder' => 'Telefono', 'label' => false]) ?>
+                                </div>
+                                <div class="col">
+                                    <?= $this->Form->control('address', ['class' =>'form-control', 'placeholder' => 'Direccion', 'label' => false]) ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?= $this->Form->button(__('Enviar') , ['class' => 'btn btn-primary']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>

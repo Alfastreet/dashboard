@@ -8,11 +8,16 @@
         </svg>
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
-        <li class="nav-item"><a class="nav-link" href="/">
+        <li class="nav-item">
+            <a class="nav-link" href="/">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-                </svg>Inicio</a></li>
+                </svg>Inicio
+            </a>
+        </li>
+        <!-- Submenus -->
         <li class="nav-title">Contabilidad</li>
+        <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a class="nav-link nav-group-toggle" href="/accountants">
                 <svg class="nav-icon">
@@ -25,7 +30,10 @@
                 </li>
             </ul>
         </li>
+        <!-- Fin Submenus de navegacion -->
+        <!-- Submenus -->
         <li class="nav-title">Administracion</li>
+        <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a href="/client" class="nav-link nav-group-toggle">
                 <svg class="nav-icon">
@@ -36,7 +44,7 @@
                 <li class="nav-items"><?= $this->Html->link('Ver todas las empresas', ['controller' => 'Business', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
             </ul>
         </li>
-       
+        <!-- Fin Submenus de navegacion -->
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>

@@ -26,7 +26,7 @@
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">
-                    <?= $this->Html->link( 'Informe General' ,['controller' => 'Accountants', 'action' => 'general'] , ['class' => 'nav-link']) ?>
+                    <?= $this->Html->link('Informe General', ['controller' => 'Accountants', 'action' => 'general'], ['class' => 'nav-link']) ?>
                 </li>
             </ul>
         </li>
@@ -35,13 +35,39 @@
         <li class="nav-title">Administracion</li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a href="/client" class="nav-link nav-group-toggle">
+            <a href="#" class="nav-link nav-group-toggle">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-building"></use>
                 </svg>Empresas
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todas las empresas', ['controller' => 'Business', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+                <li class="nav-items"><?= $this->Html->link('Registrar Empresa', ['controller' => 'Business', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+        <li class="nav-group">
+            <a href="#" class="nav-link nav-group-toggle">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-people"></use>
+                </svg>Clientes
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-items"><?= $this->Html->link('Ver todos los Clientes', ['controller' => 'Client', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+                <li class="nav-items"><?= $this->Html->link('Registrar Cliente', ['controller' => 'Client', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+        <!-- Fin Submenus de navegacion -->
+        <li class="nav-group">
+            <a href="#" class="nav-link nav-group-toggle">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-casino"></use>
+                </svg>Casinos
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-items"><?= $this->Html->link('Ver todos los Casinos', ['controller' => 'Casinos', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+                <li class="nav-items"><?= $this->Html->link('Registrar Casino', ['controller' => 'Casinos', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
@@ -50,5 +76,3 @@
 </div>
 
 
-<!-- <a class="nav-link" href="/"><span class="nav-icon"></span>
-                        Accordion</a> -->

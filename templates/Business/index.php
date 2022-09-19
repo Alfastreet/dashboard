@@ -53,7 +53,11 @@
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
                                             </svg>
                                         </a>                                       
-                                        <?= $this->Form->postLink( __('delete'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id)]) ?>
+                                        <a class="nav-link nav-group-toggle" href="/business/delete/<?=$busines->id?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                                            </svg>
+                                        </a>                                       
                                     </div>
                                 </td>
                             </tr>

@@ -50,9 +50,10 @@ class CasinosController extends AppController
         }
 
 
-        $machines = $this->fetchTable('machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
-        $accountants = $this->fetchTable('accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
-        $lastaccountants = $this->fetchTable('accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        $machines = $this->fetchTable('Machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
+        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
+        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        
         
         $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants'));
     }

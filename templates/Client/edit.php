@@ -1,36 +1,32 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Client $client
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $client->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $client->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Client'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="client form content">
-            <?= $this->Form->create($client) ?>
-            <fieldset>
-                <legend><?= __('Edit Client') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('phone');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('position_id', ['required' => false]);
-                    echo $this->Form->control('business_id', ['required' => false]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Editar Datos del Cliente') ?></h3>
+                </div>
+                <div>
+                    <?= $this->Form->postLink(
+                        __('Borrar'),
+                        ['action' => 'delete', $client->id],
+                        ['confirm' => __('Are you sure you want to delete # {0}?', $client->id), 'class' => 'btn btn-danger me-md-2']
+                    ) ?>
+                    <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
+                </div>
+            </div>
+            <div class="column-responsive column-80">
+                <?= $this->Form->create($client, ['class' => 'row g-3 needs-validation']) ?>
+                <?php include_once __DIR__ . '/layouts/form.php' ?>
+                <?= $this->Form->button(__('Editar'), ['class' => 'btn btn-primary me-md-2']) ?>
+                <?= $this->Form->end() ?>
+            </div>
         </div>
     </div>
 </div>

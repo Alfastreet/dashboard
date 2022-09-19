@@ -97,7 +97,6 @@ class BusinessController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
         $busines = $this->Business->get($id);
         if ($this->Business->delete($busines)) {
             

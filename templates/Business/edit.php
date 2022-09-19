@@ -1,37 +1,34 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Busines $busines
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $busines->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Business'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="business form content">
-            <?= $this->Form->create($busines) ?>
-            <fieldset>
-                <legend><?= __('Editar Empresa') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('nit');
-                    echo $this->Form->control('phone');
-                    echo $this->Form->control('address');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('owner_id' , ['options' => $owner]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Editar Datos de la Empresa') ?></h3>
+                </div>
+                <div>
+                    <?= $this->Form->postLink(
+                        __('Borrar'),
+                        ['action' => 'delete', $busines->id],
+                        ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id), 'class' => 'btn btn-danger me-md-2']
+                    ) ?>
+                    <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
+                </div>
+            </div>
+            <div class="column-responsive column-80">
+                <div class="business form content">
+                    <?= $this->Form->create($busines, ['class' => 'row g-3 needs-validation']) ?>
+                        <?php include_once __DIR__.'/layouts/form.php' ?>
+                    <?= $this->Form->button(__('Editar'), ['class' => 'btn btn-primary me-md-2']) ?>
+                    <?= $this->Form->end() ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>

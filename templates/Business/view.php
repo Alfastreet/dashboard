@@ -1,52 +1,43 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Busines $busines
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Busines'), ['action' => 'edit', $busines->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Busines'), ['action' => 'delete', $busines->id], ['confirm' => __('Are you sure you want to delete # {0}?', $busines->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Business'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Busines'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="business view content">
-            <h3><?= h($busines->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($busines->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Address') ?></th>
-                    <td><?= h($busines->address) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Email') ?></th>
-                    <td><?= h($busines->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($busines->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Nit') ?></th>
-                    <td><?= $this->Number->format($busines->nit) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Phone') ?></th>
-                    <td><?= $this->Number->format($busines->phone) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Owner Id') ?></th>
-                    <td><?= $this->Number->format($busines->owner_id) ?></td>
-                </tr>
-            </table>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <?php include_once __DIR__ . '/layouts/aside.php' ?>
+            <div class="column-responsive column-80">
+                <div class="business view content">
+                    <div class="mb-3">
+                        <h2 class="text-center card-title"><?= h($busines->name) ?></h2>
+                        <div class="mb-3 row">
+                            <label for="staticEmail" class="col-sm-2 col-form-label fw-bold"><?= __('Dirección:') ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($busines->address) ?>">
+                            </div>
+                            <label for="staticEmail" class="col-sm-2 col-form-label fw-bold"><?= __('Correo Electrónico:') ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($busines->email) ?>">
+                            </div>
+                            <label for="staticEmail" class="col-sm-2 col-form-label fw-bold"><?= __('NIT:') ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($busines->nit) ?>">
+                            </div>
+                            <label for="staticEmail" class="col-sm-2 col-form-label fw-bold"><?= __('Telefono:') ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($busines->phone) ?>">
+                            </div>
+                            <label for="staticEmail" class="col-sm-2 col-form-label fw-bold"><?= __('Dueño:') ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $busines->has('owner') ? h($busines->owner->name) : '' ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

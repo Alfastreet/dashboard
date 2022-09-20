@@ -21,7 +21,7 @@ class UsersController extends AppController
      */
 
 
-    
+
 
     public function index()
     {
@@ -112,12 +112,12 @@ class UsersController extends AppController
 
             if($imgRequest->getClientFileName()) {
 
-                $destiny =   WWW_ROOT."img/imgusers/".$oldImg;     
+                $destiny =   WWW_ROOT."img/imgusers/".$oldImg;
 
                 if ($this->Users->delete($user)) {
 
                     if(file_exists($destiny)){
-                    
+
                         unlink($destiny);
                     }
 
@@ -126,7 +126,7 @@ class UsersController extends AppController
                     $imgName = $time.'_'.$imgRequest->getClientFileName();
 
                     $newDestiny = WWW_ROOT."img/imgusers/".$imgName;
-                    
+
                     $imgRequest->moveTo($newDestiny);
 
                     $user->image = $imgName;
@@ -155,12 +155,12 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
-        $destiny =   WWW_ROOT."img/imgusers/".$user['image'];     
+        $destiny =   WWW_ROOT."img/imgusers/".$user['image'];
 
         if ($this->Users->delete($user)) {
 
             if(file_exists($destiny)){
-            
+
                 unlink($destiny);
             }
 
@@ -175,7 +175,7 @@ class UsersController extends AppController
 
     public function pdf($id = null)
     {
-        $this->viewBuilder()->enableAutoLayout(false); 
+        $this->viewBuilder()->enableAutoLayout(false);
         $report = $this->Users->get($id);
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
         $this->viewBuilder()->setOption(
@@ -189,41 +189,45 @@ class UsersController extends AppController
         $this->set('report', $report);
     }
 
-    public function login() 
+    public function login()
     {
-        // $this->request->allowMethod(['get', 'post']);
+        $this->request->allowMethod(['get', 'post']);
 
-        // $result = $this->Authentication->getResult();
+        $result = $this->Authentication->getResult();
 
-        // if($result->isValid()) {
-        //     $redirect = $this->request->getQuery('redirect', [
-        //         'controller' => 'Users',
-        //         'action' => 'index',
-        //     ]);
+        if($result->isValid()) {
+            $redirect = $this->request->getQuery('redirect', [
+                'controller' => 'users',
+                'action' => 'index'
+            ]);
 
-        //     return $this->redirect($redirect);
+            return $this->redirect($redirect);
+        }
 
-        // } 
+        if($this->request->is('post') && !$result->isValid()) {
+           $this->Flash->error('Credenciales Invalidas');
+        }
+    }
 
-        // if($this->request->is('post') && !$result->isValid()) {
-        //     $this->Flash->error('Credenciales Invalidas, por favor revisa de nuevo');
-        // }
+    public function logout() {
+        $result = $this->Authentication->getResult();
+
+        if($result->isValid()) {
+            $this->Authentication->logout();
+            return $this->redirect(['controller' => 'Users', 'action' => 'Login']);
+        }
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions([
+            'login', 'add'
+        ]);
     }
 
 
-    // public function logout()
-    // {
-    //     $result = $this->Authentication->getResult();
-    //     if($result->isValid()){
-    //         $this->Authentication->logout();
-    //         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-    //     }
-    // }
 
-    // public function beforeFilter(EventInterface $event)
-    // {
-    //     parent::beforeFilter($event);
-    //     $this->Authentication->addUnauthenticatedActions(['login', 'add']);
-    // }
+
 
 }

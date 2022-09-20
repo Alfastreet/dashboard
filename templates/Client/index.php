@@ -65,4 +65,4 @@
     </div>
 </div>
 
-<?php include_once __DIR__ . '/../layout/paginator.php' ?>
+<?= $this->element('paginator')?>

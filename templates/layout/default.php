@@ -54,9 +54,13 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 </head>
 
 <body>
-    <?php include_once __DIR__.'/sidebar.php' ?>
+    <?php if($this->request->getSession()->read('Auth')){
+        echo $this->element('sidebar'); 
+    }?>
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-        <?php include_once __DIR__.'/header.php' ?>
+        <?php if($this->request->getSession()->read('Auth')){ 
+            echo $this->element('header');
+        } ?>
 
         <div class="body flex-grow-1 px-3">
             <div class="container-lg">
@@ -69,7 +73,7 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
     </div>
 </body>
 
-<?php include_once __DIR__.'/scripts.php' ?>
+<?= $this->element('scripts') ?>
 
 </html>
 

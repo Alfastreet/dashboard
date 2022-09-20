@@ -70,9 +70,9 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 </head>
 <body>
 
-<?php include_once __DIR__.'/../layout/sidebar.php' ?>
+<?= $this->element('sidebar') ?>
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-        <?php include_once __DIR__.'/../layout/header.php' ?>
+        <?= $this->element('header')?>
 
         <div class="body flex-grow-1 px-3">
             <div class="container-lg">
@@ -83,12 +83,6 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 
 </body>
 
-<script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
-<script src="vendors/simplebar/js/simplebar.min.js"></script>
-<!-- Plugins and scripts required by this view-->
-<script src="vendors/chart.js/js/chart.min.js"></script>
-<script src="vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
-<script src="vendors/@coreui/utils/js/coreui-utils.js"></script>
-<script src="js/main.js"></script>
+<?= $this->element('scripts') ?>
 
 </html>

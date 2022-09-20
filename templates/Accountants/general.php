@@ -55,7 +55,7 @@
                         <td><?= $this->Number->currency($accountant->admin, 'USD') ?></td>
                         <td><?= $this->Number->currency($accountant->total, 'USD') ?></td>
                         <td><?= $this->Number->currency($accountant->alfastreet, 'USD') ?></td>
-                        <td><?= $this->Html->image('Accountants/'.$accountant->image) ?></td>
+                        <td><?= $this->Html->image('Accountants/'.$accountant->image, ['class' => 'img-thumbnail']) ?></td>
                         
                     </tr>
                     <?php endforeach; ?>

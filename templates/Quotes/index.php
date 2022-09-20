@@ -1,56 +1,68 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Quote[]|\Cake\Collection\CollectionInterface $quotes
  */
 ?>
 
-<div class="quotes index content">
-    <?= $this->Html->link(__('New Quote'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Quotes') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('Empresa Dirigida') ?></th>
-                    <th><?= $this->Paginator->sort('Creada') ?></th>
-                    <th><?= $this->Paginator->sort('Total en Dolares') ?></th>
-                    <th><?= $this->Paginator->sort('Total en Euros') ?></th>
-                    <th><?= $this->Paginator->sort('Total en Pesos') ?></th>
-                    <th><?= $this->Paginator->sort('Estado') ?></th>
-                    <th class="actions"><?= __('Acciones') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($quotes as $quote): ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Cotizaciones') ?></h3>
+                    <p class="small text-medium-emphasis">Total de cotizaciones registrados a la fecha</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Generar una Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover">
+                    <thead>
+                        <tr>
+                            <th><?= $this->Paginator->sort('id', __('#')) ?></th>
+                            <th><?= __('Empresa Dirigida') ?></th>
+                            <th><?= __('Fecha de Creación') ?></th>
+                            <th><?= __('Total en Dolares') ?></th>
+                            <th><?= __('Total en Euros') ?></th>
+                            <th><?= __('Total en Pesos') ?></th>
+                            <th><?= __('Estado') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($quotes as $quote) : ?>
 
-                <tr>
-                    <td><?= $this->Number->format($quote->id) ?></td>
-                    <td><?= h($quote->business_id) ?></td>
-                    <td><?= h($quote->date) ?></td>
-                    <td><?= h($quote->totalUSD) ?></td>
-                    <td><?= h($quote->totalEUR) ?></td>
-                    <td><?= h($quote->totalCOP) ?></td>
-                    <td><?= $this->Number->format($quote->estatus_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $quote->id]) ?>
-                        <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $quote->id]) ?> -->
-                        <?= $this->Html->link(__('Descargar'), ['action' => 'getpdf', $quote->id]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+                            <tr>
+                                <td><?= $this->Number->format($quote->id) ?></td>
+                                <td><?= $quote->has('busines') ? h($quote->busines->name) : '' ?></td>
+                                <td><?= h($quote->date) ?></td>
+                                <td><?= __('$' . number_format($quote->totalUSD)) ?></td>
+                                <td><?= __('€' . number_format($quote->totalEUR)) ?></td>
+                                <td><?= __('$' . number_format($quote->totalCOP)) ?></td>
+                                <td><?= $quote->has('status') ? h($quote->status->status) : '' ?></td>
+                                <td class="actions">
+                                    <div class="btn-group btn-group-toggle mx-3">
+                                        <a class="nav-link nav-group-toggle" href="/quotes/view/<?= $quote->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/quotes/getpdf/<?= $quote->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<?= $this->element('paginator') ?>

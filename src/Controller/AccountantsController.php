@@ -44,12 +44,13 @@ class AccountantsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
    
-    public function add( $casinoid = null )
+    public function add( $casinoid = null, $token = null )
     {
 
         //$this->autoRender = false;
 
         $casinoid = $_GET['casinoid'];
+        $token = $_GET['token'];
 
         $accountant = $this->Accountants->newEmptyEntity();
                 
@@ -81,7 +82,7 @@ class AccountantsController extends AppController
         if ($this->Accountants->save($accountant)) {
             
 
-            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid]);
+            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid , '?' => ['token' => $token]]);
         }
         $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
 

@@ -286,23 +286,22 @@ class QuotesController extends AppController
 
                 if($selectLast) {
                     foreach ($register as $res ){
-                        $insertDetails = $this->db->execute('INSERT INTO detailsquotes(quote_id, typeProduct_id, product_id, amount, money_id, value) VALUES ('.$selectLast[0]['id'].', '.$res['typeProduct_id'].', '.$res['product_id'].', '.$res['amount'].', '.$res['money_id'].', '.$res['value'].')');
+                        $insertDetails = $this->db->execute('INSERT INTO detailsquotes(quote_id, typeProduct_id, product_id, amount, money_id, value) VALUES ('.$selectLast[0]['id'].', '.$res['typeProduct_id'].', '.$res['product_id'].', '.$res['amount'].', '.$res['money_id'].', '.$res['value'].')'); 
+                    }
+                    if($insertDetails){
+                        $sumDollars = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 1')->fetchAll('assoc');
+                        $resDollars = $sumDollars[0]['SUM(value)']  > 0 ? $sumDollars[0]['SUM(value)'] : '0';
+                        $sumEur = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 2')->fetchAll('assoc');
+                        $resEur = $sumEur[0]['SUM(value)']  > 0 ? $sumEur[0]['SUM(value)'] : '0';
+                        $sumCop = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 3')->fetchAll('assoc');
+                        $resCop = $sumCop[0]['SUM(value)']  > 0 ? $sumCop[0]['SUM(value)'] : '0';
                         
-                        if($insertDetails){
-                            $sumDollars = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 1')->fetchAll('assoc');
-                            $resDollars = $sumDollars[0]['SUM(value)']  > 0 ? $sumDollars[0]['SUM(value)'] : '0';
-                            $sumEur = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 2')->fetchAll('assoc');
-                            $resEur = $sumEur[0]['SUM(value)']  > 0 ? $sumEur[0]['SUM(value)'] : '0';
-                            $sumCop = $this->db->execute('SELECT SUM(value) FROM tmpdetailsquote WHERE money_id = 3')->fetchAll('assoc');
-                            $resCop = $sumCop[0]['SUM(value)']  > 0 ? $sumCop[0]['SUM(value)'] : '0';
-                            
-                            $insertPrices = $this->db->execute('UPDATE quotes SET totalUSD = '.$resDollars.', totalEUR = '.$resEur.', totalCOP = '.$resCop.'');
-                            
-                            if($insertPrices) {
-                                echo json_encode('ok');
-                            }
-                            
+                        $insertPrices = $this->db->execute('UPDATE quotes SET totalUSD = '.$resDollars.', totalEUR = '.$resEur.', totalCOP = '.$resCop.' ORDER BY ID DESC LIMIT 1');
+                        
+                        if($insertPrices) {
+                            echo json_encode('ok');
                         }
+                        
                     }
                 }
             }

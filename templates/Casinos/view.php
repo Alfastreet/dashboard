@@ -44,18 +44,19 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
-                    <?= $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image', 'label' => false]); ?>
-                    <img id="file" class="img-thumbnail">
-                </div>
-                <div class="col-md-6">
-                    <div class="column-responsive column-80">
-                        <div class="accountants form content">
-                            <?= $this->Form->create($accountants, ['class' => 'row g-3 needs-validation', 'type' => 'file', 'url' => ['controller' => 'accountants', 'action' => 'add', '?' => ['casinoid' => $casino->id]]]) ?>
+                <div class="column-responsive column-80">
+                    <div class="accountants form content">
+                        <?= $this->Form->create($accountants, ['class' => 'row g-3 needs-validation', 'type' => 'file', 'url' => ['controller' => 'accountants', 'action' => 'add', '?' => ['casinoid' => $casino->id, 'token' => $_GET['token']]]]) ?>
+                        <div class="col-md-6">
+                            <?= $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image', 'label' => false, 'accept' => 'image/png,image/jpeg', 'class' => 'form-control']); ?>
+                            <img id="file" class="img-thumbnail rounded">
+                        </div>
+                        <div class="col-md-6">
+
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <?= $this->Form->control('machine_id', ['required' => false, 'disabled' => false, 'class' => 'form-control', 'label' => 'Selecciona la maquina']); ?>
+                                        <?= $this->Form->control('machine_id', ['required' => false, 'disabled' => false, 'class' => 'form-control', 'label' => false, 'empty' => ['' => 'Seleccione la maquina']]); ?>
                                     </div>
                                 </div>
                             </div>
@@ -99,9 +100,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary']) ?>
-                            <?= $this->Form->end() ?>
                         </div>
+                        <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary']) ?>
+                        <?= $this->Form->end() ?>
                     </div>
                 </div>
             </div>
@@ -141,7 +142,7 @@
                         foreach ($lastaccountants as $lastaccountant) : ?>
 
                             <tr>
-                                <td><?= h($lastaccountant->machine_id)?></td>
+                                <td><?= h($lastaccountant->machine_id) ?></td>
                                 <td><?= h($lastaccountant->day_init) ?></td>
                                 <td><?= h($lastaccountant->day_end) ?></td>
                                 <td><?= h($lastaccountant->month_id) ?></td>
@@ -155,7 +156,7 @@
                                 <td><?= $this->Number->currency($lastaccountant->coljuegos, 'USD') ?></td>
                                 <td><?= $this->Number->currency($lastaccountant->admin, 'USD') ?></td>
                                 <td><?= $this->Number->currency($lastaccountant->total, 'USD') ?></td>
-                                <td><?= $this->Html->image('Accountants/' . $lastaccountant->image) ?></td>
+                                <td><?= $this->Html->image('Accountants/' . $lastaccountant->image, ['class' => 'img-thumbnail']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -209,8 +210,7 @@
                                 <td><?= $this->Number->currency($accountant->coljuegos, 'USD') ?></td>
                                 <td><?= $this->Number->currency($accountant->admin, 'USD') ?></td>
                                 <td><?= $this->Number->currency($accountant->total, 'USD') ?></td>
-                                <td><?= $this->Number->currency($accountant->alfastreet, 'USD') ?></td>
-                                <td><?= $this->Html->image('Accountants/' . $accountant->image) ?></td>
+                                <td><?= $this->Html->image('Accountants/' . $accountant->image, ['class' => 'img-thumbnail']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -236,13 +236,11 @@
                         <th scope="col"><?= __('Mes') ?></th>
                         <th scope="col"><?= __('CashIn') ?></th>
                         <th scope="col"><?= __('CashOut') ?></th>
-                        <th scope="col"><?= __('Ber') ?></th>
+                        <th scope="col"><?= __('Bet') ?></th>
                         <th scope="col"><?= __('Win') ?></th>
                         <th scope="col"><?= __('Profit') ?></th>
                         <th scope="col"><?= __('Jackpot') ?></th>
                         <th scope="col"><?= __('Juegos Jugados') ?></th>
-                        <th scope="col"><?= __('ColJuegos 12%') ?></th>
-                        <th scope="col"><?= __('Administracion 1%') ?></th>
                         <th scope="col"><?= __('Total a pagar') ?></th>
                     </tr>
                 </thead>
@@ -285,7 +283,6 @@
                                     <td><?= $this->Number->currency($totalProfit, 'USD') ?></td>
                                     <td><?= $this->Number->currency($totalJackpot, 'USD') ?></td>
                                     <td><?= h($accountant->gamesplayed) ?></td>
-                                    <td><?= $this->Number->currency($totalizate, 'USD') ?></td>
                                     <td><?= $this->Number->currency($alfasteet, 'USD') ?></td>
                                 </tr>
 

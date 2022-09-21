@@ -52,7 +52,6 @@
                             <img id="file" class="img-thumbnail rounded">
                         </div>
                         <div class="col-md-6">
-
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-12">

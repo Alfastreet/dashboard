@@ -141,17 +141,12 @@
                     </tfooter>
                 </table>
             </div>
+            <button type="button" class="btn btn-primary" id="process">Procesar Cotizacion</button>
         </div>
     </div>
 </div>
 
-<div class="row">
 
-
-
-</div>
-
-<button type="button" class="btn btn-primary" id="process">Procesar Cotizacion</button>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

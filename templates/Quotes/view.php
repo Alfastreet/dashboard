@@ -76,19 +76,28 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-responsive text-center table-hover">
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Quote Id') ?></th>
-                            <th><?= __('Product Id') ?></th>
-                            <th><?= __('Amount') ?></th>
-                            <th><?= __('Value') ?></th>
+                            <th><?= __('Producto') ?></th>
+                            <th><?= __('Cantidad') ?></th>
+                            <th><?= __('Moneda') ?></th>
+                            <th><?= __('Valor') ?></th>
                         </tr>
-                        <?php foreach ($quote->detailsquotes as $detailsquotes) : ?>
+                        <?php foreach ($quote->detailsquotes as $detailsquotes) : 
+                            foreach($products as $product){
+                                if($detailsquotes->product_id == $product->id){
+                                    $nameProduct = $product->name;
+                                }
+                                foreach($money as $m){
+                                    if($detailsquotes->money_id == $m->id){
+                                        $moneyName = $m->name;
+                                    }
+                                }
+                            }
+                            ?>
                             <tr>
-                                <td><?= h($detailsquotes->id) ?></td>
-                                <td><?= h($detailsquotes->quote_id) ?></td>
-                                <td><?= h($detailsquotes->product_id) ?></td>
+                                <td><?= h($nameProduct) ?></td>
                                 <td><?= h($detailsquotes->amount) ?></td>
-                                <td><?= h($detailsquotes->value) ?></td>
+                                <td><?= h($moneyName) ?></td>
+                                <td><?= $this->Number->currency($detailsquotes->value, 'USD') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

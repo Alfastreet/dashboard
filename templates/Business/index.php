@@ -20,7 +20,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table  table-responsive table-striped table-hover table-sm table-bordered text-center">
+                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
                     <thead>
                         <tr>
                             <th><?= __('Nombre') ?></th>

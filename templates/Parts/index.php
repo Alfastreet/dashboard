@@ -1,55 +1,70 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Part[]|\Cake\Collection\CollectionInterface $parts
  */
 ?>
-
-<?php include_once __DIR__.'/../layout/templates/header.php' ?>
-
-<div class="parts index content">
-    <?= $this->Html->link(__('Nueva Parte'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Partes y Servicios') ?></h3>
-    <div class="table-responsive">
-        <table class="table-responsive text-center">
-            <thead>
-                <tr>
-                    <th><?= __('') ?></th>
-                    <th><?= $this->Paginator->sort('Serial') ?></th>
-                    <th><?= $this->Paginator->sort('Nombre') ?></th>
-                    <th><?= $this->Paginator->sort('Moneda') ?></th>
-                    <th><?= $this->Paginator->sort('Precio') ?></th>
-                    <th><?= $this->Paginator->sort('Cantidad') ?></th>
-                    <th class="actions"><?= __('Acciones') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($parts as $part): ?>
-                <tr>
-                    <td class="image"><?= $this->Html->image('Parts/'.$part->image, ['class' => 'image-index']) ?></td>
-                    <td><?= h($part->serial) ?></td>
-                    <td><?= h($part->name) ?></td>
-                    <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
-                    <td><?= $this->Number->format($part->value) ?></td>
-                    <td><?= $this->Number->format($part->amount) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('Ver'), ['action' => 'view', $part->id]) ?>
-                        <?= $this->Html->link(__('Editar'), ['action' => 'edit', $part->id]) ?>
-                        <?= $this->Form->postLink(__('Borrar'), ['action' => 'delete', $part->id], ['confirm' => __('Are you sure you want to delete # {0}?', $part->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+<?= $this->element('paginator')?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Piezas y Servicios') ?></h3>
+                    <p class="small text-medium-emphasis">Piezas y Servicios agregados a la fecha</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Agregar una Pieza o Servicio'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th><?= __('') ?></th>
+                            <th><?= __('Serial') ?></th>
+                            <th><?= __('Nombre') ?></th>
+                            <th><?= __('Moneda') ?></th>
+                            <th><?= __('Precio') ?></th>
+                            <th><?= __('Cantidad Disponible') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($parts as $part) : ?>
+                            <tr>
+                                <td><?= $this->Html->image('Parts/' . $part->image, ['class' => 'img-thumbnail']) ?></td>
+                                <td><?= h($part->serial) ?></td>
+                                <td><?= h($part->name) ?></td>
+                                <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
+                                <td><?= $this->Number->currency($part->value, 'USD') ?></td>
+                                <td><?= $this->Number->format($part->amount) ?></td>
+                                <td class="actions">
+                                    <div class="btn-group btn-group-toggle mx-3">
+                                        <a class="nav-link nav-group-toggle" href="/parts/edit/<?= $part->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/parts/view/<?= $part->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/parts/delete/<?= $part->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<?= $this->element('paginator')?>

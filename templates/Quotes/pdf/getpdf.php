@@ -142,7 +142,7 @@ table thead tr td {
 <body>
 
 <div class="header">
-    <img src="http://localhost/alfastreet/webroot/img/header.png" alt="" srcset="">
+    <img src="http://localhost/webroot/img/header.png" alt="" srcset="">
 </div>
 
 
@@ -314,7 +314,7 @@ table thead tr td {
     </div>
 
     <div class="footer">
-        <img src="http://localhost/alfastreet/webroot/img/footer.png" alt="">
+        <img src="http://localhost/webroot/img/footer.png" alt="">
     </div>
 </body>
 </html>

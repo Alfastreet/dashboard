@@ -52,7 +52,9 @@ class QuotesController extends AppController
             'contain' => ['Users', 'Business', 'Status', 'Detailsquotes'],
         ]);
 
-        $this->set(compact('quote'));
+        $products = $this->fetchTable('parts')->find('all')->all();
+        $money = $this->fetchTable('money')->find('all')->all();
+        $this->set(compact('quote', 'products', 'money'));
     }
 
     /**

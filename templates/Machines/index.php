@@ -1,76 +1,90 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Machine[]|\Cake\Collection\CollectionInterface $machines
  */
 ?>
-<div class="machines index content">
-    <?= $this->Html->link(__('New Machine'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Machines') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('idint') ?></th>
-                    <th><?= $this->Paginator->sort('serial') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('yearModel') ?></th>
-                    <th><?= $this->Paginator->sort('model_id') ?></th>
-                    <th><?= $this->Paginator->sort('maker_id') ?></th>
-                    <th><?= $this->Paginator->sort('warranty') ?></th>
-                    <th><?= $this->Paginator->sort('image') ?></th>
-                    <th><?= $this->Paginator->sort('height') ?></th>
-                    <th><?= $this->Paginator->sort('width') ?></th>
-                    <th><?= $this->Paginator->sort('display') ?></th>
-                    <th><?= $this->Paginator->sort('dateInstalling') ?></th>
-                    <th><?= $this->Paginator->sort('casino_id') ?></th>
-                    <th><?= $this->Paginator->sort('owner_id') ?></th>
-                    <th><?= $this->Paginator->sort('company_id') ?></th>
-                    <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('accountants_id') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($machines as $machine): ?>
-                <tr>
-                    <td><?= $this->Number->format($machine->id) ?></td>
-                    <td><?= $machine->idint === null ? '' : $this->Number->format($machine->idint) ?></td>
-                    <td><?= h($machine->serial) ?></td>
-                    <td><?= h($machine->name) ?></td>
-                    <td><?= $this->Number->format($machine->yearModel) ?></td>
-                    <td><?= $this->Number->format($machine->model_id) ?></td>
-                    <td><?= $this->Number->format($machine->maker_id) ?></td>
-                    <td><?= h($machine->warranty) ?></td>
-                    <td><?= h($machine->image) ?></td>
-                    <td><?= h($machine->height) ?></td>
-                    <td><?= h($machine->width) ?></td>
-                    <td><?= h($machine->display) ?></td>
-                    <td><?= h($machine->dateInstalling) ?></td>
-                    <td><?= $machine->has('casino') ? $this->Html->link($machine->casino->name, ['controller' => 'Casinos', 'action' => 'view', $machine->casino->id]) : '' ?></td>
-                    <td><?= $this->Number->format($machine->owner_id) ?></td>
-                    <td><?= $this->Number->format($machine->company_id) ?></td>
-                    <td><?= $this->Number->format($machine->contract_id) ?></td>
-                    <td><?= $this->Number->format($machine->accountants_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $machine->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $machine->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $machine->id], ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+<?= $this->element('paginator') ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Maquinas') ?></h3>
+                    <p class="small text-medium-emphasis">Maquinas agregadas a la fecha</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Agregar una Maquina'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
+                    <thead>
+                        <tr>
+                            <th><?= $this->Paginator->sort('idint', __('# Interno')) ?></th>
+                            <th><?= __('Serial de la Máquina') ?></th>
+                            <th><?= __('Nombre de la Máquina') ?></th>
+                            <th><?= __('Año del Modelo') ?></th>
+                            <th><?= __('Modelo de la Máquina') ?></th>
+                            <th><?= __('Fabricante') ?></th>
+                            <th><?= __('Garantia') ?></th>
+                            <th><?= __('Alto') ?></th>
+                            <th><?= __('Ancho') ?></th>
+                            <th><?= __('Display') ?></th>
+                            <th><?= __('Fecha de Instalación') ?></th>
+                            <th><?= __('Casino Instalado') ?></th>
+                            <th><?= __('Dueño') ?></th>
+                            <th><?= __('Compañia') ?></th>
+                            <th><?= __('Tipo de Contrato') ?></th>
+                            <th><?= __('image') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($machines as $machine) : ?>
+                            <tr>
+                                <td><?= $machine->idint === null ? '' : $this->Number->format($machine->idint) ?></td>
+                                <td><?= h($machine->serial) ?></td>
+                                <td><?= h($machine->name) ?></td>
+                                <td><?= $this->Number->format($machine->yearModel) ?></td>
+                                <td><?= $this->Number->format($machine->model_id) ?></td>
+                                <td><?= $this->Number->format($machine->maker_id) ?></td>
+                                <td><?= h($machine->warranty) ?></td>
+                                <td><?= h($machine->height) ?></td>
+                                <td><?= h($machine->width) ?></td>
+                                <td><?= h($machine->display) ?></td>
+                                <td><?= h($machine->dateInstalling) ?></td>
+                                <td><?= $machine->has('casino') ? h($machine->casino->name) : '' ?></td>
+                                <td><?= $this->Number->format($machine->owner_id) ?></td>
+                                <td><?= $this->Number->format($machine->company_id) ?></td>
+                                <td><?= $this->Number->format($machine->contract_id) ?></td>
+                                <td><?= h($machine->image) ?></td>
+                                <td class="actions">
+                                    <div class="btn-group btn-group-toggle mx-3">
+                                        <a class="nav-link nav-group-toggle" href="/machines/edit/<?= $machine->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/machines/view/<?= $machine->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/machines/delete/<?= $machine->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+<!-- <?= $this->element('paginator') ?> -->

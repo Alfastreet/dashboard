@@ -14,8 +14,32 @@ Chart.defaults.plugins.tooltip.position = 'nearest';
 Chart.defaults.plugins.tooltip.external = coreui.ChartJS.customTooltips;
 Chart.defaults.defaultFontColor = '#646470';
 
+let table = new DataTable('#myTable', {
+  scrollY: 400,
+  scrollCollapse: true,
+  paging: true,
+  responsive: true,
+  columnDefs: [
+    { responsivePriority: 1, targets: 0 },
+    { responsivePriority: 2, targets: -1 }
+  ],
+  select: {
+    info: false
+  },
+  dom: 'Plfrtip',
+  searchPanes: {
+    viewCount: false
+  },
+  "info": true,
+  "language": {
+    "info": "Mostrando pagina _PAGE_ de _PAGES_",
+    "search" : "Buscar:",
+    "infoFiltered": " - Filtrado de  _MAX_ Resultados"
+  }
+});
+
 const random = (min, max) => // eslint-disable-next-line no-mixed-operators
-Math.floor(Math.random() * (max - min + 1) + min); // eslint-disable-next-line no-unused-vars
+  Math.floor(Math.random() * (max - min + 1) + min); // eslint-disable-next-line no-unused-vars
 
 
 const cardChart1 = new Chart(document.getElementById('card-chart1'), {

@@ -29,6 +29,7 @@ $cakeDescription = 'Sistema de Gestion AlfaStreet - ';
 
     <!-- Option 1: CoreUI for Bootstrap CSS -->
     <?= $this->Html->css('https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css') ?>
+    <?= $this->Html->css('//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css') ?>
     <?= $this->Html->css('/vendors/simplebar/css/simplebar.css') ?>
     <?= $this->Html->css('/css/vendors/simplebar.css') ?>
     <?= $this->Html->css(['style', 'examples']) ?>

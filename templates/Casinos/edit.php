@@ -46,7 +46,7 @@
                     <p class="small text-medium-emphasis">Lista de los clientes relacionados con este casino</p>
                 </div>
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
-                    <?= $this->Html->link(__('Relacionar un cliente'), ['controller' => 'Clientscasinos', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                    <?= $this->Html->link(__('Relacionar un cliente'), ['controller' => 'Clientscasinos', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
                 </div>
             </div>
             <div class="table-responsive">
@@ -54,12 +54,18 @@
                     <tr>
                         <th><?= __('Nombre del Cliente') ?></th>
                     </tr>
-                    <?php foreach ($casino->clientscasinos as $clientscasino) : ?>
+                    <?php foreach ($casino->clientscasinos as $clientscasino) :
+                            foreach($clients as $client){
+                                if($clientscasino->client_id == $client->id){
+                                    $nameClient = $client->name;
+                                }
+                            }
+                        ?>
                         <tr>
-                            <td><?= $clientscasino->has('client') ? h($clientscasino->client->name) : '' ?></td>
+                            <td><?= h($nameClient) ?></td>
                             <td>
                                 <div class="btn-group btn-group-toggle mx-3">
-                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/edit/<?= $clientscasino->id ?>">
+                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/edit/<?= $clientscasino->id ?>?casinoid=<?= $casino->id ?>">
                                         <svg class="nav-icon" width="20" height="20">
                                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                                         </svg>

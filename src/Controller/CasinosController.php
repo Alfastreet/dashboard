@@ -158,11 +158,12 @@ class CasinosController extends AppController
         $states = $this->Casinos->State->find('list', ['limit' => 200])->all();
         $owners = $this->Casinos->Owner->find('list', ['limit' => 200])->all();
         $business = $this->Casinos->Business->find('list', ['limit' => 200])->all();
+        $clients = $this->fetchTable('client')->find('all')->all();
 
         $casino = $this->Casinos->get($id, [
-            'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
+            'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines',],
         ]);
-        $this->set(compact('casino', 'cities', 'states', 'owners', 'business'));
+        $this->set(compact('casino', 'cities', 'states', 'owners', 'business', 'clients'));
 
 
         

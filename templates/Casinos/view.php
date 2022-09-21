@@ -119,7 +119,8 @@
                 <table class="table table-responsive table-striped table-bordered text-center">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col"><?= __('Nombre de la maquina') ?></th>
+                            <th scope="col"><?= __('Serial de la máquina') ?></th>
+                            <th scope="col"><?= __('Nombre de la máquina') ?></th>
                             <th scope="col"><?= __('Dia de Inicio') ?></th>
                             <th scope="col"><?= __('Dia de Finalización') ?></th>
                             <th scope="col"><?= __('Mes') ?></th>
@@ -139,10 +140,19 @@
                     <tbody>
                         <?php
 
-                        foreach ($lastaccountants as $lastaccountant) : ?>
+                        foreach ($lastaccountants as $lastaccountant) :
+                            foreach ($machines as $machine) :
+                                if ($lastaccountant->machine_id == $machine->id) {
+                                    $serialMachine = $machine->serial;
+                                    $serialName = $machine->name;
+                                }
+                            endforeach;
+                        ?>
+
 
                             <tr>
-                                <td><?= h($lastaccountant->machine_id) ?></td>
+                                <td><?= h($serialMachine) ?></td>
+                                <td><?= h($serialName) ?></td>
                                 <td><?= h($lastaccountant->day_init) ?></td>
                                 <td><?= h($lastaccountant->day_end) ?></td>
                                 <td><?= h($lastaccountant->month_id) ?></td>
@@ -176,7 +186,8 @@
                 <table class="table table-responsive table-striped table-bordered text-center">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col"><?= __('Nombre de la maquina') ?></th>
+                            <th scope="col"><?= __('Serial de la máquina') ?></th>
+                            <th scope="col"><?= __('Nombre de la máquina') ?></th>
                             <th scope="col"><?= __('Dia de Inicio') ?></th>
                             <th scope="col"><?= __('Dia de Finalización') ?></th>
                             <th scope="col"><?= __('Mes') ?></th>
@@ -194,9 +205,17 @@
                     </thead>
                     <tbody>
                         <?php
-                        foreach ($accountants as $accountant) : ?>
+                        foreach ($accountants as $accountant) :
+                            foreach ($machines as $machine) :
+                                if ($accountant->machine_id == $machine->id) {
+                                    $serialMachine = $machine->serial;
+                                    $serialName = $machine->name;
+                                }
+                            endforeach;
+                        ?>
                             <tr>
-                                <td><?= h($accountant->machine_id) ?></td>
+                                <td><?= h($serialMachine) ?></td>
+                                <td><?= h($serialName) ?></td>
                                 <td><?= h($accountant->day_init) ?></td>
                                 <td><?= h($accountant->day_end) ?></td>
                                 <td><?= h($accountant->month_id) ?></td>
@@ -225,77 +244,100 @@
         <div class="card-body">
             <h3 class="card-title mb-0 text-center"><?= __('Liquidación Actual') ?></h3>
             <p>&nbsp;</p>
+
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table-bordered text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"><?= __('Serial de la máquina') ?></th>
+                            <th scope="col"><?= __('Nombre de la máquina') ?></th>
+                            <th scope="col"><?= __('Dia de Inicio') ?></th>
+                            <th scope="col"><?= __('Dia de Finalización') ?></th>
+                            <th scope="col"><?= __('Mes') ?></th>
+                            <th scope="col"><?= __('CashIn') ?></th>
+                            <th scope="col"><?= __('CashOut') ?></th>
+                            <th scope="col"><?= __('Bet') ?></th>
+                            <th scope="col"><?= __('Win') ?></th>
+                            <th scope="col"><?= __('Profit') ?></th>
+                            <th scope="col"><?= __('Jackpot') ?></th>
+                            <th scope="col"><?= __('Juegos Jugados') ?></th>
+                            <th scope="col"><?= __('Coljuegos 12%') ?></th>
+                            <th scope="col"><?= __('Administracion 1%') ?></th>
+                            <th scope="col"><?= __('IVA') ?></th>
+                            <th scope="col"><?= __('Total') ?></th>
+                            <th scope="col"><?= __('Alfastreet 40%') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $total = 0;
+                        $totalizate = 0;
+
+                        foreach ($accountants as $accountant) :
+                            foreach ($machines as $machine) :
+                                if ($accountant->machine_id == $machine->id) {
+                                    $serialMachine = $machine->serial;
+                                    $serialName = $machine->name;
+                                }
+                            endforeach;
+                            foreach ($lastaccountants as $lastaccountant) :
+                                $totalCashin = 0;
+                                $totalCashout = 0;
+                                $totalBet = 0;
+                                $totalWin = 0;
+                                $totalProfit = 0;
+                                $totalJackpot = 0;
+                                $totalizate = 0;
+                                $alfasteet = 0;
+                                $coljuegos = 0;
+                                $admin = 0;
+                                $iva = 144415;
+
+                                if ($lastaccountant->machine_id === $accountant->machine_id) {
+                                    $totalCashin = $accountant->cashin - $lastaccountant->cashin;
+                                    $totalCashout =  $accountant->cashout - $lastaccountant->cashout;
+                                    $totalBet = $accountant->bet - $lastaccountant->bet;
+                                    $totalWin = $accountant->win - $lastaccountant->win;
+                                    $totalProfit = $accountant->profit - $lastaccountant->profit;
+                                    $totalJackpot = $accountant->jackpot - $lastaccountant->jackpot;
+                                    $totalizate = $accountant->profit - $lastaccountant->profit;
+                                    $coljuegos = $totalizate * 0.12;
+                                    $admin = $coljuegos * 0.01;
+                                    $totalall = $totalizate - $coljuegos - $admin - $iva;
+                                    $alfasteet = $totalall * 0.40;
+
+                        ?>
+
+                                    <tr>
+                                        <td><?= h($serialMachine) ?></td>
+                                        <td><?= h($serialName) ?></td>
+                                        <td><?= h($accountant->day_init) ?></td>
+                                        <td><?= h($accountant->day_end) ?></td>
+                                        <td><?= h($accountant->month_id) ?></td>
+                                        <td><?= $this->Number->currency($totalCashin, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalCashout, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalBet, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalWin, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalProfit, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalJackpot, 'USD') ?></td>
+                                        <td><?= h($accountant->gamesplayed) ?></td>
+                                        <td><?= $this->Number->currency($coljuegos, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($admin, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($iva, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($totalall, 'USD') ?></td>
+                                        <td><?= $this->Number->currency($alfasteet, 'USD') ?></td>
+                                    </tr>
+
+                        <?php }
+                                $total += $alfasteet;
+                            endforeach;
+                        endforeach; ?>
+                    </tbody>
+                </table>
+
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-responsive table-striped table-bordered text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"><?= __('Nombre de la maquina') ?></th>
-                        <th scope="col"><?= __('Dia de Inicio') ?></th>
-                        <th scope="col"><?= __('Dia de Finalización') ?></th>
-                        <th scope="col"><?= __('Mes') ?></th>
-                        <th scope="col"><?= __('CashIn') ?></th>
-                        <th scope="col"><?= __('CashOut') ?></th>
-                        <th scope="col"><?= __('Bet') ?></th>
-                        <th scope="col"><?= __('Win') ?></th>
-                        <th scope="col"><?= __('Profit') ?></th>
-                        <th scope="col"><?= __('Jackpot') ?></th>
-                        <th scope="col"><?= __('Juegos Jugados') ?></th>
-                        <th scope="col"><?= __('Total a pagar') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $total = 0;
-                    $totalizate = 0;
-
-                    foreach ($accountants as $accountant) :
-                        foreach ($lastaccountants as $lastaccountant) :
-                            $totalCashin = 0;
-                            $totalCashout = 0;
-                            $totalBet = 0;
-                            $totalWin = 0;
-                            $totalProfit = 0;
-                            $totalJackpot = 0;
-                            $totalizate = 0;
-                            $alfasteet = 0;
-
-                            if ($lastaccountant->machine_id === $accountant->machine_id) {
-                                $totalCashin = $accountant->cashin - $lastaccountant->cashin;
-                                $totalCashout =  $accountant->cashout - $lastaccountant->cashout;
-                                $totalBet = $accountant->bet - $lastaccountant->bet;
-                                $totalWin = $accountant->win - $lastaccountant->win;
-                                $totalProfit = $accountant->profit - $lastaccountant->profit;
-                                $totalJackpot = $accountant->jackpot - $lastaccountant->jackpot;
-                                $totalizate = $accountant->profit - $lastaccountant->profit;
-                                $alfasteet = $totalizate * 0.40;
-
-                    ?>
-
-                                <tr>
-                                    <td><?= h($accountant->machine_id) ?></td>
-                                    <td><?= h($accountant->day_init) ?></td>
-                                    <td><?= h($accountant->day_end) ?></td>
-                                    <td><?= h($accountant->month_id) ?></td>
-                                    <td><?= $this->Number->currency($totalCashin, 'USD') ?></td>
-                                    <td><?= $this->Number->currency($totalCashout, 'USD') ?></td>
-                                    <td><?= $this->Number->currency($totalBet, 'USD') ?></td>
-                                    <td><?= $this->Number->currency($totalWin, 'USD') ?></td>
-                                    <td><?= $this->Number->currency($totalProfit, 'USD') ?></td>
-                                    <td><?= $this->Number->currency($totalJackpot, 'USD') ?></td>
-                                    <td><?= h($accountant->gamesplayed) ?></td>
-                                    <td><?= $this->Number->currency($alfasteet, 'USD') ?></td>
-                                </tr>
-
-                    <?php }
-                            $total += $alfasteet;
-                        endforeach;
-                    endforeach; ?>
-                </tbody>
-            </table>
-
-            <h3 class="lead text-center">Total a pagar en el mes: <span><?= $this->Number->currency($total, 'USD') ?></span></h3>
-
-        </div>
+        <h3 class="lead text-center">Total a pagar en el mes: <span><?= $this->Number->currency($total, 'USD') ?></span></h3>
+        <?= $this->Html->link('Descargar Liquidación', ['action' => 'getpdf', '?' => ['id' => $casino->id]], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
 <?= $this->Html->Script('accounts') ?>

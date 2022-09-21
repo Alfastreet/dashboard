@@ -5,6 +5,7 @@
  * @var \App\Model\Entity\Casino[]|\Cake\Collection\CollectionInterface $casinos
  */
 ?>
+<?= $this->element('paginator')?>
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">

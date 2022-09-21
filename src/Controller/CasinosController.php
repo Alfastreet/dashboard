@@ -37,8 +37,6 @@ class CasinosController extends AppController
     {
 
         $token = $_GET['token'];
-
-        
         
         $casino = $this->Casinos->get($id, [
             'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
@@ -50,7 +48,7 @@ class CasinosController extends AppController
         }
 
 
-        $machines = $this->fetchTable('Machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
+        $machines = $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
         $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
         $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
         
@@ -205,6 +203,32 @@ class CasinosController extends AppController
 
     public function thanks() {
         
+    }
+
+    public function getpdf($id = null) {
+
+        $id = $_GET['id'];
+
+        $this->viewBuilder()->enableAutoLayout(false); 
+        $casino = $this->Casinos->get($id);
+        $machines = $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
+        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
+        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+
+        $this->viewBuilder()->setClassName('CakePdf.Pdf');
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'portrait',
+                'pageSize' => 'A3',
+                'download' => true, // This can be omitted if "filename" is specified.
+                'filename' => '0' . $id . '.pdf', //// This can be omitted if you want file name based on URL.
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true
+            ]
+        );
+
+        $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino'));
     }
 
     

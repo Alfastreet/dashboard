@@ -1,0 +1,1 @@
+const file=document.querySelector("#file"),image=document.querySelector("#image");image.addEventListener("change",()=>{const e=image.files;if(!e||!e.length)return void(file.src="");const t=e[0],c=URL.createObjectURL(t);file.src=c});

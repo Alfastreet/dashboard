@@ -260,6 +260,7 @@ class QuotesController extends AppController
         $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, money_id, value, token) VALUES ('.$data['typeProduct_id'].', '.$data['product_id'].', '.$data['amount'].', '.$data['money_id'].', '.$data['value'].', '.$token.')');
         if($query) {
             echo json_encode('ok');
+            exit;
         }
     }
 
@@ -270,6 +271,7 @@ class QuotesController extends AppController
         $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN money m ON p.money_id = m.id')->fetchAll('assoc');
 
         echo json_encode($query);
+        exit;
     }
 
     public function dataQuote() {
@@ -302,6 +304,7 @@ class QuotesController extends AppController
                         
                         if($insertPrices) {
                             echo json_encode('ok');
+                            exit;
                         }
                         
                     }
@@ -317,6 +320,7 @@ class QuotesController extends AppController
         $delete = $this->db->execute('DELETE FROM tmpdetailsquote');
 
         echo json_encode('delete');
+        exit;
     }
 
 }

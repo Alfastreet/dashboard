@@ -140,7 +140,7 @@
                         <?php
 
                         foreach ($lastaccountants as $lastaccountant) :
-                            foreach ($machines as $machine) :
+                            foreach ($machinesName as $machine) :
                                 if ($lastaccountant->machine_id == $machine->id) {
                                     $serialMachine = $machine->serial;
                                     $serialName = $machine->name;
@@ -205,7 +205,7 @@
                     <tbody>
                         <?php
                         foreach ($accountants as $accountant) :
-                            foreach ($machines as $machine) :
+                            foreach ($machinesName as $machine) :
                                 if ($accountant->machine_id == $machine->id) {
                                     $serialMachine = $machine->serial;
                                     $serialName = $machine->name;
@@ -272,7 +272,7 @@
                         $totalizate = 0;
 
                         foreach ($accountants as $accountant) :
-                            foreach ($machines as $machine) :
+                            foreach ($machinesName as $machine) :
                                 if ($accountant->machine_id == $machine->id) {
                                     $serialMachine = $machine->serial;
                                     $serialName = $machine->name;

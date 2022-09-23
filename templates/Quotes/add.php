@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <?= $this->Form->button(__('Agregar'), ['id' => 'añadir', 'type' => 'button', 'class' => 'btn btn-primary']) ?>
+                    <?= $this->Form->button(__('Agregar'), ['id' => 'anadir', 'type' => 'button', 'class' => 'btn btn-primary']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>

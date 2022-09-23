@@ -110,10 +110,9 @@ class QuotesTable extends Table
             ->notEmptyString('estatus_id');
 
         $validator
-            ->scalar('token')
-            ->maxLength('token', 255)
-            ->requirePresence('token', 'create')
-            ->notEmptyString('token');
+            ->scalar('comments')
+            ->requirePresence('comments', 'create')
+            ->notEmptyString('comments');
 
         return $validator;
     }

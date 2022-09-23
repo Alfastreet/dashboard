@@ -303,6 +303,7 @@
                                     $admin = $coljuegos * 0.01;
                                     $totalall = $totalizate - $coljuegos - $admin - $iva;
                                     $alfasteet = $totalall * 0.40;
+                                
 
                         ?>
 

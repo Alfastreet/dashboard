@@ -5,7 +5,6 @@
  * @var \App\Model\Entity\Part[]|\Cake\Collection\CollectionInterface $parts
  */
 ?>
-<?= $this->element('paginator')?>
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
@@ -19,7 +18,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
+                <table class="display table table-responsive table-striped table-hover table-sm table-bordered text-center " id="myTable">
                     <thead>
                         <tr>
                             <th><?= __('') ?></th>
@@ -28,6 +27,7 @@
                             <th><?= __('Moneda') ?></th>
                             <th><?= __('Precio') ?></th>
                             <th><?= __('Cantidad Disponible') ?></th>
+                            <th><?= __('') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,5 +66,3 @@
         </div>
     </div>
 </div>
-
-<?= $this->element('paginator')?>

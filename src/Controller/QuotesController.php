@@ -188,7 +188,7 @@ class QuotesController extends AppController
         $this->viewBuilder()->enableAutoLayout(false); 
         $quote = $this->Quotes->get($id);
 
-        $client = $this->db->execute('SELECT q.id, q.date, q.totalUSD, q.totalEUR, q.totalCOP, dq.typeProduct_id, dq.product_id, dq.amount, dq.value AS subtotal, p.name AS pname, p.serial, p.value AS valorUnidad, b.nit, b.phone, b.email, b.name AS bName, m.shortcode
+        $client = $this->db->execute('SELECT q.id, q.date, q.totalUSD, q.totalEUR, q.totalCOP, q.comments, dq.typeProduct_id, dq.product_id, dq.amount, dq.value AS subtotal, p.name AS pname, p.serial, p.value AS valorUnidad, b.nit, b.phone, b.email, b.name AS bName, m.shortcode
             FROM quotes q 
             INNER JOIN detailsquotes dq ON dq.quote_id = q.id 
             INNER JOIN parts p ON dq.product_id = p.id 
@@ -321,6 +321,21 @@ class QuotesController extends AppController
 
         echo json_encode('delete');
         exit;
+    }
+
+    public function comments($value = null) {
+        $this->autoRender = false;
+
+        $value = $_GET['comment'];
+
+        $insertComment = $this->db->execute("UPDATE quotes SET comments = '".$value."' ORDER BY ID DESC LIMIT 1");
+
+        if($insertComment){
+            echo json_encode('ok');
+            exit;
+
+        }
+
     }
 
 }

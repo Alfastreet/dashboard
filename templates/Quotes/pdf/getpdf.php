@@ -44,6 +44,10 @@ body {
     text-align: right;
 }
 
+p {
+    font-size: 10px;
+}
+
 h2 {
     font-size: 18px;
     font-weight: 700;
@@ -60,7 +64,7 @@ h3 {
 }
 
 h3 span {
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 400;
 }
 
@@ -135,7 +139,17 @@ table thead tr td {
     left: 0px;
     right: 0px;
 }
+.comments {
+    margin: 10px 0;
+    padding: 10px 0;
+}
 
+h5 {
+    font-size: 10px;
+}
+.firma img {
+    width: 20%;
+}
 
 </style>
 </head>
@@ -281,12 +295,15 @@ table thead tr td {
 
                 </div>
                 <div class="dataText">
+                <div class="comments"> 
+                    <h4>Observaciones</h4>
+                    <p><?= $quote[0]->comments ?></p>
+                </div>
                     <h5>Favor únicamente girar en cheque o consignar en:</h5>
                     <p>Banco BBVA - Cuenta Corriente</p>
-                    <p>Beneficiario <span>ALFASTREET COLOMBIA S.A.S</span></p>
+                    <p><span>ALFASTREET COLOMBIA S.A.S</span></p>
                     <p>Cuenta 10 Digitos: <span>0171026180</span> </p>
                     <p>Cuenta 15 Digitos: <span>0171000100026180</span> </p>
-                    <p>Cuenta 20 Digitos: <span>00130171000100026180</span> </p>
                     <br>
 
                     <h5>Tiempo de entrega: <span>INMEDIATO</span></h5>
@@ -295,10 +312,10 @@ table thead tr td {
                     <br>
 
                     <h5>Cordialmente, </h5>
-                    <br>
 
-                    <h5>ALFASTREET COLOMBIA SAS</h5>
-                    <h5>NIT. 900.858.624-3</h5>
+                    <div class="firma">
+                        <img src="http://localhost/webroot/img/firma.jpg" alt="">
+                    </div>
 
                     <div>
                         <hr>

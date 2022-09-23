@@ -33,8 +33,22 @@ let table = new DataTable('#myTable', {
   "info": true,
   "language": {
     "info": "Mostrando pagina _PAGE_ de _PAGES_",
-    "search" : "Buscar:",
-    "infoFiltered": " - Filtrado de  _MAX_ Resultados"
+    "search": "Buscar:",
+    "infoFiltered": " - Filtrado de  _MAX_ Resultados",
+    paginate: {
+      first: '«',
+      previous: '‹',
+      next: '›',
+      last: '»'
+    },
+    aria: {
+      paginate: {
+        first: 'First',
+        previous: 'Previous',
+        next: 'Next',
+        last: 'Last'
+      }
+    }
   }
 });
 

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-responsive text-center table-hover">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover" id="myTable">
                     <thead>
                         <tr>
                             <th><?= __('Nombre del Cliente') ?></th>
@@ -27,6 +27,7 @@
                             <th><?= __('Correo Electronico') ?></th>
                             <th><?= __('Cargo') ?></th>
                             <th><?= __('Empresa perteneciente') ?></th>
+                            <th><?= __('') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,5 +65,3 @@
         </div>
     </div>
 </div>
-
-<?= $this->element('paginator')?>

@@ -1,49 +1,33 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Machine $machine
  * @var string[]|\Cake\Collection\CollectionInterface $casinos
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $machine->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Machines'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="machines form content">
-            <?= $this->Form->create($machine, ['type' => 'file']) ?>
-            <fieldset>
-                <legend><?= __('Edit Machine') ?></legend>
-                <?php
-                    echo $this->Form->control('idint');
-                    echo $this->Form->control('serial');
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('yearModel');
-                    echo $this->Form->control('model_id');
-                    echo $this->Form->control('maker_id');
-                    echo $this->Form->control('warranty');
-                    echo $this->Form->control('image');
-                    echo $this->Form->control('height');
-                    echo $this->Form->control('width');
-                    echo $this->Form->control('display');
-                    echo $this->Form->control('dateInstalling');
-                    echo $this->Form->control('casino_id', ['options' => $casinos]);
-                    echo $this->Form->control('owner_id');
-                    echo $this->Form->control('company_id');
-                    echo $this->Form->control('contract_id');
-                    echo $this->Form->control('accountants_id');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Editar Datos de la Maquina') ?></h3>
+                </div>
+                <div>
+                    <?= $this->Form->postLink(
+                        __('Borrar'),
+                        ['action' => 'delete', $machine->id],
+                        ['confirm' => __('Are you sure you want to delete # {0}?', $machine->id), 'class' => 'btn btn-danger me-md-2']
+                    ) ?>
+                    <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
+                </div>
+            </div>
+            <div class="column-responsive column-80">
+                <?= $this->Form->create($machine, ['type' => 'file', 'class' => 'row g-3 needs-validation']) ?>
+                <?php include_once __DIR__.'/layouts/form.php' ?>
+                <?= $this->Form->button(__('Editar'), ['class' => 'btn btn-primary me-md-2']) ?>
+                <?= $this->Form->end() ?>
+            </div>
         </div>
     </div>
 </div>

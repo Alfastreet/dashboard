@@ -1,7 +1,7 @@
 <div class="mb-3">
     <div class="row">
         <div class="col-md-6">
-            <?= $this->Form->control('business_id', ['options' => $business, 'empty'=> ['' => 'Selecciona la empresa Encargada'], 'class' => 'form-control',  'label' => false, 'require' => true, 'label' => false]) ?>
+            <?= $this->Form->control('business_id', ['options' => $business, 'empty'=> ['' => 'Selecciona la empresa Encargada'], 'class' => 'form-control',  'label' => false, 'require' => true]) ?>
         </div>
         <div class="col-md-6">
             <?= $this->Form->control('position_id', ['options' => $clientposition, 'empty'=> ['' => 'Cargo del Cliente'], 'class' => 'form-control', 'label' => false, 'require' => true, 'label' => false ]) ?>

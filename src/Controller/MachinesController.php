@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\I18n\FrozenTime;
 
 /**
  * Machines Controller
@@ -36,7 +37,7 @@ class MachinesController extends AppController
     public function view($id = null)
     {
         $machine = $this->Machines->get($id, [
-            'contain' => ['Models', 'Makers', 'Casinos', 'Owners', 'Companies', 'Contracts', 'Accountants', 'Machinepart'],
+            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract', 'Machinepart'],
         ]);
 
         $this->set(compact('machine'));
@@ -52,6 +53,19 @@ class MachinesController extends AppController
         $machine = $this->Machines->newEmptyEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
+             // Add image
+
+             $image = $this->request->getData('image');
+
+             if($image) {
+ 
+                 $time =  FrozenTime::now()->toUnixString();
+                 $nameImage = $time. "_" . $image->getClientFileName();
+                 $destiny = WWW_ROOT."img/Machines/".$nameImage;
+                 $image->moveTo($destiny);
+                 $machine->image = $nameImage;
+ 
+             }
             if ($this->Machines->save($machine)) {
                  (__('The machine has been saved.'));
 
@@ -82,6 +96,28 @@ class MachinesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
+
+            $nameImageOld = $machine->image;
+
+            $image = $this->request->getData('image');
+
+            $machine->image = $nameImageOld;
+
+            if($image->getClientFileName()) {
+
+                if(file_exists(WWW_ROOT."img/Casinos/".$nameImageOld)){
+
+                    unlink(WWW_ROOT."img/Casinos/".$nameImageOld);
+        
+                }
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time. "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT."img/Machines/".$nameImage;
+                $image->moveTo($destiny);
+                $machine->image = $nameImage;                
+
+            }
             if ($this->Machines->save($machine)) {
                  (__('The machine has been saved.'));
 
@@ -109,6 +145,13 @@ class MachinesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $machine = $this->Machines->get($id);
+         // Delete file
+
+         if(file_exists(WWW_ROOT."img/Machines/".$machine['image'])){
+
+            unlink(WWW_ROOT."img/Machines/".$machine['image']);
+
+        }
         if ($this->Machines->delete($machine)) {
              (__('The machine has been deleted.'));
         } else {

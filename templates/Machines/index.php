@@ -5,7 +5,6 @@
  * @var \App\Model\Entity\Machine[]|\Cake\Collection\CollectionInterface $machines
  */
 ?>
-<?= $this->element('paginator') ?>
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
@@ -87,4 +86,3 @@
         </div>
     </div>
 </div>
-<!-- <?= $this->element('paginator') ?> -->

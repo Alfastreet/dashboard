@@ -55,7 +55,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <?= $this->Form->control('machine_id', ['required' => false, 'disabled' => false, 'class' => 'form-control', 'label' => false, 'empty' => ['' => 'Seleccione la maquina']]); ?>
+                                        <?= $this->Form->control('machine_id', ['id' => 'machine', 'required' => true, 'disabled' => false, 'class' => 'form-control', 'label' => false, 'empty' => ['' => 'Seleccione la maquina']]); ?>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <?= $this->Form->control('cashin', ['disabled' => true, 'id' => 'cashin', 'class' => 'form-control', 'placeholder' => 'CashIn', 'label' => false]); ?>
+                                        <?= $this->Form->control('cashin', ['id' => 'cashin' ,'disabled' => true, 'id' => 'cashin', 'class' => 'form-control', 'placeholder' => 'CashIn', 'label' => false]); ?>
                                     </div>
                                     <div class="col">
                                         <?= $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control', 'placeholder' => 'CashOut', 'label' => false]); ?>
@@ -340,4 +340,5 @@
         <?= $this->Html->link('Descargar Liquidación', ['action' => 'getpdf', '?' => ['id' => $casino->id]], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
+<?= $this->Html->Script('erase') ?>
 <?= $this->Html->Script('accounts') ?>

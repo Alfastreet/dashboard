@@ -1,0 +1,1 @@
+const machine=document.querySelector("#machine"),cashin=document.querySelector("#cashin");async function lastAccountant(n){const t=`${window.location.protocol}//${window.location.hostname}/accountants/lastvalue?machineid=${n}`,a=await fetch(t),c=await a.json();console.log(c)}machine.addEventListener("change",n=>{lastAccountant(n.target.value)});

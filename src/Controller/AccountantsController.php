@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 use Cake\I18n\FrozenTime;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Accountants Controller
@@ -12,6 +13,15 @@ use Cake\I18n\FrozenTime;
  */
 class AccountantsController extends AppController
 {
+
+    private $db;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->db = ConnectionManager::get("default");
+    }
+
     /**
      * Index method
      *
@@ -143,6 +153,17 @@ class AccountantsController extends AppController
         $accountants = $this->paginate($this->Accountants);
 
         $this->set(compact('accountants'));
+    }
+
+    public function lastvalue ($machineid =  null) {
+        $this->autoRender = false;
+
+        $machineid = $_GET['machineid'];
+
+        $q = $this->db->execute("SELECT cashin FROM accountants WHERE machine_id = ".$machineid." ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
+
+        echo json_encode($q);
+        die;
     }
 
     public function csv() {

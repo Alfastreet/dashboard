@@ -57,10 +57,10 @@ class ContractTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('typecontract')
-            ->maxLength('typecontract', 255)
-            ->requirePresence('typecontract', 'create')
-            ->notEmptyString('typecontract');
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->requirePresence('name', 'create')
+            ->notEmptyString('name');
 
         return $validator;
     }

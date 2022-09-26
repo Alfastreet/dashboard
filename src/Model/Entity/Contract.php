@@ -25,7 +25,7 @@ class Contract extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'typecontract' => true,
+        'name' => true,
         'machines' => true,
     ];
 }

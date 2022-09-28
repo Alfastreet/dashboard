@@ -75,6 +75,10 @@ class UsersController extends AppController
                 $user->image = $imageName;
             }
 
+            $user->token = rand();
+            $user->rol_id = 2;
+            $user->checked = 1;
+
 
             if ($this->Users->save($user)) {
                  (__('The user has been saved.'));

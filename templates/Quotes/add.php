@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="amount" class="form-label">Cantidad</label>
-                                    <input type="number" name="amount" id="amount" class="form-control" required>
+                                    <input type="number" name="amount" id="amount" class="form-control" min="0" required>
                                 </div>
                             </div>
                         </div>

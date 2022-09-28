@@ -54,7 +54,8 @@ class QuotesController extends AppController
 
         $products = $this->fetchTable('parts')->find('all')->all();
         $money = $this->fetchTable('money')->find('all')->all();
-        $this->set(compact('quote', 'products', 'money'));
+        $quotestatus = $this->fetchTable('quotestatuses')->find('all')->where(['quote_id' => $id])->all();
+        $this->set(compact('quote', 'products', 'money', 'quotestatus'));
     }
 
     /**
@@ -336,6 +337,18 @@ class QuotesController extends AppController
 
         }
 
+    }
+
+    public function changestatus($quote = null)
+    {
+        $this->autoRender = false;
+
+        $quote = $_GET['quote'];
+
+        $this->db->execute("UPDATE quotes SET estatus_id = 1 WHERE id = '".$quote."'");
+
+        echo json_encode('ok');
+        die;
     }
 
 }

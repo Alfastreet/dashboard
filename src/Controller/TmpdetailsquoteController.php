@@ -90,5 +90,15 @@ class TmpdetailsquoteController extends AppController
             echo json_encode($query);
         }
     }
+
+    public function delete($id = null)
+    {
+        $tmpdetailsquote = $this->Tmpdetailsquote->get($id);
+        if ($this->Tmpdetailsquote->delete($tmpdetailsquote)) {
+            echo json_encode('ok');
+            die;
+        } 
+
+    }
     
 }

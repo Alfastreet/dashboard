@@ -71,9 +71,9 @@ class ErasesTable extends Table
             ->notEmptyString('machine_id');
 
         $validator
-            ->integer('details_id')
-            ->requirePresence('details_id', 'create')
-            ->notEmptyString('details_id');
+            ->integer('casino_id')
+            ->requirePresence('casino_id', 'create')
+            ->notEmptyString('casino_id');
 
         $validator
             ->scalar('image')

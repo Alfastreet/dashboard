@@ -44,7 +44,7 @@ class Erase extends Entity
      */
     protected $_accessible = [
         'machine_id' => true,
-        'details_id' => true,
+        'casino_id' => true,
         'image' => true,
         'alfastreet' => true,
         'total' => true,

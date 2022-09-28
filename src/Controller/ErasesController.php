@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\Datasource\ConnectionManager;
+use Cake\I18n\FrozenTime;
 
 /**
  * Erases Controller
@@ -11,6 +14,15 @@ namespace App\Controller;
  */
 class ErasesController extends AppController
 {
+
+    private $db;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->db = ConnectionManager::get("default");
+    }
+
     /**
      * Index method
      *
@@ -47,26 +59,49 @@ class ErasesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add( $token = null, $casinoId = null, $machineId = null )
+    public function add($token = null, $casinoId = null, $machineId = null)
     {
         $token = $_GET['token'];
         $casinoId = $_GET['casinoId'];
         $machineId = $_GET['machineId'];
         
         $erase = $this->Erases->newEmptyEntity();
+        $erase = $this->Erases->patchEntity($erase, $this->request->getData());
         if ($this->request->is('post')) {
-            $erase = $this->Erases->patchEntity($erase, $this->request->getData());
-            if ($this->Erases->save($erase)) {
-                $this->Flash->success(__('The erase has been saved.'));
+        
+        $erase->profit = $erase->cashin - $erase->cashout;
+            $erase->coljuegos = $erase->profit * 0.12;
+            $erase->admin = $erase->coljuegos * 0.01;
+            $erase->total = $erase->profit - $erase->coljuegos - $erase->admin - 144415;
+            $erase->alfastreet = $erase->total * 0.40;
+            $erase->casino_id = $casinoId;
+            $erase->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
+            $erase->year = date('Y');
 
-                return $this->redirect(['action' => 'index']);
+            $image = $this->request->getData('image');
+
+            if ($image) {
+
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Erase/" . $nameImage;
+                $image->moveTo($destiny);
+                $erase->image = $nameImage;
+            }
+
+
+
+            if ($this->Erases->save($erase)) {
+
+                return $this->redirect(['action' => 'add', '?' => ['token' => $token, 'casinoId' => $casinoId, 'machineId' => $machineId]]);
             }
             $this->Flash->error(__('The erase could not be saved. Please, try again.'));
         }
-        $machines = $this->Erases->Machines->find('list', ['limit' => 200])->all();
+        $machines = $this->Erases->Machines->find('list')->where(['casino_id' => $casinoId, 'contract_id' => 2])->all();
         $months = $this->Erases->Month->find('list', ['limit' => 200])->all();
-        $casino = $this->Erases->Casinos->find('list', ['limit' => 200])->all();
-        $this->set(compact('erase', 'machines', 'months', 'casino'));
+        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $casinoId, 'machine_id' => $machineId])->all();
+
+        $this->set(compact('erase', 'machines', 'months', 'erases'));
     }
 
     /**
@@ -114,4 +149,19 @@ class ErasesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function addAccount() 
+    {
+        $this->autoRender = false;
+
+        $data = $_POST;
+
+        $query = $this->db->execute("INSERT INTO accountants (`machine_id`, `casino_id`, `day_init`, `day_end`, `month_id`, `year`, `cashin`, `cashout`, `bet`, `win`, `profit`, `jackpot`, `gamesplayed`, `coljuegos`, `admin`, `total`, `alfastreet`, `image`) VALUES (".$data['machine_id'].", ".$data['casino_id'].", ".$data['day_init'].", ".$data['day_end'].", ".$data['month_id'].", ".$data['year'].", ".$data['cashin'].", ".$data['cashout'].", ".$data['bet'].", ".$data['win'].", ".$data['profit'].", ".$data['jackpot'].", ".$data['gamesplayed'].", ".$data['coljuegos'].", ".$data['admin'].", ".$data['total'].", ".$data['alfastreet'].", 'Nulo')");
+        
+        if($query){
+            echo json_encode('ok');
+            die;
+        }
+    }
+
 }

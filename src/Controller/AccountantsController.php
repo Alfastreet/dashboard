@@ -160,9 +160,14 @@ class AccountantsController extends AppController
 
         $machineid = $_GET['machineid'];
 
-        $q = $this->db->execute("SELECT cashin FROM accountants WHERE machine_id = ".$machineid." ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
+        $q = $this->db->execute("SELECT cashin, machine_id FROM accountants WHERE machine_id = ".$machineid." ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
 
-        echo json_encode($q);
+        if($q){
+            echo json_encode($q);
+            die;
+        }
+
+        echo json_encode('error');
         die;
     }
 

@@ -13,6 +13,8 @@
         <div class="card-body">
             <div class="mb-6">
                 <h2 class="text-center card-title"><?= h($casino->name) ?></h2>
+                <input type="hidden" id="casinoid" value="<?= $casino->id ?>">
+                <input type="hidden" id="token" value="<?= $casino->token ?>">
                 <div class="mb-3 row">
                     <div class="col">
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Dirección del Casino:') ?></label>

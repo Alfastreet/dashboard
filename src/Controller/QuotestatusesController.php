@@ -57,6 +57,33 @@ class QuotestatusesController extends AppController
         die;
     }
 
+    public function noapta($comment = null, $quote = null)
+    {
+        $comment = $_GET['comment'];
+        $quote = $_GET['quote'];
+
+        $comments = $this->db->execute('UPDATE quotestatuses SET comment = "'.$comment.'" WHERE quote_id = '.$quote.' LIMIT 1');
+        
+        if($comments){
+            echo json_encode('ok');
+            die;
+        }
+        echo json_encode('error');
+        die;
+    }
+
+    public function deletestatus($quote = null)
+    {
+        $quote = $_GET['quote'];
+
+        $delete = $this->db->execute("DELETE FROM quotestatuses WHERE quote_id = ".$quote." LIMIT 1");
+
+        if($delete){
+            echo json_encode('ok');
+            die;
+        }
+    }
+
     /**
      * Edit method
      *

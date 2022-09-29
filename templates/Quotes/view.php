@@ -62,7 +62,7 @@
                 <div class="col">
                     <div class="card-body">
                         <div class="row mb-4">
-                            <div class="col">
+                            <div class="col-6">
                                 <label for="staticEmail" class="col-sm-4 col-form-label fw-bold"><?= __('Estado:') ?></label>
                                 <div class="col-sm-6">
                                     <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($quote->has('status') ? h($quote->status->status) : '') ?>">
@@ -72,14 +72,12 @@
                                 <!-- Si estado es 1 -->
                                 <?php if ($quote->estatus_id === 1) : ?>
                                     <label for="staticEmail" class="col-sm-10 col-form-label fw-bold"><?= __('Numero de Factura:') ?></label>
-                                    <?php foreach($quotestatus as $qu): 
-                                        if($quote->id === $qu->quote_id){
+                                    <?php foreach ($quotestatus as $qu) :
+                                        if ($quote->id === $qu->quote_id) {
                                             $description = $qu->invoice;
                                         }
-                                     endforeach ?>
-                                    <div class="col-sm-6">
-                                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $description ?>">
-                                    </div>
+                                    endforeach ?>
+                                    <p><?= $description ?></p>
                                 <?php endif; ?>
                                 <!-- Fin estado 1 -->
                                 <!-- Si estado es Pendiente -->
@@ -93,11 +91,22 @@
                                         <button type="button" class="btn btn-danger" id="canceled">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-x"></use>
-                                            </svg> Cancelar
+                                            </svg> No Apta
                                         </button>
                                     </div>
                                 <?php endif ?>
                                 <!-- Fin estado 2 -->
+                                <!-- Si estado es 3 -->
+                                <?php if ($quote->estatus_id === 3) : ?>
+                                    <label for="staticEmail" class="col-sm-10 col-form-label fw-bold"><?= __('Motivo:') ?></label>
+                                    <?php foreach ($quotestatus as $qu) :
+                                        if ($quote->id === $qu->quote_id) {
+                                            $comment = $qu->comment;
+                                        }
+                                    endforeach ?>
+                                    <p><?= $comment ?></p>
+                                <?php endif ?>
+                                <!-- Fin estado 3 -->
                             </div>
                         </div>
                         <h4 class="text-center card-title"><?= __('Comentarios') ?></h4>

@@ -52,9 +52,9 @@ class QuotesController extends AppController
             'contain' => ['Users', 'Business', 'Status', 'Detailsquotes'],
         ]);
 
-        $products = $this->fetchTable('parts')->find('all')->all();
-        $money = $this->fetchTable('money')->find('all')->all();
-        $quotestatus = $this->fetchTable('quotestatuses')->find('all')->where(['quote_id' => $id])->all();
+        $products = $this->fetchTable('Parts')->find('all')->all();
+        $money = $this->fetchTable('Money')->find('all')->all();
+        $quotestatus = $this->fetchTable('Quotestatuses')->find('all')->where(['quote_id' => $id])->all();
         $this->set(compact('quote', 'products', 'money', 'quotestatus'));
     }
 
@@ -339,13 +339,14 @@ class QuotesController extends AppController
 
     }
 
-    public function changestatus($quote = null)
+    public function changestatus($quote = null, $status = null)
     {
         $this->autoRender = false;
 
         $quote = $_GET['quote'];
+        $status = $_GET['status'];
 
-        $this->db->execute("UPDATE quotes SET estatus_id = 1 WHERE id = '".$quote."'");
+        $this->db->execute("UPDATE quotes SET estatus_id = '".$status."' WHERE id = '".$quote."'");
 
         echo json_encode('ok');
         die;

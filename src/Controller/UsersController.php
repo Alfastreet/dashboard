@@ -46,7 +46,8 @@ class UsersController extends AppController
             'contain' => ['Rol', 'Quotes'],
         ]);
 
-        $this->set(compact('user'));
+        $rol = $this->fetchTable('Rol')->find('all')->all();
+        $this->set(compact('user', 'rol'));
     }
 
     /**

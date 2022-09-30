@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -13,6 +14,7 @@
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -20,7 +22,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
-$this->disableAutoLayout();
+//$this->disableAutoLayout();
 
 
 if (!Configure::read('debug')) :
@@ -29,60 +31,107 @@ if (!Configure::read('debug')) :
     );
 endif;
 
-$cakeDescription = 'Sistema de Gestion AlfaStreet - ';
+//Porcentaje Cotizaciones
+
+$percentAproved = round($quotesAproved / $quotesTotal  * 100);
+$percentPending = round($quotesPending / $quotesTotal  * 100);
+$percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
+
 ?>
-<!doctype html>
-<html lang="es">
 
-<head>
-    <base href="./">
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Option 1: CoreUI for Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
-    <link rel="stylesheet" href="css/vendors/simplebar.css">
+<h1 class="text-center mb-4"><?= __('Bienvenido ') . $this->request->getSession()->read('Auth.name') . " " . $this->request->getSession()->read('Auth.lastName')  ?></h1>
 
-    <?= $this->Html->css(['style', 'examples']) ?>
+<div class="row">
+    <!-- Col cotizaciones -->
+    <div class="col-sm-6 col-lg-6">
+        <div class="card mb-4 text-white bg-primary">
+            <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="fw-bold"><?= __('Cotizaciones Totales') ?></div>
+                    <div class="fs-4 fw-semibold">
+                        <?= __($quotesTotal) ?>
+                        <span class="fs-6 fw-normal"> <?= __('(100%)') ?></span>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg class="icon">
+                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-options"></use>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="/quotes">Ver todas las Cotizaciones</a>
+                        <a class="dropdown-item" href="/quotes/add">Nueva Cotizacion</a>
+                    </div>
+                </div>
+            </div>
+            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                <!-- <canvas class="chart" id="card-chart1" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas> -->
+                <div class="row">
+                    <div class="col">
+                        <div class="fw-bold"><?= __('Aprobadas') ?></div>
+                        <div class="fs-4 fw-semibold">
+                            <?= __($quotesAproved) ?>
+                            <span class="fs-6 fw-normal"> <?= __('(' . $percentAproved . '%)') ?></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="fw-bold"><?= __('Pendientes') ?></div>
+                        <div class="fs-4 fw-semibold">
+                            <?= __($quotesPending) ?>
+                            <span class="fs-6 fw-normal"> <?= __('(' . $percentPending . '%)') ?></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="fw-bold"><?= __('Rechazadas') ?></div>
+                        <div class="fs-4 fw-semibold">
+                            <?= __($quotesRechazed) ?>
+                            <span class="fs-6 fw-normal"> <?= __('(' . $percentRechazed . '%)') ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin col cotizaciones -->
 
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-KX4JH47');
-    </script>
-    <link href="vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
-
-    <title><?= $cakeDescription ?></title>
-</head>
-<body>
-
-<?= $this->element('sidebar') ?>
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-        <?= $this->element('header')?>
-
-        <div class="body flex-grow-1 px-3">
-            <div class="container-lg">
-                
+    <!-- Col Participaciones -->
+    <div class="col-sm-6 col-lg-6">
+        <div class="card mb-4 text-white bg-info">
+            <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="fs-4 fw-semibold">
+                        <?= __($accountantsTotal) ?><?php
+                        $total = 0;
+                        foreach ($accountantsSum as $totalSum) {
+                            $total += $totalSum->alfastreet;
+                        }
+                        ?>
+                        <span class="fs-6 fw-normal"> <?= __('('.$this->Number->currency($total, 'USD').')') ?> </span>
+                        <!-- Aqui ira el total de las participaciones Ingresadas en el año  -->
+                    </div>
+                    <div>Participaciones</div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg class="icon">
+                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-options"></use>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="/accountants/general">Ver todas las participaciones</a>
+                    </div>
+                </div>
+            </div>
+            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas class="chart" id="card-chart2" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas>
             </div>
         </div>
     </div>
 
-</body>
+</div>
 
-<?= $this->element('scripts') ?>
 
-</html>
+<?= $this->Html->script('graficas') ?>

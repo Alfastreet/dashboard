@@ -59,7 +59,18 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
+
+        // Query Cotizaciones
+        $quotesTotal = $this->fetchTable('Quotes')->find()->count();
+        $quotesAproved = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 1])->count();
+        $quotesPending = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 2])->count();
+        $quotesRechazed = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 3])->count();
+
+        // Query Contadores
+        $accountantsTotal = $this->fetchTable('Accountants')->find()->count();
+        $accountantsSum = $this->fetchTable('Accountants')->find()->select(['alfastreet'])->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all(); 
+
+        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed'));
 
         try {
             return $this->render(implode('/', $path));

@@ -1,7 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
 use Cake\I18n\FrozenTime;
 use Cake\Datasource\ConnectionManager;
 
@@ -29,7 +31,12 @@ class AccountantsController extends AppController
      */
     public function index()
     {
-        
+        $this->paginate = [
+            'contain' => ['Machines', 'Casinos'],
+        ];
+        $accountants = $this->paginate($this->Accountants);
+
+        $this->set(compact('accountants'));
     }
 
     /**
@@ -53,8 +60,8 @@ class AccountantsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-   
-    public function add( $casinoid = null, $token = null )
+
+    public function add($casinoid = null, $token = null)
     {
 
         //$this->autoRender = false;
@@ -63,41 +70,39 @@ class AccountantsController extends AppController
         $token = $_GET['token'];
 
         $accountant = $this->Accountants->newEmptyEntity();
-                
+
         $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
 
 
-        $accountant->profit = $accountant->cashin - $accountant-> cashout;
+        $accountant->profit = $accountant->cashin - $accountant->cashout;
         $accountant->coljuegos = $accountant->profit * 0.12;
-        $accountant->admin = $accountant->coljuegos *0.01;
+        $accountant->admin = $accountant->coljuegos * 0.01;
         $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - 144415;
         $accountant->alfastreet = $accountant->total * 0.40;
         $accountant->casino_id = $casinoid;
-        $accountant->month_id = date('m', strtotime(date('d-m-Y')."- 1 month"));
+        $accountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
         $accountant->year = date('Y');
         $accountant->casino_id = $casinoid;
-        
+
         $image = $this->request->getData('image');
-        
-        if($image) {
-            
+
+        if ($image) {
+
             $time =  FrozenTime::now()->toUnixString();
-            $nameImage = $time. "_" . $image->getClientFileName();
-            $destiny = WWW_ROOT."img/Accountants/".$nameImage;
+            $nameImage = $time . "_" . $image->getClientFileName();
+            $destiny = WWW_ROOT . "img/Accountants/" . $nameImage;
             $image->moveTo($destiny);
             $accountant->image = $nameImage;
-            
         }
 
         if ($this->Accountants->save($accountant)) {
-            
 
-            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid , '?' => ['token' => $token]]);
+
+            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid, '?' => ['token' => $token]]);
         }
         $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
-
     }
-    
+
 
     /**
      * Edit method
@@ -114,7 +119,7 @@ class AccountantsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
             if ($this->Accountants->save($accountant)) {
-                
+
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -138,7 +143,6 @@ class AccountantsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $accountant = $this->Accountants->get($id);
         if ($this->Accountants->delete($accountant)) {
-              
         } else {
             $this->Flash->error(__('The accountant could not be deleted. Please, try again.'));
         }
@@ -146,7 +150,8 @@ class AccountantsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function general() {
+    public function general()
+    {
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],
         ];
@@ -155,14 +160,15 @@ class AccountantsController extends AppController
         $this->set(compact('accountants'));
     }
 
-    public function lastvalue ($machineid =  null) {
+    public function lastvalue($machineid =  null)
+    {
         $this->autoRender = false;
 
         $machineid = $_GET['machineid'];
 
-        $q = $this->db->execute("SELECT cashin, machine_id FROM accountants WHERE machine_id = ".$machineid." ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
+        $q = $this->db->execute("SELECT cashin, machine_id FROM accountants WHERE machine_id = " . $machineid . " ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
 
-        if($q){
+        if ($q) {
             echo json_encode($q);
             die;
         }
@@ -171,14 +177,14 @@ class AccountantsController extends AppController
         die;
     }
 
-    public function csv() {
-        $this->response = $this->response->withDownload('participaciones.csv');
-        $data = $this->Accountants->find();
-        $_serialize = 'data';
-        $_header = ['ID', 'Maquina', 'Casino', 'Dia inicio', 'Dia fin', 'Mes', 'Año', 'CashIn', 'CashOut', 'Bet', 'Win', 'Profit', 'Jackpot', 'Total Juegos', 'Coljuegos', 'Admin', 'Total', 'AlfaStreet'];
-        $_extract = ['id', 'machine_id', 'casino_id', 'day_init', 'day_end', 'month_id', 'year', 'cashin', 'cashout', 'bet', 'win', 'profit', 'jackpot', 'gamesplayed', 'coljuegos', 'admin', 'total', 'alfastreet'];
+    public function csv()
+    {
 
-        $this->viewBuilder()->setClassName('CsvView.Csv');
-        $this->set(compact('data', '_serialize', '_header', '_extract'));
+        $data = $this->Accountants->find();
+        $this->setResponse($this->getResponse()->withDownload('my-file.csv'));
+        $this->set(compact('data'));
+        $this->viewBuilder()
+            ->setClassName('CsvView.Csv')
+            ->setOption('serialize', 'data');
     }
 }

@@ -1,3 +1,4 @@
+<?= $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js') ?>
 <?= $this->Html->script('https://code.jquery.com/jquery-3.6.1.js') ?>
 <?= $this->Html->script('/vendors/@coreui/coreui/js/coreui.bundle.min.js') ?>
 <?= $this->Html->script('/vendors/simplebar/js/simplebar.min.js') ?>

@@ -14,7 +14,10 @@ Chart.defaults.plugins.tooltip.position = 'nearest';
 Chart.defaults.plugins.tooltip.external = coreui.ChartJS.customTooltips;
 Chart.defaults.defaultFontColor = '#646470';
 
+// Datatable
+
 let table = new DataTable('#myTable', {
+  "lengthMenu": [ 50 ,100 ],
   scrollY: 400,
   scrollCollapse: true,
   paging: true,

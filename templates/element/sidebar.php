@@ -101,7 +101,7 @@
         <li class="nav-title">Inventarios</li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="/accountants">
+            <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
                 </svg>Piezas y Servicios
@@ -109,6 +109,43 @@
             <ul class="nav-group-items">
                 <li class="nav-item">
                     <?= $this->Html->link('Ver Inventario', ['controller' => 'Parts', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+
+        <!-- Submenus -->
+        <li class="nav-title">Administración General</li>
+        <!-- Submenus de navegacion -->
+        <li class="nav-group">
+            <a class="nav-link nav-group-toggle" href="#">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                </svg><?= __('Usuarios') ?>
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-item">
+                    <?= $this->Html->link('Ver Todos los Usuarios', ['controller' => 'Users', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Añadir Nuevo Usuario', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link']) ?>
+                </li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+         <!-- Submenus de navegacion -->
+         <li class="nav-group">
+            <a class="nav-link nav-group-toggle" href="#">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-router"></use>
+                </svg><?= __('Modelo de maquinas') ?>
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-item">
+                    <?= $this->Html->link('Ver Todos los Modelos', ['controller' => 'Model', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Añadir Nuevo Modelo', ['controller' => 'Model', 'action' => 'add'], ['class' => 'nav-link']) ?>
                 </li>
             </ul>
         </li>

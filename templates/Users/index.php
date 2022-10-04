@@ -33,7 +33,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($users as $user) : ?>
+                        <?php foreach ($users as $user) :
+                            foreach($rol as $ro){
+                                if($user->rol_id === $ro->id){
+                                    $rolName = $ro->rol;
+                                }
+                            } ?>
                             <tr>
                                 <td><?= h($user->name) ?></td>
                                 <td><?= h($user->lastName) ?></td>
@@ -41,7 +46,7 @@
                                 <td><?= $this->Number->format($user->phone) ?></td>
                                 <td><?= $this->Number->format($user->identification) ?></td>
                                 <td><?= h($user->email) ?></td>
-                                <td><?= $this->Number->format($user->rol_id) ?></td>
+                                <td><?= h($rolName) ?></td>
                                 <td><?= $this->Html->image('imgusers/' . $user->image, ['class' => 'card-img-top']) ?></td>
                                 <td class="actions">
                                 <div class="btn-group btn-group-toggle mx-3">

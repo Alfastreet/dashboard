@@ -31,7 +31,7 @@ class ClientController extends AppController
         $this->paginate = [
             'contain' => ['Clientposition', 'Business'],
         ];
-        $client = $this->paginate($this->Client);
+        $client = $this->paginate($this->Client, ['limit' => 10000]);
 
         $this->set(compact('client'));
     }

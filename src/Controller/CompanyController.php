@@ -19,7 +19,7 @@ class CompanyController extends AppController
     public function index()
     {
         
-        $company = $this->paginate($this->Company);
+        $company = $this->paginate($this->Company, ['limit' => 10000]);
 
         $this->set(compact('company'));
     }

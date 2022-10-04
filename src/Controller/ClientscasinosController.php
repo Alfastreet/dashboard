@@ -57,9 +57,10 @@ class ClientscasinosController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add($casinoid = null)
+    public function add($casinoid = null, $token = null)
     {
-        $casinoid = $_GET['casinoid'];
+        $casinoid = $this->request->getQuery('casinoid'); 
+        $token = $this->request->getQuery('token'); 
 
         if($casinoid == null){
             return $this->redirect(['controller' => 'Casinos', 'action' => 'index']);
@@ -71,7 +72,7 @@ class ClientscasinosController extends AppController
             if ($this->Clientscasinos->save($clientscasino)) {
                  (__('The clientscasino has been saved.'));
 
-                return $this->redirect(['controller' => 'Casinos', 'action' => 'edit', $casinoid]);
+                return $this->redirect(['controller' => 'Casinos', 'action' => 'view', $casinoid, '?' => ['token' => $token]]);
             }
             $this->Flash->error(__('The clientscasino could not be saved. Please, try again.'));
         }
@@ -87,9 +88,10 @@ class ClientscasinosController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null, $casinoid = null)
+    public function edit($id = null, $casinoid = null, $token = null)
     {
-        $casinoid = $_GET['casinoid'];
+        $casinoid = $this->request->getQuery('casinoid');
+        $token = $this->request->getQuery('token');
 
         if($casinoid == null){
             return $this->redirect(['controller' => 'Casinos', 'action' => 'index']);
@@ -103,7 +105,7 @@ class ClientscasinosController extends AppController
             if ($this->Clientscasinos->save($clientscasino)) {
                  (__('The clientscasino has been saved.'));
 
-                return $this->redirect(['controller' => 'Casinos', 'action' => 'edit', $casinoid]);
+                return $this->redirect(['controller' => 'Casinos', 'action' => 'view', $casinoid, '?' => ['token' => $token]]);
             }
             $this->Flash->error(__('The clientscasino could not be saved. Please, try again.'));
         }

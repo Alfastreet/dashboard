@@ -73,7 +73,7 @@
                             <td><?= h($nameClient) ?></td>
                             <td>
                                 <div class="btn-group btn-group-toggle mx-3">
-                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/edit/<?= $clientscasino->id ?>?casinoid=<?= $casino->id ?>">
+                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/edit/<?= $clientscasino->id ?>?casinoid=<?= $casino->id ?>&token=<?= $casino->token ?>">
                                         <svg class="nav-icon" width="20" height="20">
                                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                                         </svg>

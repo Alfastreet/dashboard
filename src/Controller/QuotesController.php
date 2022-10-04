@@ -180,9 +180,7 @@ class QuotesController extends AppController
 
     public function getpdf($id = null)
     {
-
-
-
+        
         $this->viewBuilder()->enableAutoLayout(false);
         $quote = $this->Quotes->get($id);
 

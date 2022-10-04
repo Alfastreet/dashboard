@@ -30,7 +30,8 @@ class UsersController extends AppController
         ];
         $users = $this->paginate($this->Users);
 
-        $this->set(compact('users'));
+        $rol = $this->fetchTable('Rol')->find('all')->all();
+        $this->set(compact('users', 'rol'));
     }
 
     /**
@@ -158,7 +159,6 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         $destiny =   WWW_ROOT."img/imgusers/".$user['image'];
 

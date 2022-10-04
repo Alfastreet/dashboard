@@ -64,10 +64,9 @@ class AccountantsController extends AppController
     public function add($casinoid = null, $token = null)
     {
 
-        //$this->autoRender = false;
 
-        $casinoid = $_GET['casinoid'];
-        $token = $_GET['token'];
+        $casinoid = $this->request->getQuery('casinoid');
+        $token = $this->request->getQuery('token');
 
         $accountant = $this->Accountants->newEmptyEntity();
 
@@ -164,7 +163,7 @@ class AccountantsController extends AppController
     {
         $this->autoRender = false;
 
-        $machineid = $_GET['machineid'];
+        $machineid = $this->request->getQuery('machineid');
 
         $q = $this->db->execute("SELECT cashin, machine_id FROM accountants WHERE machine_id = " . $machineid . " ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
 

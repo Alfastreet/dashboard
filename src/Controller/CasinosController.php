@@ -36,7 +36,7 @@ class CasinosController extends AppController
     public function view($id = null, $token = null)
     {
 
-        $token = $_GET['token'];
+        $token = $this->request->getQuery('token');
         
         $casino = $this->Casinos->get($id, [
             'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
@@ -210,7 +210,7 @@ class CasinosController extends AppController
 
     public function getpdf($id = null) {
 
-        $id = $_GET['id'];
+        $id = $this->request->getQuery('id');
 
         $this->viewBuilder()->enableAutoLayout(false); 
         $casino = $this->Casinos->get($id);

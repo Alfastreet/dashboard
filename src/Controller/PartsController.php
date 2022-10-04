@@ -32,7 +32,7 @@ class PartsController extends AppController
         $this->paginate = [
             'contain' => ['Money'],
         ];
-        $parts = $this->paginate($this->Parts);
+        $parts = $this->paginate($this->Parts, ['limit' => 10000]);
 
         $this->set(compact('parts'));
     }

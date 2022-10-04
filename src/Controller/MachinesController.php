@@ -22,7 +22,7 @@ class MachinesController extends AppController
         $this->paginate = [
             'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
         ];
-        $machines = $this->paginate($this->Machines);
+        $machines = $this->paginate($this->Machines, ['limit' => 10000]);
 
         $this->set(compact('machines'));
     }
@@ -50,6 +50,7 @@ class MachinesController extends AppController
      */
     public function add()
     {
+        // $casinoId = $this->request->getQuery('casinoid');
         $machine = $this->Machines->newEmptyEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());

@@ -21,7 +21,7 @@ class BusinessController extends AppController
         $this->paginate = [
             'contain' => ['Owner'],
         ];
-        $business = $this->paginate($this->Business);
+        $business = $this->paginate($this->Business, ['limit' => 10000]);
 
         $this->set(compact('business'));
     }

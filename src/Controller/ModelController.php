@@ -18,7 +18,7 @@ class ModelController extends AppController
      */
     public function index()
     {
-        $model = $this->paginate($this->Model);
+        $model = $this->paginate($this->Model, ['limit' => 10000]);
 
         $this->set(compact('model'));
     }

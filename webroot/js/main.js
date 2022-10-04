@@ -18,7 +18,7 @@ Chart.defaults.defaultFontColor = '#646470';
 
 let table = new DataTable('#myTable', {
   "lengthMenu": [ 50 ,100 ],
-  scrollY: 400,
+  scrollY: 550,
   scrollCollapse: true,
   paging: true,
   responsive: true,

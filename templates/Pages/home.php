@@ -33,9 +33,17 @@ endif;
 
 //Porcentaje Cotizaciones
 
+$percentAproved = 0;
+$percentPending = 0;
+$percentRechazed = 0;
+
+if($quotesTotal !== 0 ){
+    
 $percentAproved = round($quotesAproved / $quotesTotal  * 100);
 $percentPending = round($quotesPending / $quotesTotal  * 100);
 $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
+
+}
 
 ?>
 

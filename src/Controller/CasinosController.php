@@ -52,9 +52,10 @@ class CasinosController extends AppController
         $machines = $this->fetchTable('machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
         $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
         $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        $clients = $this->fetchTable('Client')->find('all')->all();
         
         
-        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName'));
+        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName', 'clients'));
     }
 
     /**

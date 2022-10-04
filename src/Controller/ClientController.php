@@ -49,7 +49,8 @@ class ClientController extends AppController
             'contain' => ['Clientposition', 'Business', 'Clientscasinos'],
         ]);
 
-        $this->set(compact('client'));
+        $casinos = $this->fetchTable('casinos')->find('all')->all();
+        $this->set(compact('client', 'casinos'));
     }
 
     /**

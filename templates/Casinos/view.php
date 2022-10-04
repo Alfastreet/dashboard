@@ -42,9 +42,124 @@
     </div>
 </div>
 
+
+<!-- Clientes relacionados -->
+
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Clientes pertenecientes a este Casino') ?></h3>
+                    <p class="small text-medium-emphasis">Lista de los clientes relacionados con este casino</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Relacionar un cliente'), ['controller' => 'Clientscasinos', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover">
+                    <tr>
+                        <th><?= __('Nombre del Cliente') ?></th>
+                    </tr>
+                    <?php foreach ($casino->clientscasinos as $clientscasino) :
+                        foreach ($clients as $client) {
+                            if ($clientscasino->client_id == $client->id) {
+                                $nameClient = $client->name;
+                            }
+                        }
+                    ?>
+                        <tr>
+                            <td><?= h($nameClient) ?></td>
+                            <td>
+                                <div class="btn-group btn-group-toggle mx-3">
+                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/edit/<?= $clientscasino->id ?>?casinoid=<?= $casino->id ?>">
+                                        <svg class="nav-icon" width="20" height="20">
+                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                        </svg>
+                                    </a>
+                                    <a class="nav-link nav-group-toggle" href="/clientscasinos/view/<?= $clientscasino->id ?>">
+                                        <svg class="nav-icon" width="20" height="20">
+                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Maquinas relacionadas -->
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Tus Maquinas') ?></h3>
+                    <p class="small text-medium-emphasis">Maquinas inscritas a este Casino</p>
+                </div>
+                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <?= $this->Html->link(__('Agregar una Nueva Maquina'), ['controller' => 'Machines', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover">
+                    <tr>
+                        <th><?= __('Serial de la Maquina') ?></th>
+                        <th><?= __('Nombre de la Maquina') ?></th>
+                        <th><?= __('Dia de Instalacion') ?></th>
+                        <th><?= __('Imagen') ?></th>
+                    </tr>
+                    <?php foreach ($casino->machines as $machines) : ?>
+                        <tr>
+                            <td><?= h($machines->serial) ?></td>
+                            <td><?= h($machines->name) ?></td>
+                            <td><?= h($machines->dateInstalling) ?></td>
+                            <td><?= $this->Html->image('Machines/' . $machines->image, ['class' => 'img-thumbnail img-fluid rounded mx-auto d-block', 'style' => 'max-width:150px']) ?></td>
+                            <td class="actions">
+                                <div class="btn-group btn-group-toggle mx-3">
+                                    <a class="nav-link nav-group-toggle" href="/machines/edit/<?= $machines->id ?>">
+                                        <svg class="nav-icon" width="20" height="20">
+                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                        </svg>
+                                    </a>
+                                    <a class="nav-link nav-group-toggle" href="/machines/view/<?= $machines->id ?>">
+                                        <svg class="nav-icon" width="20" height="20">
+                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                        </svg>
+                                    </a>
+                                    <a class="nav-link nav-group-toggle" href="/machines/delete/<?= $machines->id ?>">
+                                        <svg class="nav-icon" width="20" height="20">
+                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Ingreso de datos para las participaciones -->
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div>
+                <h3 class="card-title mb-0"><?= __('Participaciones') ?></h3>
+                <p class="small text-medium-emphasis">Ingreso de datos para la liquidación de participaciones</p>
+            </div>
             <div class="row">
                 <div class="column-responsive column-80">
                     <div class="accountants form content">
@@ -74,7 +189,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <?= $this->Form->control('cashin', ['id' => 'cashin' ,'disabled' => true, 'id' => 'cashin', 'class' => 'form-control', 'placeholder' => 'CashIn', 'label' => false]); ?>
+                                        <?= $this->Form->control('cashin', ['id' => 'cashin', 'disabled' => true, 'id' => 'cashin', 'class' => 'form-control', 'placeholder' => 'CashIn', 'label' => false]); ?>
                                     </div>
                                     <div class="col">
                                         <?= $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control', 'placeholder' => 'CashOut', 'label' => false]); ?>
@@ -305,7 +420,7 @@
                                     $admin = $coljuegos * 0.01;
                                     $totalall = $totalizate - $coljuegos - $admin - $iva;
                                     $alfasteet = $totalall * 0.40;
-                                
+
 
                         ?>
 
@@ -342,5 +457,7 @@
         <?= $this->Html->link('Descargar Liquidación', ['action' => 'getpdf', '?' => ['id' => $casino->id]], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
+
+
 <?= $this->Html->Script('erase') ?>
 <?= $this->Html->Script('accounts') ?>

@@ -52,20 +52,27 @@
                                 <th><?= __('Cliente') ?></th>
                                 <th><?= __('Casino') ?></th>
                             </tr>
-                            <?php foreach ($client->clientscasinos as $clientscasinos) : ?>
+                            <?php 
+                            foreach ($client->clientscasinos as $clientscasinos) : 
+                                    if($clientscasinos->client_id === $client->id){
+                                        $clientName = $client->name;
+                                    }
+                                    foreach($casinos as $casino){
+                                        if($clientscasinos->casino_id === $casino->id){
+                                            $casinoName = $casino->name;
+                                            $casinoId = $casino->id;
+                                        }
+                                    }
+                                    
+                                ?>
                                 <tr>
-                                    <td><?= h($clientscasinos->client_id) ?></td>
-                                    <td><?= h($clientscasinos->casino_id) ?></td>
+                                    <td><?= h($clientName) ?></td>
+                                    <td><?= h($casinoName) ?></td>
                                     <td class="actions">
                                         <div class="btn-group btn-group-toggle mx-3">
-                                            <a class="nav-link nav-group-toggle" href="/Clientscasinos/edit/<?= $clientscasinos->id ?>">
+                                            <a class="nav-link nav-group-toggle" href="/Clientscasinos/edit/<?= $clientscasinos->id ?>?casinoid=<?= $casinoId ?>">
                                                 <svg class="nav-icon" width="20" height="20">
                                                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                                                </svg>
-                                            </a>
-                                            <a class="nav-link nav-group-toggle" href="/Clientscasinos/view/<?= $clientscasinos->id ?>">
-                                                <svg class="nav-icon" width="20" height="20">
-                                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
                                                 </svg>
                                             </a>
                                             <a class="nav-link nav-group-toggle" href="/Clientscasinos/delete/<?= $clientscasinos->id ?>">

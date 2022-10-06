@@ -73,30 +73,31 @@ class CasinosController extends AppController
         if ($this->request->is('post')) {
 
             $casino = $this->Casinos->patchEntity($casino, $this->request->getData());
+            $name = $casino->name;
 
-            // Add image
+            $query = $this->Casinos->find('all')->where(['name' => $name])->all();
 
-            $image = $this->request->getData('image');
-
-            if($image) {
-
-                $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time. "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT."img/Casinos/".$nameImage;
-                $image->moveTo($destiny);
-                $casino->image = $nameImage;
-
+            if(sizeof($query) === 0){
+                // Add image
+                $image = $this->request->getData('image');
+                if($image) {
+    
+                    $time =  FrozenTime::now()->toUnixString();
+                    $nameImage = $time. "_" . $image->getClientFileName();
+                    $destiny = WWW_ROOT."img/Casinos/".$nameImage;
+                    $image->moveTo($destiny);
+                    $casino->image = $nameImage;
+    
+                }
+                $casino->token = uniqid();
+                if ($this->Casinos->save($casino)) {
+                     (__('The casino has been saved.'));
+    
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('Hubo un error al Guardar el Casino.'));
             }
-
-            $casino->token = uniqid();
-
-
-            if ($this->Casinos->save($casino)) {
-                 (__('The casino has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The casino could not be saved. Please, try again.'));
+            $this->Flash->error(__('El casino Ya existe!!.'));
         }
         $cities = $this->Casinos->City->find('list', ['limit' => 200])->all();
         $states = $this->Casinos->State->find('list', ['limit' => 200])->all();
@@ -160,7 +161,7 @@ class CasinosController extends AppController
         $states = $this->Casinos->State->find('list', ['limit' => 200])->all();
         $owners = $this->Casinos->Owner->find('list', ['limit' => 200])->all();
         $business = $this->Casinos->Business->find('list', ['limit' => 200])->all();
-        $clients = $this->fetchTable('client')->find('all')->all();
+        $clients = $this->fetchTable('Client')->find('all')->all();
 
         $casino = $this->Casinos->get($id, [
             'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines',],
@@ -232,6 +233,21 @@ class CasinosController extends AppController
         );
 
         $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino'));
+    }
+
+    public function searchCasinoName($name =  null) 
+    {
+        $this->autoRender = false;
+
+        $name = $this->request->getQuery('name');
+
+        $query = $this->Casinos->find('all')->where(['name' => $name])->all();
+        
+        if(sizeof($query) > 0){
+            echo json_encode('error');
+            die;
+        }
+
     }
 
     

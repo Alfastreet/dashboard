@@ -40,10 +40,10 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
-                                <?= $this->Form->control('idint', ['class' => 'form-control', 'label' => false, 'require' => true, 'placeholder' => 'ID Interno de la maquina']); ?>
+                                <?= $this->Form->control('idint', ['class' => 'form-control', 'id' => 'intId', 'label' => false, 'require' => true, 'placeholder' => 'ID Interno de la maquina']); ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('serial', ['class' => 'form-control', 'label' => false, 'require' => true, 'placeholder' => 'Serial de la maquina']); ?>
+                                <?= $this->Form->control('serial', ['class' => 'form-control', 'id' => 'serial',  'label' => false, 'require' => true, 'placeholder' => 'Serial de la maquina']); ?>
                             </div>
                             <div class="col">
                                 <?= $this->Form->control('name', ['class' => 'form-control', 'label' => false, 'require' => true, 'placeholder' => 'Nombre de la maquina o modulo']); ?>
@@ -89,10 +89,11 @@
                             </div>
                         </div>
                     </div>
-                    <?= $this->Form->button(__('Añadir'), ['class' => 'btn btn-primary']) ?>
+                    <?= $this->Form->button(__('Añadir'), ['class' => 'btn btn-primary', 'id' => 'add']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?= $this->Html->script('machinesAdd') ?>

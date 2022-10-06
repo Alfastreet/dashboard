@@ -1,7 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
 use Cake\I18n\FrozenTime;
 
 /**
@@ -54,25 +56,33 @@ class MachinesController extends AppController
         $machine = $this->Machines->newEmptyEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
-             // Add image
+            // Add image
 
-             $image = $this->request->getData('image');
 
-             if($image) {
- 
-                 $time =  FrozenTime::now()->toUnixString();
-                 $nameImage = $time. "_" . $image->getClientFileName();
-                 $destiny = WWW_ROOT."img/Machines/".$nameImage;
-                 $image->moveTo($destiny);
-                 $machine->image = $nameImage;
- 
-             }
-            if ($this->Machines->save($machine)) {
-                 (__('The machine has been saved.'));
+            $image = $this->request->getData('image');
+            $idint = $machine->idint;
+            $serial = $machine->serial;
+            $queryidInt = $this->Machines->find('all')->where(['idint' => $idint])->all();
+            $queryserial = $this->Machines->find('all')->where(['serial' => $serial])->all();
 
-                return $this->redirect(['action' => 'index']);
+            if (sizeof($queryserial) === 0) {
+
+                if ($image) {
+
+                    $time =  FrozenTime::now()->toUnixString();
+                    $nameImage = $time . "_" . $image->getClientFileName();
+                    $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
+                    $image->moveTo($destiny);
+                    $machine->image = $nameImage;
+                }
+                if ($this->Machines->save($machine)) {
+                    (__('The machine has been saved.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('Hubo un error al procesar los Datos'));
             }
-            $this->Flash->error(__('The machine could not be saved. Please, try again.'));
+            $this->Flash->error(__('La maquina Ya esta registrada'));
         }
         $models = $this->Machines->Model->find('list', ['limit' => 200])->all();
         $makers = $this->Machines->Maker->find('list', ['limit' => 200])->all();
@@ -104,23 +114,21 @@ class MachinesController extends AppController
 
             $machine->image = $nameImageOld;
 
-            if($image->getClientFileName()) {
+            if ($image->getClientFileName()) {
 
-                if(file_exists(WWW_ROOT."img/Casinos/".$nameImageOld)){
+                if (file_exists(WWW_ROOT . "img/Casinos/" . $nameImageOld)) {
 
-                    unlink(WWW_ROOT."img/Casinos/".$nameImageOld);
-        
+                    unlink(WWW_ROOT . "img/Casinos/" . $nameImageOld);
                 }
 
                 $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time. "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT."img/Machines/".$nameImage;
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
                 $image->moveTo($destiny);
-                $machine->image = $nameImage;                
-
+                $machine->image = $nameImage;
             }
             if ($this->Machines->save($machine)) {
-                 (__('The machine has been saved.'));
+                (__('The machine has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -144,21 +152,47 @@ class MachinesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
         $machine = $this->Machines->get($id);
-         // Delete file
+        // Delete file
 
-         if(file_exists(WWW_ROOT."img/Machines/".$machine['image'])){
+        if (file_exists(WWW_ROOT . "img/Machines/" . $machine['image'])) {
 
-            unlink(WWW_ROOT."img/Machines/".$machine['image']);
-
+            unlink(WWW_ROOT . "img/Machines/" . $machine['image']);
         }
         if ($this->Machines->delete($machine)) {
-             (__('The machine has been deleted.'));
+            (__('The machine has been deleted.'));
         } else {
             $this->Flash->error(__('The machine could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function searchIdInt($idint = null)
+    {
+        $this->autoRender = false;
+
+        $idint = $this->request->getQuery('idint');
+
+        $query = $this->Machines->find('all')->where(['idint' => $idint])->all();
+
+        if (sizeof($query) > 0) {
+            echo json_encode('error');
+            die;
+        }
+    }
+
+    public function searchSerial($serial = null)
+    {
+        $this->autoRender = false;
+
+        $serial = $this->request->getQuery('serial');
+
+        $query = $this->Machines->find('all')->where(['serial' => $serial])->all();
+
+        if (sizeof($query) > 0) {
+            echo json_encode('error');
+            die;
+        }
     }
 }

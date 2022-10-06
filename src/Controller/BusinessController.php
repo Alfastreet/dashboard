@@ -52,12 +52,18 @@ class BusinessController extends AppController
         $busines = $this->Business->newEmptyEntity();
         if ($this->request->is('post')) {
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
-            if ($this->Business->save($busines)) {
-                
+            $nit = $busines->nit;
+            $query = $this->Business->find('all')->where(['nit' => $nit])->all();
 
-                return $this->redirect(['action' => 'index']);
+            if(sizeof($query) === 0){
+                
+                if ($this->Business->save($busines)) {    
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('Hubo un error al Guardar los datos'));
             }
-            $this->Flash->error(__('The busines could not be saved. Please, try again.'));
+            $this->Flash->error(__('La empresa ya existe'));
+
         }
         $owner = $this->Business->Owner->find('list', ['limit' => 200])->all();
         $this->set(compact('busines', 'owner'));
@@ -105,5 +111,18 @@ class BusinessController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function searchBussines($nit = null) 
+    {
+        $this->autoRender = false;
+        $nit = $this->request->getQuery('nit');
+
+        $query = $this->Business->find('all')->where(['nit' => $nit])->all();
+        
+        if(sizeof($query) > 0){
+            echo json_encode('error');
+            die;
+        }
     }
 }

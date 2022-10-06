@@ -63,15 +63,15 @@ class AccountantsController extends AppController
 
     public function add($casinoid = null, $token = null)
     {
-
+        $this->autoRender =  false;
 
         $casinoid = $this->request->getQuery('casinoid');
         $token = $this->request->getQuery('token');
-
+        
         $accountant = $this->Accountants->newEmptyEntity();
-
+        
         $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
-
+        
 
         $accountant->profit = $accountant->cashin - $accountant->cashout;
         $accountant->coljuegos = $accountant->profit * 0.12;
@@ -82,24 +82,22 @@ class AccountantsController extends AppController
         $accountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
         $accountant->year = date('Y');
         $accountant->casino_id = $casinoid;
-
-        $image = $this->request->getData('image');
-
+        $image = $_FILES['image'];
+             
         if ($image) {
-
+            
             $time =  FrozenTime::now()->toUnixString();
-            $nameImage = $time . "_" . $image->getClientFileName();
+            $nameImage = $time . "_" . $image['name'];
             $destiny = WWW_ROOT . "img/Accountants/" . $nameImage;
-            $image->moveTo($destiny);
-            $accountant->image = $nameImage;
+            $move = move_uploaded_file($image['tmp_name'], $destiny);
+            if($move) {
+                $accountant->image = $nameImage;
+            }
         }
-
         if ($this->Accountants->save($accountant)) {
-
-
-            return $this->redirect(['controller' => 'casinos', 'action' => 'view', $casinoid, '?' => ['token' => $token]]);
+            echo json_encode('ok');
+            die;
         }
-        $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
     }
 
 
@@ -186,4 +184,5 @@ class AccountantsController extends AppController
             ->setClassName('CsvView.Csv')
             ->setOption('serialize', 'data');
     }
+
 }

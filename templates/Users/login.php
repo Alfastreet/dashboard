@@ -10,13 +10,13 @@
               <?= $this->Form->create() ?>
                 <div class="input-group mb-3"><span class="input-group-text">
                     <svg class="icon">
-                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                      <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
                     </svg></span>
                     <?= $this->Form->control('email', ['required' => true, 'class' => 'form-control', 'label' => false, 'placeholder' => 'Correo Electronico']) ?>
                   </div>
                 <div class="input-group mb-4"><span class="input-group-text">
                     <svg class="icon">
-                      <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                      <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
                     </svg></span>
                   <?= $this->Form->control('password', ['required' => true, 'class' => 'form-control', 'label' => false, 'placeholder' => 'Password']) ?>
                 </div>

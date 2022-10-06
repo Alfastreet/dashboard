@@ -94,6 +94,7 @@
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todas las maquinas', ['controller' => 'Machines', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+                <li class="nav-items"><?= $this->Html->link('Añadir Maquina', ['controller' => 'Machines', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->

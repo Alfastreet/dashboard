@@ -163,7 +163,7 @@
             <div class="row">
                 <div class="column-responsive column-80">
                     <div class="accountants form content">
-                        <?= $this->Form->create($accountants, ['class' => 'row g-3 needs-validation', 'type' => 'file', 'url' => ['controller' => 'accountants', 'action' => 'add', '?' => ['casinoid' => $casino->id, 'token' => $_GET['token']]]]) ?>
+                        <?= $this->Form->create($accountants, ['id' => 'formAccountants', 'class' => 'row g-3 needs-validation', 'type' => 'file', 'url' => ['controller' => 'accountants', 'action' => 'add', '?' => ['casinoid' => $casino->id, 'token' => $_GET['token']]]]) ?>
                         <div class="col-md-6">
                             <?= $this->Form->control('image', ['type' => 'file', 'required' => 'true', 'id' => 'image', 'label' => false, 'accept' => 'image/png,image/jpeg', 'class' => 'form-control']); ?>
                             <img id="file" class="img-thumbnail rounded">
@@ -172,17 +172,17 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <?= $this->Form->control('machine_id', ['id' => 'machine', 'required' => true, 'disabled' => false, 'class' => 'form-control', 'label' => false, 'empty' => ['' => 'Seleccione la maquina']]); ?>
+                                        <?= $this->Form->control('machine_id', ['id' => 'machine', 'required' => true, 'disabled' => false, 'class' => 'form-control', 'label' => false, 'empty' => ['' => 'Seleccione la maquina'], 'id' => 'machine']); ?>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <?= $this->Form->control('day_init', ['disabled' => true, 'id' => 'dayInit', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia de inicio del Contador, INSERTAR SOLO EL NUMERO DEL DIA']); ?>
+                                        <?= $this->Form->control('day_init', ['disabled' => true, 'id' => 'dayInit', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia de inicio del Contador, INSERTAR SOLO EL NUMERO DEL DIA',  'id' => 'dayInit']); ?>
                                     </div>
                                     <div class="col">
-                                        <?= $this->Form->control('day_end', ['disabled' => true, 'id' => 'dayEnd', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia final del Contador, INSERTAR SOLO EL NUMERO DEL DIA']); ?>
+                                        <?= $this->Form->control('day_end', ['disabled' => true, 'id' => 'dayEnd', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Dia final del Contador, INSERTAR SOLO EL NUMERO DEL DIA', 'id' => 'dayEnd']); ?>
                                     </div>
                                 </div>
                             </div>
@@ -192,32 +192,32 @@
                                         <?= $this->Form->control('cashin', ['id' => 'cashin', 'disabled' => true, 'id' => 'cashin', 'class' => 'form-control', 'placeholder' => 'CashIn', 'label' => false]); ?>
                                     </div>
                                     <div class="col">
-                                        <?= $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control', 'placeholder' => 'CashOut', 'label' => false]); ?>
+                                        <?= $this->Form->control('cashout', ['disabled' => true, 'id' => 'cashout', 'class' => 'form-control', 'placeholder' => 'CashOut', 'label' => false, 'id' => 'cashout']); ?>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <?= $this->Form->control('bet', ['disabled' => true, 'id' => 'bet', 'class' => 'form-control', 'placeholder' => 'Bet', 'label' => false]); ?>
+                                        <?= $this->Form->control('bet', ['disabled' => true, 'id' => 'bet', 'class' => 'form-control', 'placeholder' => 'Bet', 'label' => false, 'id' => 'bet']); ?>
                                     </div>
                                     <div class="col">
-                                        <?= $this->Form->control('win', ['disabled' => true, 'id' => 'win', 'class' => 'form-control', 'placeholder' => 'Win', 'label' => false]); ?>
+                                        <?= $this->Form->control('win', ['disabled' => true, 'id' => 'win', 'class' => 'form-control', 'placeholder' => 'Win', 'label' => false, 'id' => 'win']); ?>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col">
-                                        <?= $this->Form->control('jackpot', ['disabled' => true, 'id' => 'jackpot', 'class' => 'form-control', 'placeholder' => 'Jackpot', 'label' => false]);  ?>
+                                        <?= $this->Form->control('jackpot', ['disabled' => true, 'id' => 'jackpot', 'class' => 'form-control', 'placeholder' => 'Jackpot', 'label' => false, 'id' => 'jackpot']);  ?>
                                     </div>
                                     <div class="col">
-                                        <?= $this->Form->control('gamesplayed', ['disabled' => true, 'id' => 'gamesplayed', 'class' => 'form-control', 'placeholder' => 'Total de juegos jugados', 'label' => false]);  ?>
+                                        <?= $this->Form->control('gamesplayed', ['disabled' => true, 'id' => 'gamesplayed', 'class' => 'form-control', 'placeholder' => 'Total de juegos jugados', 'label' => false, 'id' => 'gamesplayed']);  ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary']) ?>
+                        <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary', 'id' => 'confirmed']) ?>
                         <?= $this->Form->end() ?>
                     </div>
                 </div>
@@ -225,6 +225,8 @@
         </div>
     </div>
 </div>
+
+<!-- Datos de las participaciones -->
 
 <div class="col-12">
     <div class="card mb-4">
@@ -461,3 +463,4 @@
 
 <?= $this->Html->Script('erase') ?>
 <?= $this->Html->Script('accounts') ?>
+<?= $this->Html->Script('confirmedAccountants') ?>

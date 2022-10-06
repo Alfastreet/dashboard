@@ -1,6 +1,9 @@
 const file = document.querySelector('#file');
 const image = document.querySelector('#image');
 
+
+// Funcion para mostrar la imagen
+
 image.addEventListener('change', () => {
 
     const archive = image.files;
@@ -25,3 +28,6 @@ image.addEventListener('change', () => {
     document.querySelector('#jackpot').disabled = false;
     document.querySelector('#gamesplayed').disabled = false;
 })
+
+
+

@@ -59,11 +59,11 @@ class ErasesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add($token = null, $casinoId = null, $machineId = null)
+    public function add($token = null, $casinoId = null)
     {
-        $token = $_GET['token'];
-        $casinoId = $_GET['casinoId'];
-        $machineId = $_GET['machineId'];
+        $token = $this->request->getQuery('token');
+        $casinoId = $this->request->getQuery('casinoId');
+        $machineId = $this->request->getQuery('machineId');
         
         $erase = $this->Erases->newEmptyEntity();
         $erase = $this->Erases->patchEntity($erase, $this->request->getData());
@@ -89,8 +89,6 @@ class ErasesController extends AppController
                 $erase->image = $nameImage;
             }
 
-
-
             if ($this->Erases->save($erase)) {
 
                 return $this->redirect(['action' => 'add', '?' => ['token' => $token, 'casinoId' => $casinoId, 'machineId' => $machineId]]);
@@ -99,7 +97,7 @@ class ErasesController extends AppController
         }
         $machines = $this->Erases->Machines->find('list')->where(['casino_id' => $casinoId, 'contract_id' => 2])->all();
         $months = $this->Erases->Month->find('list', ['limit' => 200])->all();
-        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $casinoId, 'machine_id' => $machineId])->all();
+        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $casinoId])->all();
 
         $this->set(compact('erase', 'machines', 'months', 'erases'));
     }

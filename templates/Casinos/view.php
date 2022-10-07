@@ -156,9 +156,14 @@
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
-            <div>
-                <h3 class="card-title mb-0"><?= __('Participaciones') ?></h3>
-                <p class="small text-medium-emphasis">Ingreso de datos para la liquidación de participaciones</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="card-title mb-0"><?= __('Participaciones') ?></h3>
+                    <p class="small text-medium-emphasis">Ingreso de datos para la liquidación de participaciones</p>
+                </div>
+                <div>
+                    <button id="erase" class="btn btn-warning">Ingresar Borrados</button>
+                </div>
             </div>
             <div class="row">
                 <div class="column-responsive column-80">
@@ -217,7 +222,7 @@
                                 </div>
                             </div>
                         </div>
-                        <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary', 'id' => 'confirmed']) ?>
+                        <?= $this->Form->button(__('Enviar Contador'), ['class' => 'btn btn-primary ', 'id' => 'confirmed']) ?>
                         <?= $this->Form->end() ?>
                     </div>
                 </div>
@@ -456,7 +461,74 @@
             </div>
         </div>
         <h3 class="lead text-center">Total a pagar en el mes: <span><?= $this->Number->currency($total, 'USD') ?></span></h3>
-        <?= $this->Html->link('Descargar Liquidación', ['action' => 'getpdf', '?' => ['id' => $casino->id]], ['class' => 'btn btn-primary']) ?>
+        <input type="hidden" id="totalLiquidation" value="<?=$total?>">
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="text-center card-title"><?= __('Borrados') ?></h3>
+            <p>&nbsp;</p>
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table-bordered text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"><?= __('Serial de la máquina') ?></th>
+                            <th scope="col"><?= __('Nombre de la máquina') ?></th>
+                            <th scope="col"><?= __('Dia de Inicio') ?></th>
+                            <th scope="col"><?= __('Dia de Finalización') ?></th>
+                            <th scope="col"><?= __('Mes') ?></th>
+                            <th scope="col"><?= __('CashIn') ?></th>
+                            <th scope="col"><?= __('CashOut') ?></th>
+                            <th scope="col"><?= __('Ber') ?></th>
+                            <th scope="col"><?= __('Win') ?></th>
+                            <th scope="col"><?= __('Profit') ?></th>
+                            <th scope="col"><?= __('Jackpot') ?></th>
+                            <th scope="col"><?= __('Juegos Jugados') ?></th>
+                            <th scope="col"><?= __('ColJuegos 12%') ?></th>
+                            <th scope="col"><?= __('Administracion 1%') ?></th>
+                            <th scope="col"><?= __('Total a pagar') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($erases as $erase) :
+                            foreach ($machinesName as $machine) :
+                                if ($erase->machine_id == $machine->id) {
+                                    $serialMachine = $machine->serial;
+                                    $serialName = $machine->name;
+                                }
+                            endforeach;
+                        ?>
+                            <tr>
+                                <td><?= h($serialMachine) ?></td>
+                                <td><?= h($serialName) ?></td>
+                                <td><?= h($erase->day_init) ?></td>
+                                <td><?= h($erase->day_end) ?></td>
+                                <td><?= h($erase->month_id) ?></td>
+                                <td><?= $this->Number->currency($erase->cashin, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->cashout, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->bet, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->win, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->profit, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->jackpot, 'USD') ?></td>
+                                <td><?= h($erase->gamesplayed) ?></td>
+                                <td><?= $this->Number->currency($erase->coljuegos, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->admin, 'USD') ?></td>
+                                <td><?= $this->Number->currency($erase->total, 'USD') ?></td>
+                                <td><?= $this->Html->image('Accountants/' . $erase->image, ['class' => 'img-thumbnail']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php foreach($totalErases as $total): ?>
+                <h3 class="lead text-center">Total de liquidacion de Borrados: <span><?= $this->Number->currency($total->total, 'USD') ?></span></h3>
+                <?php endforeach ?>
+            </div>
+        </div>
+        <button type="button" id="generate" class="btn btn-primary" ><?=__('Descargar Liquidacion') ?></button>
+        <!-- <?= $this->Html->link('Descargar Liquidación', ['action' => 'getpdf', '?' => ['id' => $casino->id]], ['class' => '']) ?> -->
     </div>
 </div>
 
@@ -464,3 +536,4 @@
 <?= $this->Html->Script('erase') ?>
 <?= $this->Html->Script('accounts') ?>
 <?= $this->Html->Script('confirmedAccountants') ?>
+<?= $this->Html->Script('createLiquidation') ?>

@@ -195,4 +195,17 @@ class MachinesController extends AppController
             die;
         }
     }
+
+    // public function searchMachines($casinoId = null) 
+    // {
+    //     $this->autoRender = false;
+    //     $casinoId = $this->request->getQuery('casinoId');
+
+    //     $query = $this->Machines->find('all')->where((['casino_id' => $casinoId, 'contract_id' => 2 ]))->all();
+
+    //     if(sizeof($query) > 0){
+    //         echo json_encode($query);
+    //         die;
+    //     }
+    // }
 }

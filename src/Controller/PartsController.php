@@ -86,7 +86,8 @@ class PartsController extends AppController
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
         $monies = $this->Parts->Money->find('list', ['limit' => 200])->all();
-        $this->set(compact('part', 'monies'));
+        $typeparts = $this->fetchTable('Typeproduct')->find('all', ['limit' => 100])->all();
+        $this->set(compact('part', 'monies', 'typeparts'));
     }
 
     /**

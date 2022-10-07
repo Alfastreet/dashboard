@@ -25,6 +25,8 @@ class PartsFixture extends TestFixture
                 'money_id' => 1,
                 'value' => 1,
                 'amount' => 1,
+                'image' => 'Lorem ipsum dolor sit amet',
+                'typeproduct_id' => 1,
             ],
         ];
         parent::init();

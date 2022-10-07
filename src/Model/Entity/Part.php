@@ -14,6 +14,8 @@ use Cake\ORM\Entity;
  * @property int $money_id
  * @property int $value
  * @property int $amount
+ * @property string $image
+ * @property int $typeproduct_id
  *
  * @property \App\Model\Entity\Money $money
  * @property \App\Model\Entity\Machinepart[] $machinepart
@@ -35,8 +37,9 @@ class Part extends Entity
         'money_id' => true,
         'value' => true,
         'amount' => true,
+        'image' => true,
+        'typeproduct_id' => true,
         'money' => true,
         'machinepart' => true,
-        'image' => true,
     ];
 }

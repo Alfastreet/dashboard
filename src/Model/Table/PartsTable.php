@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
 /**
  * Parts Model
  *
- * @property \App\Model\Table\MoniesTable&\Cake\ORM\Association\BelongsTo $Monies
  * @property \App\Model\Table\MachinepartTable&\Cake\ORM\Association\HasMany $Machinepart
  *
  * @method \App\Model\Entity\Part newEmptyEntity()
@@ -44,12 +43,11 @@ class PartsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Money', [
-            'foreignKey' => 'money_id',
-            'joinType' => 'INNER',
-        ]);
         $this->hasMany('Machinepart', [
             'foreignKey' => 'part_id',
+        ]);
+        $this->hasMany('Money', [
+            'foreignKey' => 'money_id',
         ]);
     }
 
@@ -92,22 +90,13 @@ class PartsTable extends Table
             ->scalar('image')
             ->maxLength('image', 255)
             ->requirePresence('image', 'create')
-            ->notEmptyString('image');
+            ->notEmptyFile('image');
+
+        $validator
+            ->integer('typeproduct_id')
+            ->requirePresence('typeproduct_id', 'create')
+            ->notEmptyString('typeproduct_id');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn('money_id', 'Money'), ['errorField' => 'money_id']);
-
-        return $rules;
     }
 }

@@ -53,9 +53,11 @@ class CasinosController extends AppController
         $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
         $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
         $clients = $this->fetchTable('Client')->find('all')->all();
+        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id])->all();
+        $totalErases = $this->fetchTable('totalerases')->find('all')->where(['casino_id' =>$id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month")) ])->all();
         
         
-        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName', 'clients'));
+        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName', 'clients', 'erases', 'totalErases'));
     }
 
     /**
@@ -218,6 +220,10 @@ class CasinosController extends AppController
         $machines = $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
         $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
         $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id])->all();
+        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id])->all();
+        $totalAccountants = $this->fetchTable('Totalaccountants')->find('all')->where(['casino_id' => $id ]);
+
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
         $this->viewBuilder()->setOption(
@@ -232,7 +238,7 @@ class CasinosController extends AppController
             ]
         );
 
-        $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino'));
+        $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino', 'erases', 'totalErases', 'totalAccountants'));
     }
 
     public function searchCasinoName($name =  null) 

@@ -9,10 +9,12 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Money Model
+ * Monies Model
  *
+ * @property \App\Model\Table\DetailsquotesTable&\Cake\ORM\Association\HasMany $Detailsquotes
  * @property \App\Model\Table\PartsTable&\Cake\ORM\Association\HasMany $Parts
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
+ * @property \App\Model\Table\TmpdetailsquoteTable&\Cake\ORM\Association\HasMany $Tmpdetailsquote
  *
  * @method \App\Model\Entity\Money newEmptyEntity()
  * @method \App\Model\Entity\Money newEntity(array $data, array $options = [])
@@ -28,7 +30,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Money[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Money[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class MoneyTable extends Table
+class MoniesTable extends Table
 {
     /**
      * Initialize method
@@ -40,14 +42,20 @@ class MoneyTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('money');
+        $this->setTable('monies');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->hasMany('Detailsquotes', [
+            'foreignKey' => 'money_id',
+        ]);
         $this->hasMany('Parts', [
             'foreignKey' => 'money_id',
         ]);
         $this->hasMany('Services', [
+            'foreignKey' => 'money_id',
+        ]);
+        $this->hasMany('Tmpdetailsquote', [
             'foreignKey' => 'money_id',
         ]);
     }
@@ -67,8 +75,14 @@ class MoneyTable extends Table
             ->notEmptyString('name');
 
         $validator
+            ->scalar('shortcode')
+            ->maxLength('shortcode', 20)
+            ->requirePresence('shortcode', 'create')
+            ->notEmptyString('shortcode');
+
+        $validator
             ->scalar('value')
-            ->maxLength('value', 255)
+            ->maxLength('value', 10)
             ->requirePresence('value', 'create')
             ->notEmptyString('value');
 

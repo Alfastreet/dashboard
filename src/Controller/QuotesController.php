@@ -54,9 +54,10 @@ class QuotesController extends AppController
         ]);
 
         $products = $this->fetchTable('Parts')->find('all')->all();
-        $money = $this->fetchTable('Money')->find('all')->all();
+        $money = $this->fetchTable('Monies')->find('all')->all();
         $quotestatus = $this->fetchTable('Quotestatuses')->find('all')->where(['quote_id' => $id])->all();
-        $this->set(compact('quote', 'products', 'money', 'quotestatus'));
+        $orders = $this->fetchTable('Orders')->find()->where(['quote_id' => $id])->first();
+        $this->set(compact('quote', 'products', 'money', 'quotestatus', 'orders'));
     }
 
     /**
@@ -268,7 +269,7 @@ class QuotesController extends AppController
 
         $this->autoRender = false;
 
-        $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN money m ON p.money_id = m.id')->fetchAll('assoc');
+        $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN monies m ON p.money_id = m.id')->fetchAll('assoc');
 
         echo json_encode($query);
         exit;

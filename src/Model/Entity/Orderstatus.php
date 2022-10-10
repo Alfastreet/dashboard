@@ -6,14 +6,14 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Typeproduct Entity
+ * Orderstatus Entity
  *
  * @property int $id
- * @property string $type
+ * @property string $status
  *
- * @property \App\Model\Entity\Part[] $parts
+ * @property \App\Model\Entity\Order[] $orders
  */
-class Typeproduct extends Entity
+class Orderstatus extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -25,7 +25,7 @@ class Typeproduct extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'type' => true,
-        'parts' => true,
+        'status' => true,
+        'orders' => true,
     ];
 }

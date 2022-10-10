@@ -7,7 +7,19 @@
 ?>
 <div class="col-12">
     <div class="mb-3">
-        <?php include_once __DIR__ . '/layouts/aside.php' ?>
+        <aside class="column">
+            <div class="d-flex justify-content-between">
+                <div class="">
+                    <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
+                </div>
+                <div class="">
+                    <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']) ?>
+                    <?= $this->Html->link(__('Descargar Cotización'), ['action' => 'getpdf', $quote->id], ['class' => 'btn btn-success me-md-2']) ?>
+                    <?php if ($orders !== null) : echo $this->Html->link(__('Ver Orden de trabajo'), ['controller' => 'orders', 'action' => 'view', $orders->id], ['class' => 'btn btn-info me-md-2']);
+                    endif; ?>
+                </div>
+            </div>
+        </aside>
     </div>
     <div class="card mb-4">
         <div class="card-body">
@@ -115,7 +127,23 @@
                         </div>
                     </div>
                 </div>
-
+                <?php if ($orders === null) :
+                    if ($quote->estatus_id === 1) {
+                        echo $this->Html->link(
+                            __('Generar Orden de Trabajo'),
+                            [
+                                'controller' => 'orders',
+                                'action' => 'add',
+                                '?' => [
+                                    'quoteId' => $quote->id,
+                                    'clientId' => $quote->business_id
+                                ]
+                            ],
+                            ['class' => 'btn btn-info me-md-2']
+                        );
+                    }
+                endif;
+                ?>
             </div>
         </div>
     </div>

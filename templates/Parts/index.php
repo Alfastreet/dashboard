@@ -26,6 +26,7 @@
                             <th><?= __('Nombre') ?></th>
                             <th><?= __('Moneda') ?></th>
                             <th><?= __('Precio') ?></th>
+                            <th><?= __('Tipo de Producto') ?></th>
                             <th><?= __('Cantidad Disponible') ?></th>
                             <th><?= __('') ?></th>
                         </tr>
@@ -38,6 +39,7 @@
                                 <td><?= h($part->name) ?></td>
                                 <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
                                 <td><?= $this->Number->currency($part->value, 'USD') ?></td>
+                                <td><?= h($part->typeproduct_id) ?></td>
                                 <td><?= $this->Number->format($part->amount) ?></td>
                                 <td class="actions">
                                     <div class="btn-group btn-group-toggle mx-3">

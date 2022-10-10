@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\PartsTable;
+use App\Model\Table\MoniesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\PartsTable Test Case
+ * App\Model\Table\MoniesTable Test Case
  */
-class PartsTableTest extends TestCase
+class MoniesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\PartsTable
+     * @var \App\Model\Table\MoniesTable
      */
-    protected $Parts;
+    protected $Monies;
 
     /**
      * Fixtures
@@ -24,10 +24,11 @@ class PartsTableTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
+        'app.Monies',
+        'app.Detailsquotes',
         'app.Parts',
-        'app.Typeproducts',
-        'app.Machinepart',
-        'app.Money',
+        'app.Services',
+        'app.Tmpdetailsquote',
     ];
 
     /**
@@ -38,8 +39,8 @@ class PartsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Parts') ? [] : ['className' => PartsTable::class];
-        $this->Parts = $this->getTableLocator()->get('Parts', $config);
+        $config = $this->getTableLocator()->exists('Monies') ? [] : ['className' => MoniesTable::class];
+        $this->Monies = $this->getTableLocator()->get('Monies', $config);
     }
 
     /**
@@ -49,7 +50,7 @@ class PartsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Parts);
+        unset($this->Monies);
 
         parent::tearDown();
     }
@@ -58,20 +59,9 @@ class PartsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\PartsTable::validationDefault()
+     * @uses \App\Model\Table\MoniesTable::validationDefault()
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     * @uses \App\Model\Table\PartsTable::buildRules()
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

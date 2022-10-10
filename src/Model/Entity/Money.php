@@ -10,10 +10,14 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
+ * @property string $shortcode
+ * @property string $value
  * @property string $urlData
  *
+ * @property \App\Model\Entity\Detailsquote[] $detailsquotes
  * @property \App\Model\Entity\Part[] $parts
  * @property \App\Model\Entity\Service[] $services
+ * @property \App\Model\Entity\Tmpdetailsquote[] $tmpdetailsquote
  */
 class Money extends Entity
 {
@@ -28,9 +32,12 @@ class Money extends Entity
      */
     protected $_accessible = [
         'name' => true,
+        'shortcode' => true,
         'value' => true,
         'urlData' => true,
+        'detailsquotes' => true,
         'parts' => true,
         'services' => true,
+        'tmpdetailsquote' => true,
     ];
 }

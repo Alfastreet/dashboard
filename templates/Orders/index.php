@@ -18,28 +18,33 @@
                 <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
                     <thead>
                         <tr>
-                            <th><?= $this->Paginator->sort('id') ?></th>
-                            <th><?= $this->Paginator->sort('quote_id') ?></th>
-                            <th><?= $this->Paginator->sort('user_id') ?></th>
-                            <th><?= $this->Paginator->sort('detailsquotes_id') ?></th>
-                            <th><?= $this->Paginator->sort('parts_id') ?></th>
-                            <th><?= $this->Paginator->sort('client_id') ?></th>
+                            <th><?= __('Cotizacion #') ?></th>
+                            <th><?= __('Tecnico Encargado') ?></th>
+                            <th><?= __('Cliente') ?></th>
+                            <th><?= __('Estado') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($orders as $order) : ?>
                             <tr>
-                                <td><?= $this->Number->format($order->id) ?></td>
                                 <td><?= $order->has('quote') ? $this->Html->link($order->quote->id, ['controller' => 'Quotes', 'action' => 'view', $order->quote->id]) : '' ?></td>
                                 <td><?= $order->has('user') ? $this->Html->link($order->user->name, ['controller' => 'Users', 'action' => 'view', $order->user->id]) : '' ?></td>
-                                <td><?= $order->has('detailsquote') ? $this->Html->link($order->detailsquote->id, ['controller' => 'Detailsquotes', 'action' => 'view', $order->detailsquote->id]) : '' ?></td>
-                                <td><?= $order->has('part') ? $this->Html->link($order->part->name, ['controller' => 'Parts', 'action' => 'view', $order->part->id]) : '' ?></td>
                                 <td><?= $this->Number->format($order->client_id) ?></td>
+                                <td><?= $order->has('orderstatus') ? h($order->orderstatus->status) : '' ?></td>
                                 <td class="actions">
-                                    <?= $this->Html->link(__('View'), ['action' => 'view', $order->id]) ?>
-                                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $order->id]) ?>
-                                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $order->id], ['confirm' => __('Are you sure you want to delete # {0}?', $order->id)]) ?>
+                                <div class="btn-group btn-group-toggle mx-3">
+                                        <a class="nav-link nav-group-toggle" href="/orders/view/<?= $order->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/orders/getpdf/<?= $order->id ?>">
+                                            <svg class="nav-icon" width="20" height="20">
+                                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

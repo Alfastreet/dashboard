@@ -9,7 +9,9 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Typeproduct Model
+ * Typeproducts Model
+ *
+ * @property \App\Model\Table\PartsTable&\Cake\ORM\Association\HasMany $Parts
  *
  * @method \App\Model\Entity\Typeproduct newEmptyEntity()
  * @method \App\Model\Entity\Typeproduct newEntity(array $data, array $options = [])
@@ -25,7 +27,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Typeproduct[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Typeproduct[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class TypeproductTable extends Table
+class TypeproductsTable extends Table
 {
     /**
      * Initialize method
@@ -37,9 +39,13 @@ class TypeproductTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('typeproduct');
+        $this->setTable('typeproducts');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('Parts', [
+            'foreignKey' => 'typeproduct_id',
+        ]);
     }
 
     /**

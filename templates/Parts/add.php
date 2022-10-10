@@ -22,7 +22,7 @@
                     <div class="parts form content">
                         <?= $this->Form->create($part, ['type' => 'file', 'class' => 'row g-3 needs-validation']) ?>
                         <div class="col-3 mb-3">
-                            <?= $this->Form->control('typeProduct_id', [ 'options' => $typeparts ,'class' => 'form-control', 'label' => false, 'placeholder' => 'Tipo de Inventario', 'empty' => ['' => 'Seleccionar']]) ?>
+                            <?= $this->Form->control('typeproduct_id', [ 'options' => $typeparts, 'class' => 'form-control', 'label' => false, 'placeholder' => 'Tipo de Inventario', 'empty' => ['' => 'Seleccionar']]) ?>
                         </div>
                         <div class="row">
                             <div class="col">

@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
 /**
  * Parts Model
  *
+ * @property \App\Model\Table\TypeproductsTable&\Cake\ORM\Association\BelongsTo $Typeproducts
  * @property \App\Model\Table\MachinepartTable&\Cake\ORM\Association\HasMany $Machinepart
  *
  * @method \App\Model\Entity\Part newEmptyEntity()
@@ -43,11 +44,16 @@ class PartsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Monies', [
+            'foreignKey' => 'money_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Typeproducts', [
+            'foreignKey' => 'typeproduct_id',
+            'joinType' => 'INNER',
+        ]);
         $this->hasMany('Machinepart', [
             'foreignKey' => 'part_id',
-        ]);
-        $this->hasMany('Money', [
-            'foreignKey' => 'money_id',
         ]);
     }
 
@@ -98,5 +104,20 @@ class PartsTable extends Table
             ->notEmptyString('typeproduct_id');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->existsIn('money_id', 'Monies'), ['errorField' => 'money_id']);
+        $rules->add($rules->existsIn('typeproduct_id', 'Typeproducts'), ['errorField' => 'typeproduct_id']);
+
+        return $rules;
     }
 }

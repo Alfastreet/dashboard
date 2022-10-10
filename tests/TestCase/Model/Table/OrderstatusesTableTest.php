@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\OrdersTable;
+use App\Model\Table\OrderstatusesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\OrdersTable Test Case
+ * App\Model\Table\OrderstatusesTable Test Case
  */
-class OrdersTableTest extends TestCase
+class OrderstatusesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\OrdersTable
+     * @var \App\Model\Table\OrderstatusesTable
      */
-    protected $Orders;
+    protected $Orderstatuses;
 
     /**
      * Fixtures
@@ -24,9 +24,8 @@ class OrdersTableTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
+        'app.Orderstatuses',
         'app.Orders',
-        'app.Quotes',
-        'app.Users',
     ];
 
     /**
@@ -37,8 +36,8 @@ class OrdersTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Orders') ? [] : ['className' => OrdersTable::class];
-        $this->Orders = $this->getTableLocator()->get('Orders', $config);
+        $config = $this->getTableLocator()->exists('Orderstatuses') ? [] : ['className' => OrderstatusesTable::class];
+        $this->Orderstatuses = $this->getTableLocator()->get('Orderstatuses', $config);
     }
 
     /**
@@ -48,7 +47,7 @@ class OrdersTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Orders);
+        unset($this->Orderstatuses);
 
         parent::tearDown();
     }
@@ -57,20 +56,9 @@ class OrdersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\OrdersTable::validationDefault()
+     * @uses \App\Model\Table\OrderstatusesTable::validationDefault()
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     * @uses \App\Model\Table\OrdersTable::buildRules()
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

@@ -9,17 +9,16 @@ use Cake\ORM\Entity;
  * Order Entity
  *
  * @property int $id
+ * @property int $order_id
  * @property int $quote_id
  * @property int $user_id
- * @property int $detailsquotes_id
- * @property int $parts_id
  * @property int $client_id
- * @property string $comments
+ * @property string|null $comments
+ * @property int $orderstatus_id
  *
+ * @property \App\Model\Entity\Order[] $orders
  * @property \App\Model\Entity\Quote $quote
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Detailsquote $detailsquote
- * @property \App\Model\Entity\Part $part
  */
 class Order extends Entity
 {
@@ -33,15 +32,14 @@ class Order extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'order_id' => true,
         'quote_id' => true,
         'user_id' => true,
-        'detailsquotes_id' => true,
-        'parts_id' => true,
         'client_id' => true,
         'comments' => true,
+        'orderstatus_id' => true,
+        'orders' => true,
         'quote' => true,
         'user' => true,
-        'detailsquote' => true,
-        'part' => true,
     ];
 }

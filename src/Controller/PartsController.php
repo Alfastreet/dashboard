@@ -30,7 +30,7 @@ class PartsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Money'],
+            'contain' => ['Monies'],
         ];
         $parts = $this->paginate($this->Parts, ['limit' => 10000]);
 
@@ -47,7 +47,7 @@ class PartsController extends AppController
     public function view($id = null)
     {
         $part = $this->Parts->get($id, [
-            'contain' => ['Money', 'Machinepart'],
+            'contain' => ['Monies', 'Machinepart'],
         ]);
 
         $this->set(compact('part'));
@@ -85,8 +85,8 @@ class PartsController extends AppController
             }
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
-        $monies = $this->Parts->Money->find('list', ['limit' => 200])->all();
-        $typeparts = $this->fetchTable('Typeproduct')->find('all', ['limit' => 100])->all();
+        $monies = $this->Parts->Monies->find('list', ['limit' => 200])->all();
+        $typeparts = $this->Parts->Typeproducts->find('list', ['limit' => 200])->all();
         $this->set(compact('part', 'monies', 'typeparts'));
     }
 
@@ -135,7 +135,7 @@ class PartsController extends AppController
             }
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
-        $monies = $this->Parts->Money->find('list', ['limit' => 200])->all();
+        $monies = $this->Parts->Monies->find('list', ['limit' => 200])->all();
         $this->set(compact('part', 'monies'));
     }
 

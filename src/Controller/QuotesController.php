@@ -146,37 +146,37 @@ class QuotesController extends AppController
     }
 
 
-    public function pdf()
-    {
+    // public function pdf()
+    // {
 
-        $this->autoRender = false;
+    //     $this->autoRender = false;
 
-        if ($this->request->is('ajax')) {
+    //     if ($this->request->is('ajax')) {
 
-            $data = $_POST;
+    //         $data = $_POST;
 
-            if (empty($data['codClient'])) {
-                $clientId = 1;
-            }
+    //         if (empty($data['codClient'])) {
+    //             $clientId = 1;
+    //         }
 
-            $clientId = $data['codClient'];
+    //         $clientId = $data['codClient'];
 
-            $token = md5($data['token']);
-            $user = 8;
+    //         $token = md5($data['token']);
+    //         $user = 8;
 
-            $query = $this->db->execute('SELECT * FROM tmpdetailsquote WHERE token = "' . $token . '"')->fetchAll('assoc');
+    //         $query = $this->db->execute('SELECT * FROM tmpdetailsquote WHERE token = "' . $token . '"')->fetchAll('assoc');
 
 
-            if ($query) {
+    //         if ($query) {
 
-                $queryPros = $this->db->execute('CALL procesar_cotizacion(' . $user . ', ' . $clientId . ', "' . $token . '")')->fetchAll('assoc');
+    //             $queryPros = $this->db->execute('CALL procesar_cotizacion(' . $user . ', ' . $clientId . ', "' . $token . '")')->fetchAll('assoc');
 
-                echo json_encode($queryPros, JSON_UNESCAPED_UNICODE);
-            } else {
-                echo 'error';
-            }
-        }
-    }
+    //             echo json_encode($queryPros, JSON_UNESCAPED_UNICODE);
+    //         } else {
+    //             echo 'error';
+    //         }
+    //     }
+    // }
 
 
     public function getpdf($id = null)

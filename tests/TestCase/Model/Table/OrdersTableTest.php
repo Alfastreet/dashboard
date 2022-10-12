@@ -27,6 +27,8 @@ class OrdersTableTest extends TestCase
         'app.Orders',
         'app.Quotes',
         'app.Users',
+        'app.Orderstatuses',
+        'app.Machines',
     ];
 
     /**

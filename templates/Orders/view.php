@@ -65,6 +65,10 @@
                             </div>
                         <?php endif; ?>
                     </div>
+                    <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Serial de la Maquina:') ?></label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $order->has('machine') ? h($order->machine->serial) : '' ?>">
+                    </div>
                     <?php if ($order->comments !== '') : ?>
                         <div class="row">
                             <div class="col">

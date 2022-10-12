@@ -44,6 +44,59 @@
                                 <div class="col-sm-10">
                                     <?= $this->Form->control('user_id', ['options' => $users, 'class' => 'form-control', 'label' => false, 'id' => 'user', 'empty' => ['0' => 'Seleccione al tecnico encargado'], 'require' => true]) ?>
                                 </div>
+                                <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Maquina:') ?></label>
+                                <div class="col-sm-10">
+                                    <?= $this->Form->control('machine_id', ['options' => $machine, 'class' => 'form-control', 'label' => false, 'id' => 'machine', 'empty' => ['0' => 'Seleccione la maquina'], 'require' => true]) ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-5 ">
+                            <h2 class="text-center "><?= __('Datos de Apuesta') ?></h2>
+                            <div class="col p-5">
+                                <h3 class="text-center"><?= __('Apuesta Minima') ?></h3>
+                                <?= $this->Form->control('totalmin', ['class' => 'form-control', 'label' => false, 'id' => 'totalmin', 'require' => false, 'placeholder' => 'Total Apuesta minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('interiormin', ['class' => 'form-control', 'label' => false, 'id' => 'interiormin', 'require' => false, 'placeholder' => 'Interior Apuesta minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('exteriormin', ['class' => 'form-control', 'label' => false, 'id' => 'exteriormin', 'require' => false, 'placeholder' => 'Exterior Apuesta minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x36min', ['class' => 'form-control', 'label' => false, 'id' => 'x36min', 'require' => false, 'placeholder' => ' Apuesta x36 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x18min', ['class' => 'form-control', 'label' => false, 'id' => 'x18min', 'require' => false, 'placeholder' => 'Apuesta x18 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x12min', ['class' => 'form-control', 'label' => false, 'id' => 'x12min', 'require' => false, 'placeholder' => 'Apuesta x12 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x9min', ['class' => 'form-control', 'label' => false, 'id' => 'x9min', 'require' => false, 'placeholder' => 'Apuesta x9 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x7min', ['class' => 'form-control', 'label' => false, 'id' => 'x7min', 'require' => false, 'placeholder' => 'Apuesta x7 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x6min', ['class' => 'form-control', 'label' => false, 'id' => 'x6min', 'require' => false, 'placeholder' => 'Apuesta x6 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x3min', ['class' => 'form-control', 'label' => false, 'id' => 'x3min', 'require' => false, 'placeholder' => 'Apuesta x3 minima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x2min', ['class' => 'form-control', 'label' => false, 'id' => 'x2min', 'require' => false, 'placeholder' => 'Apuesta x2 minima', 'type' => 'number']) ?>
+                            </div>
+                            <div class="col  p-5">
+                                <h3 class="text-center"><?= __('Apuesta Maxima') ?></h3>
+                                <?= $this->Form->control('totalmax', ['class' => 'form-control', 'label' => false, 'id' => 'totalmax', 'require' => false, 'placeholder' => 'Total Apuesta maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('interiormax', ['class' => 'form-control', 'label' => false, 'id' => 'interiormax', 'require' => false, 'placeholder' => 'Interior Apuesta maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('exteriormax', ['class' => 'form-control', 'label' => false, 'id' => 'exteriormax', 'require' => false, 'placeholder' => 'Exterior Apuesta Maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x36max', ['class' => 'form-control', 'label' => false, 'id' => 'x36max', 'require' => false, 'placeholder' => ' Apuesta x36 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x18max', ['class' => 'form-control', 'label' => false, 'id' => 'x18max', 'require' => false, 'placeholder' => 'Apuesta x18 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x12max', ['class' => 'form-control', 'label' => false, 'id' => 'x12max', 'require' => false, 'placeholder' => 'Apuesta x12 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x9max', ['class' => 'form-control', 'label' => false, 'id' => 'x9max', 'require' => false, 'placeholder' => 'Apuesta x9 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x7max', ['class' => 'form-control', 'label' => false, 'id' => 'x7max', 'require' => false, 'placeholder' => 'Apuesta x7 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x6max', ['class' => 'form-control', 'label' => false, 'id' => 'x6max', 'require' => false, 'placeholder' => 'Apuesta x6 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x3max', ['class' => 'form-control', 'label' => false, 'id' => 'x3max', 'require' => false, 'placeholder' => 'Apuesta x3 maxima', 'type' => 'number']) ?>
+                                <?= $this->Form->control('x2max', ['class' => 'form-control', 'label' => false, 'id' => 'x2max', 'require' => false, 'placeholder' => 'Apuesta x2 maxima', 'type' => 'number']) ?>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <h2 class="text-center"><?= __('Configuracion General') ?></h2>
+                            <div class="col p-5">
+                                <h3><?= __('Configuración Centro') ?></h3>
+                                <?= $this->Form->control('soplado', ['class' => 'form-control', 'label' => false, 'id' => 'soplado', 'require' => false, 'placeholder' => 'Soplado',]) ?>
+                                <?= $this->Form->control('contrasoplado', ['class' => 'form-control', 'label' => false, 'id' => 'contrasoplado', 'require' => false, 'placeholder' => 'Contrasoplado',]) ?>
+                                <?= $this->Form->control('timeapuesta', ['class' => 'form-control', 'label' => false, 'id' => 'timeapuesta', 'require' => false, 'placeholder' => 'Tiempo de Apuesta',]) ?>
+                            </div>
+                            <div class="col p-5">
+                                <h3><?= __('Configuración Jackpot') ?></h3>
+                                <?= $this->Form->control('apuestaper', ['class' => 'form-control', 'label' => false, 'id' => 'apuestaper', 'require' => false, 'placeholder' => '% de Apuesta', 'type' => 'number']) ?>
+                                <?= $this->Form->control('hiddenper', ['class' => 'form-control', 'label' => false, 'id' => 'hiddenper', 'require' => false, 'placeholder' => '% de Hidden', 'type' => 'number']) ?>
+                                <?= $this->Form->control('frecuenciaini', ['class' => 'form-control', 'label' => false, 'id' => 'frecuenciaini', 'require' => false, 'placeholder' => 'Frecuencia Inicial',]) ?>
+                                <?= $this->Form->control('fecuenciafin', ['class' => 'form-control', 'label' => false, 'id' => 'fecuenciafin', 'require' => false, 'placeholder' => 'Frecuencia Final',]) ?>
+                                <?= $this->Form->control('apuestamin', ['class' => 'form-control', 'label' => false, 'id' => 'apuestamin', 'require' => false, 'placeholder' => 'Apuesta Inicial',]) ?>
+                                <?= $this->Form->control('limitmax', ['class' => 'form-control', 'label' => false, 'id' => 'limitmax', 'require' => false, 'placeholder' => 'Maximo Limite',]) ?>
                             </div>
                         </div>
                     </div>

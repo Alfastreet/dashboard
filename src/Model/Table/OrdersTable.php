@@ -14,6 +14,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\OrdersTable&\Cake\ORM\Association\BelongsTo $Orders
  * @property \App\Model\Table\QuotesTable&\Cake\ORM\Association\BelongsTo $Quotes
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\OrderstatusesTable&\Cake\ORM\Association\BelongsTo $Orderstatuses
+ * @property \App\Model\Table\MachinesTable&\Cake\ORM\Association\BelongsTo $Machines
  * @property \App\Model\Table\OrdersTable&\Cake\ORM\Association\HasMany $Orders
  *
  * @method \App\Model\Entity\Order newEmptyEntity()
@@ -46,10 +48,6 @@ class OrdersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        // $this->belongsTo('Orders', [
-        //     'foreignKey' => 'order_id',
-        //     'joinType' => 'INNER',
-        // ]);
         $this->belongsTo('Quotes', [
             'foreignKey' => 'quote_id',
             'joinType' => 'INNER',
@@ -62,7 +60,12 @@ class OrdersTable extends Table
             'foreignKey' => 'orderstatus_id',
             'joinType' => 'INNER',
         ]);
-
+        $this->belongsTo('Machines', [
+            'foreignKey' => 'machine_id',
+        ]);
+        $this->hasMany('Orders', [
+            'foreignKey' => 'order_id',
+        ]);
     }
 
     /**
@@ -104,6 +107,165 @@ class OrdersTable extends Table
             ->requirePresence('orderstatus_id', 'create')
             ->notEmptyString('orderstatus_id');
 
+        $validator
+            ->integer('machine_id')
+            ->allowEmptyString('machine_id');
+
+        $validator
+            ->scalar('x2max')
+            ->maxLength('x2max', 255)
+            ->allowEmptyString('x2max');
+
+        $validator
+            ->scalar('x3max')
+            ->maxLength('x3max', 255)
+            ->allowEmptyString('x3max');
+
+        $validator
+            ->scalar('x6max')
+            ->maxLength('x6max', 255)
+            ->allowEmptyString('x6max');
+
+        $validator
+            ->scalar('x7max')
+            ->maxLength('x7max', 255)
+            ->allowEmptyString('x7max');
+
+        $validator
+            ->scalar('x9max')
+            ->maxLength('x9max', 255)
+            ->allowEmptyString('x9max');
+
+        $validator
+            ->scalar('x12max')
+            ->maxLength('x12max', 255)
+            ->allowEmptyString('x12max');
+
+        $validator
+            ->scalar('x18max')
+            ->maxLength('x18max', 255)
+            ->allowEmptyString('x18max');
+
+        $validator
+            ->scalar('x36max')
+            ->maxLength('x36max', 255)
+            ->allowEmptyString('x36max');
+
+        $validator
+            ->scalar('exteriormax')
+            ->maxLength('exteriormax', 255)
+            ->allowEmptyString('exteriormax');
+
+        $validator
+            ->scalar('interiormax')
+            ->maxLength('interiormax', 255)
+            ->allowEmptyString('interiormax');
+
+        $validator
+            ->scalar('totalmax')
+            ->maxLength('totalmax', 255)
+            ->allowEmptyString('totalmax');
+
+        $validator
+            ->scalar('x2min')
+            ->maxLength('x2min', 255)
+            ->allowEmptyString('x2min');
+
+        $validator
+            ->scalar('x3min')
+            ->maxLength('x3min', 255)
+            ->allowEmptyString('x3min');
+
+        $validator
+            ->scalar('x6min')
+            ->maxLength('x6min', 255)
+            ->allowEmptyString('x6min');
+
+        $validator
+            ->scalar('x7min')
+            ->maxLength('x7min', 255)
+            ->allowEmptyString('x7min');
+
+        $validator
+            ->scalar('x9min')
+            ->maxLength('x9min', 255)
+            ->allowEmptyString('x9min');
+
+        $validator
+            ->scalar('x12min')
+            ->maxLength('x12min', 255)
+            ->allowEmptyString('x12min');
+
+        $validator
+            ->scalar('x18min')
+            ->maxLength('x18min', 255)
+            ->allowEmptyString('x18min');
+
+        $validator
+            ->scalar('x36min')
+            ->maxLength('x36min', 255)
+            ->allowEmptyString('x36min');
+
+        $validator
+            ->scalar('exteriormin')
+            ->maxLength('exteriormin', 255)
+            ->allowEmptyString('exteriormin');
+
+        $validator
+            ->scalar('interiormin')
+            ->maxLength('interiormin', 255)
+            ->allowEmptyString('interiormin');
+
+        $validator
+            ->scalar('totalmin')
+            ->maxLength('totalmin', 255)
+            ->allowEmptyString('totalmin');
+
+        $validator
+            ->scalar('limitmax')
+            ->maxLength('limitmax', 255)
+            ->allowEmptyString('limitmax');
+
+        $validator
+            ->scalar('apuestamin')
+            ->maxLength('apuestamin', 255)
+            ->allowEmptyString('apuestamin');
+
+        $validator
+            ->scalar('fecuenciafin')
+            ->maxLength('fecuenciafin', 255)
+            ->allowEmptyString('fecuenciafin');
+
+        $validator
+            ->scalar('frecuenciaini')
+            ->maxLength('frecuenciaini', 255)
+            ->allowEmptyString('frecuenciaini');
+
+        $validator
+            ->scalar('hiddenper')
+            ->maxLength('hiddenper', 255)
+            ->allowEmptyString('hiddenper');
+
+        $validator
+            ->scalar('apuestaper')
+            ->maxLength('apuestaper', 255)
+            ->allowEmptyString('apuestaper');
+
+        $validator
+            ->scalar('timeapuesta')
+            ->maxLength('timeapuesta', 255)
+            ->allowEmptyString('timeapuesta');
+
+        $validator
+            ->scalar('contrasoplado')
+            ->maxLength('contrasoplado', 255)
+            ->allowEmptyString('contrasoplado');
+
+        $validator
+            ->scalar('soplado')
+            ->maxLength('soplado', 255)
+            ->allowEmptyString('soplado');
+
         return $validator;
     }
 
@@ -116,10 +278,10 @@ class OrdersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        // $rules->add($rules->existsIn('order_id', 'Orders'), ['errorField' => 'order_id']);
         $rules->add($rules->existsIn('quote_id', 'Quotes'), ['errorField' => 'quote_id']);
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
         $rules->add($rules->existsIn('orderstatus_id', 'Orderstatuses'), ['errorField' => 'orderstatus_id']);
+        $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
 
         return $rules;
     }

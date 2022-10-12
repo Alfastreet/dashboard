@@ -114,6 +114,19 @@
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
+        <li class="nav-group">
+            <a class="nav-link nav-group-toggle" href="#">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
+                </svg>Ordenes de Trabajo
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-item">
+                    <?= $this->Html->link('Ver Ordenes', ['controller' => 'orders', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
 
         <!-- Submenus -->
         <li class="nav-title">Administración General</li>

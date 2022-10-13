@@ -221,7 +221,7 @@ class CasinosController extends AppController
         $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
         $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
         $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id])->all();
-        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id])->all();
+        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id])->first();
         $totalAccountants = $this->fetchTable('Totalaccountants')->find('all')->where(['casino_id' => $id ]);
 
 

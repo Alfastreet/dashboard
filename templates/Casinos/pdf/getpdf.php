@@ -5,172 +5,172 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo $this->Html->css('bootstrap.css', ['fullBase' => true]);?>
+    <?php echo $this->Html->css('bootstrap.css', ['fullBase' => true]); ?>
     <title>Liquidacion de <?= h($casino->name) ?></title>
 </head>
 <style>
     * {
-    box-sizing: border-box;
-}
+        box-sizing: border-box;
+    }
 
-@page {
-    margin: 0px !important;
-    padding: 0px 0px 0px 0px !important;    
-}
+    @page {
+        margin: 0px !important;
+        padding: 0px 0px 0px 0px !important;
+    }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-.contenedor {
-    margin: 10px;
-}
+    .contenedor {
+        margin: 10px;
+    }
 
-.datos-basicos:after,
-.datosFinales:after {
-    content: "";
-    display: table;
-    clear: both;
-}
+    .datos-basicos:after,
+    .datosFinales:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-.datos-cliente {
-    margin-top: 200px;
-    float: left;
-    width: 50%;
-}
+    .datos-cliente {
+        margin-top: 200px;
+        float: left;
+        width: 50%;
+    }
 
-.datos-cliente h3{
-    line-height : 25px;
-}
+    .datos-cliente h3 {
+        line-height: 25px;
+    }
 
-.datos-cotizacion {
-    float: right;
-    width: 50%;
-    text-align: right;
-}
+    .datos-cotizacion {
+        float: right;
+        width: 50%;
+        text-align: right;
+    }
 
-h2 {
-    font-size: 18px;
-    font-weight: 700;
-}
+    h2 {
+        font-size: 18px;
+        font-weight: 700;
+    }
 
-h2 span {
-    font-weight: 400;
-    font-size: 12px;
-}
+    h2 span {
+        font-weight: 400;
+        font-size: 12px;
+    }
 
-h3 {
-    font-size: 18px;
-    line-height: 5px;
-}
+    h3 {
+        font-size: 18px;
+        line-height: 5px;
+    }
 
-h3 span {
-    font-size: 15px;
-    font-weight: 400;
-}
+    h3 span {
+        font-size: 15px;
+        font-weight: 400;
+    }
 
-table {
-    margin-top: 25px;
-    width: 100%;
-    text-align: center;
-    border: 2px solid #000;
-}
+    table {
+        margin-top: 25px;
+        width: 100%;
+        text-align: center;
+        border: 2px solid #000;
+    }
 
-table thead {
-    border-bottom: 2px solid #000;
-}
+    table thead {
+        border-bottom: 2px solid #000;
+    }
 
-table th {
-    border: 1px solid #000;
-}
+    table th {
+        border: 1px solid #000;
+    }
 
-table td {
-    font-size: 12px;
-    border: 1px solid #000;
-}
+    table td {
+        font-size: 12px;
+        border: 1px solid #000;
+    }
 
-table .data tr td{
-    padding: 10px 0;
-}
+    table .data tr td {
+        padding: 10px 0;
+    }
 
-table .namePart {
-    text-transform: capitalize;
-}
+    table .namePart {
+        text-transform: capitalize;
+    }
 
-table thead tr td {
-    font-weight: 700;
-    font-size: 15px;
-    padding-bottom: 10px;
-}
+    table thead tr td {
+        font-weight: 700;
+        font-size: 15px;
+        padding-bottom: 10px;
+    }
 
-.footerTable {
-    width: 100%;
-    padding-top: 15px;
-    text-align: right;
-    line-height: 1px;
-    float: right;
-}
+    .footerTable {
+        width: 100%;
+        padding-top: 15px;
+        text-align: right;
+        line-height: 1px;
+        float: right;
+    }
 
-.footerTable h3 {
-    font-size: 18px;
-}
+    .footerTable h3 {
+        font-size: 18px;
+    }
 
-.footerTable h4 {
-    font-size: 12px;
-}
+    .footerTable h4 {
+        font-size: 12px;
+    }
 
-.footerTable p {
-    font-size: 10px;
-    /* border-left: 1px solid #000;
+    .footerTable p {
+        font-size: 10px;
+        /* border-left: 1px solid #000;
     margin-top: -25px; */
-}
+    }
 
-.dataText {
-    line-height: 5px;
-    float: left;
-}
+    .dataText {
+        line-height: 5px;
+        float: left;
+    }
 
-.header {
-    position: fixed;
-    top: -5px;
-    left: -5px;
-    right: 0px;
-    height: 5px;
+    .header {
+        position: fixed;
+        top: -5px;
+        left: -5px;
+        right: 0px;
+        height: 5px;
 
-}
+    }
 
-.footer {
-    position: fixed;
-    bottom: -5px;
-    left: 0px;
-    right: 0px;
-}
+    .footer {
+        position: fixed;
+        bottom: -5px;
+        left: 0px;
+        right: 0px;
+    }
 
-.textcenter {
-    text-align: center;
-    text-transform: uppercase;
-}
+    .textcenter {
+        text-align: center;
+        text-transform: uppercase;
+    }
 
-.totalizated {
-    text-align: right;
-    margin-top: 50px;
-}
+    .totalizated {
+        text-align: right;
+        margin-top: 50px;
+    }
 
-.centered {
-    text-align: center;
-}
+    .centered {
+        text-align: center;
+    }
 
-.centered img {
-    margin: 0px auto;
-}
-
+    .centered img {
+        margin: 0px auto;
+    }
 </style>
 <div class="centered">
     <img src="http://localhost/img/Alfa-logo.webp" alt="" srcset="">
 </div>
 
 <body class="contenedor">
-    <h2 class="textcenter"> <?=__( 'Liquidacion del mes '. date('M', strtotime(date('Y-m-d'). '-1 month')). ' De la empresa '. h($casino->name)) ?></h2>
+    <h2 class="textcenter"> <?= __('Liquidacion del mes ' . date('M', strtotime(date('Y-m-d') . '-1 month')) . ' De la empresa ' . h($casino->name)) ?></h2>
+    <h2 class="textcenter"> <?= __('Participaciones') ?></h2>
     <table>
         <thead>
             <tr>
@@ -193,10 +193,11 @@ table thead tr td {
         <tbody>
             <?php $total = 0;
             $totalizate = 0;
+            $totalAll = 0;
 
             foreach ($accountants as $accountant) :
-                foreach($machines as $machine) :
-                    if($accountant->machine_id == $machine->id){
+                foreach ($machines as $machine) :
+                    if ($accountant->machine_id == $machine->id) {
                         $namemachine = $machine->serial;
                         $serialName = $machine->name;
                     }
@@ -253,7 +254,64 @@ table thead tr td {
         </tbody>
     </table>
 
-    <h3 class="totalizated">TOTAL A PAGAR : <?=$this->Number->currency($total, 'USD')?></h3>
+    <h3 class="totalizated">TOTAL LIQUIDACION SIN BORRADOS : <?= $this->Number->currency($total, 'USD') ?></h3>
+
+    <h2 class="textcenter"> <?= __('Borrados') ?></h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Serial de la máquina</th>
+                <th>Nombre de la máquina</th>
+                <th>Cashin</th>
+                <th>Cashout</th>
+                <th>Bet</th>
+                <th>Win</th>
+                <th>Profit</th>
+                <th>Jackpot</th>
+                <th>Juegos Jugados</th>
+                <th>12% Coljuegos</th>
+                <th>1% Admin</th>
+                <th>Iva</th>
+                <th>Total</th>
+                <th>40% Alfastreet</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $totalErase = 0;
+            $totalizateErase = 0;
+            $totalAll = $total + $totalErases->total;
+            $iva = 144415;
+            foreach ($erases as $erase) :
+                foreach ($machines as $machine) :
+                    if ($erase->machine_id == $machine->id) {
+                        $namemachine = $machine->serial;
+                        $serialName = $machine->name;
+                    } ?>
+                    <tr>
+                        <td><?= h($namemachine) ?></td>
+                        <td><?= h($serialName) ?></td>
+                        <td><?= $this->Number->currency($erase->totalCashin, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->totalCashout, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->totalBet, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->totalWin, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->totalProfit, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->totalJackpot, 'USD') ?></td>
+                        <td><?= h($erase->gamesplayed) ?></td>
+                        <td><?= $this->Number->currency($erase->coljuegos, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->admin, 'USD') ?></td>
+                        <td><?= $this->Number->currency($iva, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->total, 'USD') ?></td>
+                        <td><?= $this->Number->currency($erase->alfastreet, 'USD') ?></td>
+                    </tr>
+            <?php endforeach;
+            endforeach ?>
+        </tbody>
+    </table>
+
+    <h3 class="totalizated">TOTAL BORRADOS : <?= $this->Number->currency($totalErases->total, 'USD') ?></h3>
+
+    <h2 style="text-align: center;">TOTAL A PAGAR <?= $this->Number->currency($totalAll, 'USD') ?> </h2>
 
 </body>
 

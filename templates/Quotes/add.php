@@ -14,8 +14,15 @@
                     <h3 class="card-title mb-0"><?= __('Nueva Cotización') ?></h3>
                     <p class="small text-medium-emphasis">&nbsp;</p>
                 </div>
-                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Ver todas las Cotizaciones'), ['action' => 'index'], ['class' => 'btn btn-primary']) ?>
+                </div>
+                <div class="d-block d-sm-none">
+                    <a href="/quotes" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-caret-left"></use>
+                        </svg>
+                    </a>
                 </div>
             </div>
             <div class="column-responsive column-80">
@@ -112,7 +119,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="column-responsive column-80">
-                <table class="table table-bordered table-striped table-responsive text-center table-hover">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover" id="myTable">
                     <thead>
                         <tr>
                             <th scope="col">#</th>

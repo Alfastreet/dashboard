@@ -14,6 +14,13 @@
                     <h3 class="card-title mb-0"><?= __('Registrar Empresa') ?></h3>
                     <p class="small text-medium-emphasis">&nbsp;</p>
                 </div>
+                <div class="btn-toolbar d-block d-md-none">
+                    <a href="/business" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-caret-left"></use>
+                        </svg>
+                    </a>
+                </div>
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Volver al Listado'), ['action' => 'index'], ['class' => 'btn btn-primary']) ?>
                 </div>
@@ -24,8 +31,8 @@
                     <?= $this->Form->create($busines, ['class' => 'row g-3 needs-validation']) ?>
                     <div class="mb-3">
                         <div class="row">
-                            <div class="col-md-2">
-                                <?= $this->Form->control('owner_id', ['options' => $owner, 'class' => 'form-control', 'label' => false, 'require' => true, 'label' => 'Dueño de la empresa:']) ?>
+                            <div class="col-md-5 ">
+                                <?= $this->Form->control('owner_id', ['options' => $owner, 'class' => 'form-control', 'label' => false, 'require' => true, 'empty' => ['' => 'Dueño de la Empresa']]) ?>
                             </div>
                         </div>
                     </div>
@@ -52,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <?= $this->Form->button(__('Enviar'), ['class' => 'btn btn-primary', 'id' => 'add']) ?>
+                    <?= $this->Form->button(__('Registrar'), ['class' => 'btn btn-primary', 'id' => 'add']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>

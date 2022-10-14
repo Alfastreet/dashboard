@@ -14,6 +14,13 @@
                     <h3 class="card-title mb-0"><?= __('Empresas') ?></h3>
                     <p class="small text-medium-emphasis">Empresas de los clientes agregados a la fecha</p>
                 </div>
+                <div class="btn-toolbar d-block d-md-none">
+                    <a href="/business/add" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
+                        </svg>
+                    </a>
+                </div>
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Agregar una Empresa'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
                 </div>
@@ -43,21 +50,21 @@
                                 <td><?= $busines->has('owner') ? h($busines->owner->name) : '' ?></td>
                                 <td class="actions">
                                     <div class="btn-group btn-group-toggle mx-3">
-                                        <a class="nav-link nav-group-toggle" href="/business/edit/<?=$busines->id?>">
+                                        <a class="nav-link nav-group-toggle" href="/business/edit/<?= $busines->id ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                                             </svg>
                                         </a>
-                                        <a class="nav-link nav-group-toggle" href="/business/view/<?=$busines->id?>">
+                                        <a class="nav-link nav-group-toggle" href="/business/view/<?= $busines->id ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
                                             </svg>
-                                        </a>                                       
-                                        <a class="nav-link nav-group-toggle" href="/business/delete/<?=$busines->id?>">
+                                        </a>
+                                        <a class="nav-link nav-group-toggle" href="/business/delete/<?= $busines->id ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
                                             </svg>
-                                        </a>                                       
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

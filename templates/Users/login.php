@@ -8,16 +8,20 @@
               <h1><?= __('Iniciar Sesión') ?></h1>
               <p class="text-medium-emphasis"><?= __('Ingresa a tu cuenta') ?></p>
               <?= $this->Form->create() ?>
-                <div class="input-group mb-3"><span class="input-group-text">
+                <div class="input-group mb-3">
+                  <span class="input-group-text d-none d-sm-block">
                     <svg class="icon">
                       <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                    </svg></span>
+                    </svg>
+                  </span>
                     <?= $this->Form->control('email', ['required' => true, 'class' => 'form-control', 'label' => false, 'placeholder' => 'Correo Electronico']) ?>
                   </div>
-                <div class="input-group mb-4"><span class="input-group-text">
+                <div class="input-group mb-4">
+                  <span class="input-group-text  d-none d-sm-block">
                     <svg class="icon">
                       <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
-                    </svg></span>
+                    </svg>
+                  </span>
                   <?= $this->Form->control('password', ['required' => true, 'class' => 'form-control', 'label' => false, 'placeholder' => 'Password']) ?>
                 </div>
                 <div class="row">

@@ -15,19 +15,19 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover">
                     <thead>
                         <tr>
                             <th><?= __('Cotizacion #') ?></th>
                             <th><?= __('Tecnico Encargado') ?></th>
                             <th><?= __('Cliente') ?></th>
                             <th><?= __('Estado') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($orders as $order) : ?>
-                            <tr>
+                            <tr class="class="<?= $order->orderstatus_id === 1 ? 'table-success' : ($order->orderstatus_id === 3  ? 'table-danger' : '')  ?>">
                                 <td><?= $order->has('quote') ? $this->Html->link($order->quote->id, ['controller' => 'Quotes', 'action' => 'view', $order->quote->id]) : '' ?></td>
                                 <td><?= $order->has('user') ? $this->Html->link($order->user->name, ['controller' => 'Users', 'action' => 'view', $order->user->id]) : '' ?></td>
                                 <td><?= $this->Number->format($order->client_id) ?></td>

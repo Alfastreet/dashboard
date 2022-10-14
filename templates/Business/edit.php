@@ -12,7 +12,14 @@
                 <div>
                     <h3 class="card-title mb-0"><?= __('Editar Datos de la Empresa') ?></h3>
                 </div>
-                <div>
+                <div class="d-block d-sm-none">
+                    <a href="/business" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-caret-left"></use>
+                        </svg>
+                    </a>
+                </div>
+                <div class="d-none d-sm-flex">
                     <?= $this->Form->postLink(
                         __('Borrar'),
                         ['action' => 'delete', $busines->id],

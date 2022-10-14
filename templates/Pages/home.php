@@ -75,7 +75,7 @@ $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
                     </div>
                 </div>
             </div>
-            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+            <div class="c-chart-wrapper mt-3 mx-3" style="height:100%;">
                 <!-- <canvas class="chart" id="card-chart1" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas> -->
                 <div class="row">
                     <div class="col">
@@ -92,7 +92,7 @@ $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
                             <span class="fs-6 fw-normal"> <?= __('(' . $percentPending . '%)') ?></span>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col mb-3">
                         <div class="fw-bold"><?= __('Rechazadas') ?></div>
                         <div class="fs-4 fw-semibold">
                             <?= __($quotesRechazed) ?>
@@ -133,7 +133,7 @@ $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
                     </div>
                 </div>
             </div>
-            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+            <div class="c-chart-wrapper mt-3 mx-3" style="height:100%;">
                 <canvas class="chart" id="card-chart2" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas>
             </div>
         </div>
@@ -141,5 +141,22 @@ $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
 
 </div>
 
+
+<?php 
+    $vCuota = 3500;
+    $compFinanciero = 0.39;
+    $porcentaje = (($vCuota * $compFinanciero) / 100);
+    $numCoutas = 24;
+
+    for ($i=0; $i < $numCoutas ; $i++) { 
+        $nose = $numCoutas - $i;
+        $sumatoria = $porcentaje * ($nose);
+        echo $sumatoria . '<br>';
+    }
+    
+    
+
+
+?>
 
 <?= $this->Html->script('graficas') ?>

@@ -12,15 +12,16 @@
             <svg class="icon icon-lg">
                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
             </svg>
-        </button><a class="header-brand d-md-none" href="#">
+        </button>
+        <a class="header-brand d-none" href="#">
             <svg width="118" height="46" alt="CoreUI Logo">
                 <use xlink:href="/assets/brand/coreui.svg#full"></use>
-            </svg></a>
-        <!-- Parte Borrada -->
+            </svg>
+        </a>
 
-        <div class="col" id="trm"></div>
+        <div class="col d-none d-md-block" id="trm"></div>
 
-        <div class="col">
+        <div class="col text-center">
             <!-- Cuando la página carga (onload), llamamos al método cargarReloj() de JavaScript -->
             <div id="relojnumerico" class="reloj" onload="cargarReloj()">
                 <!-- Acá mostraremos el reloj desde JavaScript -->

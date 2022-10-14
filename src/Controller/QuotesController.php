@@ -190,7 +190,7 @@ class QuotesController extends AppController
             INNER JOIN detailsquotes dq ON dq.quote_id = q.id 
             INNER JOIN parts p ON dq.product_id = p.id 
             INNER JOIN business b ON q.business_id = b.id
-            INNER JOIN money m ON dq.money_id = m.id
+            INNER JOIN monies m ON dq.money_id = m.id
             WHERE q.id = ' . $quote->id . '')->fetchAll('obj');
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');

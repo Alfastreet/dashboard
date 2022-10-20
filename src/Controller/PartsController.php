@@ -29,6 +29,7 @@ class PartsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Monies'],
         ];

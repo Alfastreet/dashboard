@@ -49,6 +49,7 @@
                                 <div class="col">
                                     <?= $this->Form->control('email', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Correo Electronico', 'require' => true]) ?>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="mb-3">

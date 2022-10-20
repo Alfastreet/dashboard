@@ -49,6 +49,7 @@ class DetailsquotesController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $detailsquote = $this->Detailsquotes->newEmptyEntity();
         if ($this->request->is('post')) {
             $detailsquote = $this->Detailsquotes->patchEntity($detailsquote, $this->request->getData());
@@ -103,6 +104,7 @@ class DetailsquotesController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $detailsquote = $this->Detailsquotes->get($id);
         if ($this->Detailsquotes->delete($detailsquote)) {

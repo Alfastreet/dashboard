@@ -21,6 +21,8 @@ class MachinesController extends AppController
      */
     public function index()
     {
+
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
         ];
@@ -38,6 +40,7 @@ class MachinesController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $machine = $this->Machines->get($id, [
             'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract', 'Machinepart'],
         ]);
@@ -53,12 +56,12 @@ class MachinesController extends AppController
     public function add()
     {
         // $casinoId = $this->request->getQuery('casinoid');
+        $this->Authorization->skipAuthorization();
         $machine = $this->Machines->newEmptyEntity();
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
             // Add image
-
-
+            $machine->cheked = 1;
             $image = $this->request->getData('image');
             $idint = $machine->idint;
             $serial = $machine->serial;
@@ -102,37 +105,36 @@ class MachinesController extends AppController
      */
     public function edit($id = null)
     {
-        $machine = $this->Machines->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->Authorization->skipAuthorization();
+        $machine = $this->Machines->newEmptyEntity();
+        if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
-
-            $nameImageOld = $machine->image;
-
+            // Add image
+            $machine->cheked = 1;
             $image = $this->request->getData('image');
+            $idint = $machine->idint;
+            $serial = $machine->serial;
+            $queryidInt = $this->Machines->find('all')->where(['idint' => $idint])->all();
+            $queryserial = $this->Machines->find('all')->where(['serial' => $serial])->all();
 
-            $machine->image = $nameImageOld;
-
-            if ($image->getClientFileName()) {
-
-                if (file_exists(WWW_ROOT . "img/Casinos/" . $nameImageOld)) {
-
-                    unlink(WWW_ROOT . "img/Casinos/" . $nameImageOld);
+            if (sizeof($queryserial) === 0) {
+                
+                if ($image) {
+                    
+                    $time =  FrozenTime::now()->toUnixString();
+                    $nameImage = $time . "_" . $image->getClientFileName();
+                    $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
+                    $image->moveTo($destiny);
+                    $machine->image = $nameImage;
                 }
+                if ($this->Machines->save($machine)) {
+                    (__('The machine has been saved.'));
 
-                $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time . "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
-                $image->moveTo($destiny);
-                $machine->image = $nameImage;
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('Hubo un error al procesar los Datos'));
             }
-            if ($this->Machines->save($machine)) {
-                (__('The machine has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The machine could not be saved. Please, try again.'));
+            $this->Flash->error(__('La maquina Ya esta registrada'));
         }
         $models = $this->Machines->Model->find('list', ['limit' => 200])->all();
         $makers = $this->Machines->Maker->find('list', ['limit' => 200])->all();
@@ -196,16 +198,17 @@ class MachinesController extends AppController
         }
     }
 
-    // public function searchMachines($casinoId = null) 
-    // {
-    //     $this->autoRender = false;
-    //     $casinoId = $this->request->getQuery('casinoId');
+    public function searchId($id = null)
+    {
+        $this->autoRender = false;
 
-    //     $query = $this->Machines->find('all')->where((['casino_id' => $casinoId, 'contract_id' => 2 ]))->all();
+        $id = $this->request->getQuery('id');
 
-    //     if(sizeof($query) > 0){
-    //         echo json_encode($query);
-    //         die;
-    //     }
-    // }
+        $query = $this->Machines->find()->where(['id' => $id])->first();
+
+        if ($query) {
+            echo json_encode($query);
+            die;
+        }
+    }
 }

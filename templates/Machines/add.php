@@ -89,6 +89,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col">
+                                <?= $this->Form->control('value', ['type' => 'number', 'class' => 'form-control', 'placeholder' => 'Valor de la maquina', 'label' => false, 'required' => false]) ?>
+                            </div>
+                        </div>
+                    </div>
                     <?= $this->Form->button(__('Añadir'), ['class' => 'btn btn-primary', 'id' => 'add']) ?>
                     <?= $this->Form->end() ?>
                 </div>

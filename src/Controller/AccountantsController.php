@@ -63,7 +63,13 @@ class AccountantsController extends AppController
 
     public function add($casinoid = null, $token = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender =  false;
+
+        $coljuegosValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 2 ])->first()->value;
+        $adminValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 3 ])->first()->value;
+        $iva = $this->fetchTable('dataiportants')->find()->where(['id' => 1])->first()->value;
+        $alfaValue = $this->fetchTable('dataiportants')->find()->where(['id' => 4])->first()->value;
 
         $casinoid = $this->request->getQuery('casinoid');
         $token = $this->request->getQuery('token');
@@ -71,13 +77,14 @@ class AccountantsController extends AppController
         $accountant = $this->Accountants->newEmptyEntity();
         
         $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
+
         
 
         $accountant->profit = $accountant->cashin - $accountant->cashout;
-        $accountant->coljuegos = $accountant->profit * 0.12;
-        $accountant->admin = $accountant->coljuegos * 0.01;
-        $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - 144415;
-        $accountant->alfastreet = $accountant->total * 0.40;
+        $accountant->coljuegos = $accountant->profit * $coljuegosValue;
+        $accountant->admin = $accountant->coljuegos * $adminValue;
+        $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - $iva;
+        $accountant->alfastreet = $accountant->total * $alfaValue;
         $accountant->casino_id = $casinoid;
         $accountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
         $accountant->year = date('Y');
@@ -108,25 +115,25 @@ class AccountantsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $accountant = $this->Accountants->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
-            if ($this->Accountants->save($accountant)) {
+    // public function edit($id = null)
+    // {
+    //     $accountant = $this->Accountants->get($id, [
+    //         'contain' => [],
+    //     ]);
+    //     if ($this->request->is(['patch', 'post', 'put'])) {
+    //         $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
+    //         if ($this->Accountants->save($accountant)) {
 
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
-        }
-        $machines = $this->Accountants->Machines->find('list', ['limit' => 200])->all();
-        $casinos = $this->Accountants->Casinos->find('list', ['limit' => 200])->all();
-        $months = $this->Accountants->Months->find('list', ['limit' => 200])->all();
-        $this->set(compact('accountant', 'machines', 'casinos'));
-    }
+    //             return $this->redirect(['action' => 'index']);
+    //         }
+    //         $this->Flash->error(__('The accountant could not be saved. Please, try again.'));
+    //     }
+    //     $machines = $this->Accountants->Machines->find('list', ['limit' => 200])->all();
+    //     $casinos = $this->Accountants->Casinos->find('list', ['limit' => 200])->all();
+    //     $months = $this->Accountants->Months->find('list', ['limit' => 200])->all();
+    //     $this->set(compact('accountant', 'machines', 'casinos'));
+    // }
 
     /**
      * Delete method
@@ -135,20 +142,21 @@ class AccountantsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $accountant = $this->Accountants->get($id);
-        if ($this->Accountants->delete($accountant)) {
-        } else {
-            $this->Flash->error(__('The accountant could not be deleted. Please, try again.'));
-        }
+    // public function delete($id = null)
+    // {
+    //     $this->request->allowMethod(['post', 'delete']);
+    //     $accountant = $this->Accountants->get($id);
+    //     if ($this->Accountants->delete($accountant)) {
+    //     } else {
+    //         $this->Flash->error(__('The accountant could not be deleted. Please, try again.'));
+    //     }
 
-        return $this->redirect(['action' => 'index']);
-    }
+    //     return $this->redirect(['action' => 'index']);
+    // }
 
     public function general()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],
         ];

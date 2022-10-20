@@ -11,13 +11,7 @@ use Cake\Validation\Validator;
 /**
  * Machines Model
  *
- * @property \App\Model\Table\ModelsTable&\Cake\ORM\Association\BelongsTo $Models
- * @property \App\Model\Table\MakersTable&\Cake\ORM\Association\BelongsTo $Makers
  * @property \App\Model\Table\CasinosTable&\Cake\ORM\Association\BelongsTo $Casinos
- * @property \App\Model\Table\OwnersTable&\Cake\ORM\Association\BelongsTo $Owners
- * @property \App\Model\Table\CompaniesTable&\Cake\ORM\Association\BelongsTo $Companies
- * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @property \App\Model\Table\AccountantsTable&\Cake\ORM\Association\BelongsTo $Accountants
  * @property \App\Model\Table\AccountantsTable&\Cake\ORM\Association\HasMany $Accountants
  * @property \App\Model\Table\MachinepartTable&\Cake\ORM\Association\HasMany $Machinepart
  *
@@ -51,36 +45,29 @@ class MachinesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Model', [
-            'foreignKey' => 'model_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Maker', [
-            'foreignKey' => 'maker_id',
-            'joinType' => 'INNER',
-        ]);
         $this->belongsTo('Casinos', [
             'foreignKey' => 'casino_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Owner', [
-            'foreignKey' => 'owner_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Company', [
-            'foreignKey' => 'company_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Contract', [
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Accountants', [
-            'foreignKey' => 'accountants_id',
+        $this->belongsTo('Company', [
+            'foreignKey' => 'company_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('Machinepart', [
-            'foreignKey' => 'machine_id',
+        $this->belongsTo('Maker', [
+            'foreignKey' => 'maker_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Owner', [
+            'foreignKey' => 'owner_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Model', [
+            'foreignKey' => 'model_id',
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -178,6 +165,16 @@ class MachinesTable extends Table
             ->requirePresence('contract_id', 'create')
             ->notEmptyString('contract_id');
 
+        $validator
+            ->integer('cheked')
+            ->requirePresence('cheked', 'create')
+            ->notEmptyString('cheked');
+
+        $validator
+            ->scalar('value')
+            ->maxLength('value', 255)
+            ->allowEmptyString('value');
+
         return $validator;
     }
 
@@ -190,13 +187,7 @@ class MachinesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('model_id', 'Model'), ['errorField' => 'model_id']);
-        $rules->add($rules->existsIn('maker_id', 'Maker'), ['errorField' => 'maker_id']);
         $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
-        $rules->add($rules->existsIn('owner_id', 'Owner'), ['errorField' => 'owner_id']);
-        $rules->add($rules->existsIn('company_id', 'Company'), ['errorField' => 'company_id']);
-        $rules->add($rules->existsIn('contract_id', 'Contract'), ['errorField' => 'contract_id']);
-        $rules->add($rules->existsIn('accountants_id', 'Accountants'), ['errorField' => 'accountants_id']);
 
         return $rules;
     }

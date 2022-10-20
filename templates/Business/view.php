@@ -19,22 +19,24 @@
                         </svg>
                     </a>
                 </div>
-                <div class="d-none d-sm-block">
-                    <?= $this->Html->link(__('Editar'), ['action' => 'edit', $busines->id], ['class' => 'btn btn-info me-md-2']) ?>
-                    <?= $this->Form->link(__('Borrar'), ['action' => 'delete', $busines->id], ['confirm' => __('Estas Seguro de eliminar la entrada # {0}?', $busines->id), 'class' => 'btn btn-danger me-md-2']) ?>
-                </div>
-                <div class="d-block d-sm-none">
-                    <a href="/quotes/edit/<?= $busines->id ?>" class="btn btn-info">
-                        <svg class="icon">
-                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pen"></use>
-                        </svg>
-                    </a>
-                    <a href="/quotes/delete/<?= $busines->id ?>" class="btn btn-danger">
-                        <svg class="icon">
-                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                        </svg>
-                    </a>
-                </div>
+                <?php if ($isAdmin) : ?>
+                    <div class="d-none d-sm-block">
+                        <?= $this->Html->link(__('Editar'), ['action' => 'edit', $busines->id], ['class' => 'btn btn-info me-md-2']) ?>
+                        <?= $this->Html->link(__('Borrar'), ['action' => 'delete', $busines->id], ['confirm' => __('Estas Seguro de eliminar la entrada # {0}?', $busines->id), 'class' => 'btn btn-danger me-md-2']) ?>
+                    </div>
+                    <div class="d-block d-sm-none">
+                        <a href="/quotes/edit/<?= $busines->id ?>" class="btn btn-info">
+                            <svg class="icon">
+                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pen"></use>
+                            </svg>
+                        </a>
+                        <a href="/quotes/delete/<?= $busines->id ?>" class="btn btn-danger">
+                            <svg class="icon">
+                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                            </svg>
+                        </a>
+                    </div>
+                <?php endif ?>
             </div>
             <div class="column-responsive column-80">
                 <div class="business view content">

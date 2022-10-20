@@ -97,6 +97,11 @@ if (file_exists(CONFIG . 'app_local.php')) {
  * for a short time.
  */
 if (Configure::read('debug')) {
+    Configure::write('DebugKit.panels', ['DebugKit.Packages' => false]);
+    Configure::write('DebugKit.safeTld', ['dev', 'local', 'example']);
+    Configure::write('DebugKit.forceEnable', true);
+    Configure::write('DebugKit.variablesPanelMaxDepth', 8);
+    Configure::write('DebugKit.ignorePathsPattern', '/\.(jpg|png|gif)$/');
     Configure::write('Cache._cake_model_.duration', '+2 minutes');
     Configure::write('Cache._cake_core_.duration', '+2 minutes');
     // disable router cache during development

@@ -25,12 +25,12 @@ class MachinesTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Machines',
-        'app.Models',
-        'app.Makers',
+        'app.Model',
+        'app.Maker',
         'app.Casinos',
-        'app.Owners',
-        'app.Companies',
-        'app.Contracts',
+        'app.Owner',
+        'app.Company',
+        'app.Contract',
         'app.Accountants',
         'app.Machinepart',
     ];

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -22,9 +23,9 @@ class UsersController extends AppController
 
 
 
-
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Rol'],
         ];
@@ -46,6 +47,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['Rol', 'Quotes'],
         ]);
+        $this->Authorization->authorize($user);
 
         $rol = $this->fetchTable('Rol')->find('all')->all();
         $this->set(compact('user', 'rol'));
@@ -59,18 +61,19 @@ class UsersController extends AppController
     public function add()
     {
         $user = $this->Users->newEmptyEntity();
+        $this->Authorization->authorize($user);
         if ($this->request->is('post')) {
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $image = $this->request->getData('image');
 
-            if($image) {
+            if ($image) {
 
                 $time = FrozenTime::now()->toUnixString();
 
-                $imageName = $time."_".$image->getClientFileName();
+                $imageName = $time . "_" . $image->getClientFileName();
 
-                $destiny = WWW_ROOT."img/imgusers/".$imageName;
+                $destiny = WWW_ROOT . "img/imgusers/" . $imageName;
 
                 $image->moveTo($destiny);
 
@@ -78,12 +81,12 @@ class UsersController extends AppController
             }
 
             $user->token = rand();
-            $user->rol_id = 2;
+            $user->rol_id = 6;
             $user->checked = 1;
 
 
             if ($this->Users->save($user)) {
-                 (__('The user has been saved.'));
+                (__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -105,6 +108,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($user);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
@@ -116,22 +120,22 @@ class UsersController extends AppController
 
             $user->image = $oldImg;
 
-            if($imgRequest->getClientFileName()) {
+            if ($imgRequest->getClientFileName()) {
 
-                $destiny =   WWW_ROOT."img/imgusers/".$oldImg;
+                $destiny =   WWW_ROOT . "img/imgusers/" . $oldImg;
 
                 if ($this->Users->delete($user)) {
 
-                    if(file_exists($destiny)){
+                    if (file_exists($destiny)) {
 
                         unlink($destiny);
                     }
 
                     $time = FrozenTime::now()->toUnixString();
 
-                    $imgName = $time.'_'.$imgRequest->getClientFileName();
+                    $imgName = $time . '_' . $imgRequest->getClientFileName();
 
-                    $newDestiny = WWW_ROOT."img/imgusers/".$imgName;
+                    $newDestiny = WWW_ROOT . "img/imgusers/" . $imgName;
 
                     $imgRequest->moveTo($newDestiny);
 
@@ -140,7 +144,7 @@ class UsersController extends AppController
             }
 
             if ($this->Users->save($user)) {
-                 (__('The user has been saved.'));
+                (__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -160,16 +164,17 @@ class UsersController extends AppController
     public function delete($id = null)
     {
         $user = $this->Users->get($id);
-        $destiny =   WWW_ROOT."img/imgusers/".$user['image'];
+        $this->Authorization->authorize($user);
+        $destiny =   WWW_ROOT . "img/imgusers/" . $user['image'];
 
         if ($this->Users->delete($user)) {
 
-            if(file_exists($destiny)){
+            if (file_exists($destiny)) {
 
                 unlink($destiny);
             }
 
-             (__('The user has been deleted.'));
+            (__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
@@ -178,29 +183,30 @@ class UsersController extends AppController
     }
 
 
-    public function pdf($id = null)
-    {
-        $this->viewBuilder()->enableAutoLayout(false);
-        $report = $this->Users->get($id);
-        $this->viewBuilder()->setClassName('CakePdf.Pdf');
-        $this->viewBuilder()->setOption(
-            'pdfConfig',
-            [
-                'orientation' => 'portrait',
-                'download' => true, // This can be omitted if "filename" is specified.
-                'filename' => 'Report_' . $id . '.pdf' //// This can be omitted if you want file name based on URL.
-            ]
-        );
-        $this->set('report', $report);
-    }
+    // public function pdf($id = null)
+    // {
+    //     $this->viewBuilder()->enableAutoLayout(false);
+    //     $report = $this->Users->get($id);
+    //     $this->viewBuilder()->setClassName('CakePdf.Pdf');
+    //     $this->viewBuilder()->setOption(
+    //         'pdfConfig',
+    //         [
+    //             'orientation' => 'portrait',
+    //             'download' => true, // This can be omitted if "filename" is specified.
+    //             'filename' => 'Report_' . $id . '.pdf' //// This can be omitted if you want file name based on URL.
+    //         ]
+    //     );
+    //     $this->set('report', $report);
+    // }
 
     public function login()
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
 
         $result = $this->Authentication->getResult();
 
-        if($result->isValid()) {
+        if ($result->isValid()) {
             $redirect = $this->request->getQuery('redirect', [
                 'controller' => 'users',
                 'action' => 'index'
@@ -209,15 +215,17 @@ class UsersController extends AppController
             return $this->redirect($redirect);
         }
 
-        if($this->request->is('post') && !$result->isValid()) {
-           $this->Flash->error('Credenciales Invalidas');
+        if ($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error('Credenciales Invalidas');
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
+        $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
 
-        if($result->isValid()) {
+        if ($result->isValid()) {
             $this->Authentication->logout();
             return $this->redirect(['controller' => 'Users', 'action' => 'Login']);
         }
@@ -230,9 +238,4 @@ class UsersController extends AppController
             'login', 'add'
         ]);
     }
-
-
-
-
-
 }

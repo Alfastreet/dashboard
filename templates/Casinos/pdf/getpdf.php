@@ -256,6 +256,7 @@
 
     <h3 class="totalizated">TOTAL LIQUIDACION SIN BORRADOS : <?= $this->Number->currency($total, 'USD') ?></h3>
 
+    <?php if($erasesCant !== 0 && $cantTotalErases ): ?>
     <h2 class="textcenter"> <?= __('Borrados') ?></h2>
 
     <table>
@@ -312,6 +313,7 @@
     <h3 class="totalizated">TOTAL BORRADOS : <?= $this->Number->currency($totalErases->total, 'USD') ?></h3>
 
     <h2 style="text-align: center;">TOTAL A PAGAR <?= $this->Number->currency($totalAll, 'USD') ?> </h2>
+    <?php endif ?>
 
 </body>
 

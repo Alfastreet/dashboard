@@ -13,9 +13,11 @@
                     <h3 class="card-title mb-0"><?= __('Maquinas') ?></h3>
                     <p class="small text-medium-emphasis">Maquinas agregadas a la fecha</p>
                 </div>
-                <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
-                    <?= $this->Html->link(__('Agregar una Maquina'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
-                </div>
+                <?php if ($isAdmin) : ?>
+                    <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                        <?= $this->Html->link(__('Agregar una Maquina'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                    </div>
+                <?php endif ?>
             </div>
             <div class="table-responsive">
                 <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
@@ -32,8 +34,9 @@
                             <th><?= __('Propietario') ?></th>
                             <th><?= __('Compañia') ?></th>
                             <th><?= __('Tipo de Contrato') ?></th>
-                            <th><?= __('image') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __('Imagen') ?></th>
+                            <th><?= __('Valor de la maquina') ?></th>
+                            <th><?= __('') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,7 +53,8 @@
                                 <td><?= $machine->has('owner') ? h($machine->owner->name) : '' ?></td>
                                 <td><?= $machine->has('company') ? h($machine->company->name) : '' ?></td>
                                 <td><?= $machine->has('contract') ? h($machine->contract->name) : '' ?></td>
-                                <td><?= $this->Html->image('Machines/'.$machine->image, ['class' => 'img-thumbnail']) ?></td>
+                                <td><?= $this->Html->image('Machines/' . $machine->image, ['class' => 'img-thumbnail']) ?></td>
+                                <td><?= $this->Number->currency($machine->value, 'USD') . __(' USD') ?></td>
                                 <td class="actions">
                                     <div class="btn-group btn-group-toggle mx-3">
                                         <a class="nav-link nav-group-toggle" href="/machines/edit/<?= $machine->id ?>">

@@ -1,8 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
 use Cake\I18n\FrozenTime;
+
 /**
  * Casinos Controller
  *
@@ -18,6 +21,7 @@ class CasinosController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['City', 'State', 'Owner', 'Business'],
         ];
@@ -35,29 +39,31 @@ class CasinosController extends AppController
      */
     public function view($id = null, $token = null)
     {
-
+        $this->Authorization->skipAuthorization();
         $token = $this->request->getQuery('token');
-        
+
         $casino = $this->Casinos->get($id, [
             'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines'],
         ]);
-        
 
-        if($token !== $casino->token){
+
+        if ($token !== $casino->token) {
             return $this->redirect(['action' => 'error']);
         }
 
 
-        $machinesName= $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
+        $machinesName = $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
         $machines = $this->fetchTable('machines')->find('list')->where(['contract_id' => 2, 'casino_id' => $id])->all();
-        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
-        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
+        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y') . "- 1 month"))])->all();
+        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y') . "- 2 month"))])->all();
         $clients = $this->fetchTable('Client')->find('all')->all();
         $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id])->all();
-        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' =>$id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month")) ])->all();
-        
-        
-        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName', 'clients', 'erases', 'totalErases'));
+        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y') . "- 1 month"))])->all();
+        $erasesCant = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->count();
+        $cantTotalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->count();
+
+
+        $this->set(compact('casino', 'accountants', 'machines', 'lastaccountants', 'machinesName', 'clients', 'erases', 'totalErases', 'erasesCant', 'cantTotalErases'));
     }
 
     /**
@@ -67,10 +73,8 @@ class CasinosController extends AppController
      */
     public function add()
     {
-
-        
-
         $casino = $this->Casinos->newEmptyEntity();
+        $this->Authorization->authorize($casino);
 
         if ($this->request->is('post')) {
 
@@ -79,22 +83,21 @@ class CasinosController extends AppController
 
             $query = $this->Casinos->find('all')->where(['name' => $name])->all();
 
-            if(sizeof($query) === 0){
+            if (sizeof($query) === 0) {
                 // Add image
                 $image = $this->request->getData('image');
-                if($image) {
-    
+                if ($image) {
+
                     $time =  FrozenTime::now()->toUnixString();
-                    $nameImage = $time. "_" . $image->getClientFileName();
-                    $destiny = WWW_ROOT."img/Casinos/".$nameImage;
+                    $nameImage = $time . "_" . $image->getClientFileName();
+                    $destiny = WWW_ROOT . "img/Casinos/" . $nameImage;
                     $image->moveTo($destiny);
                     $casino->image = $nameImage;
-    
                 }
                 $casino->token = uniqid();
                 if ($this->Casinos->save($casino)) {
-                     (__('The casino has been saved.'));
-    
+                    (__('The casino has been saved.'));
+
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('Hubo un error al Guardar el Casino.'));
@@ -106,8 +109,8 @@ class CasinosController extends AppController
         $owners = $this->Casinos->Owner->find('list', ['limit' => 200])->all();
         $business = $this->Casinos->Business->find('list', ['limit' => 200])->all();
 
-        
-        
+
+
 
         $this->set(compact('casino', 'cities', 'states', 'owners', 'business'));
     }
@@ -124,36 +127,35 @@ class CasinosController extends AppController
         $casino = $this->Casinos->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($casino);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             $nameImageOld = $casino->image;
-            
+
             $casino = $this->Casinos->patchEntity($casino, $this->request->getData());
 
             $image = $this->request->getData('image');
 
             $casino->image = $nameImageOld;
 
-            if($image->getClientFileName()) {
+            if ($image->getClientFileName()) {
 
-                if(file_exists(WWW_ROOT."img/Casinos/".$nameImageOld)){
+                if (file_exists(WWW_ROOT . "img/Casinos/" . $nameImageOld)) {
 
-                    unlink(WWW_ROOT."img/Casinos/".$nameImageOld);
-        
+                    unlink(WWW_ROOT . "img/Casinos/" . $nameImageOld);
                 }
 
                 $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time. "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT."img/Casinos/".$nameImage;
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Casinos/" . $nameImage;
                 $image->moveTo($destiny);
-                $casino->image = $nameImage;                
-
+                $casino->image = $nameImage;
             }
 
             $casino->token = uniqid();
 
             if ($this->Casinos->save($casino)) {
-                 (__('The casino has been saved.'));
+                (__('The casino has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -169,9 +171,6 @@ class CasinosController extends AppController
             'contain' => ['City', 'State', 'Owner', 'Business', 'Clientscasinos', 'Machines',],
         ]);
         $this->set(compact('casino', 'cities', 'states', 'owners', 'business', 'clients'));
-
-
-        
     }
 
     /**
@@ -188,14 +187,13 @@ class CasinosController extends AppController
 
         // Delete file
 
-        if(file_exists(WWW_ROOT."img/Casinos/".$casino['image'])){
+        if (file_exists(WWW_ROOT . "img/Casinos/" . $casino['image'])) {
 
-            unlink(WWW_ROOT."img/Casinos/".$casino['image']);
-
+            unlink(WWW_ROOT . "img/Casinos/" . $casino['image']);
         }
 
         if ($this->Casinos->delete($casino)) {
-             (__('The casino has been deleted.'));
+            (__('The casino has been deleted.'));
         } else {
             $this->Flash->error(__('The casino could not be deleted. Please, try again.'));
         }
@@ -203,26 +201,30 @@ class CasinosController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function error() {
-        
+    public function error()
+    {
+        $this->Authorization->skipAuthorization();
     }
 
-    public function thanks() {
-        
+    public function thanks()
+    {
     }
 
-    public function getpdf($id = null) {
-
+    public function getpdf($id = null)
+    {
+        $this->Authorization->skipAuthorization();
         $id = $this->request->getQuery('id');
 
-        $this->viewBuilder()->enableAutoLayout(false); 
+        $this->viewBuilder()->enableAutoLayout(false);
         $casino = $this->Casinos->get($id);
         $machines = $this->fetchTable('Machines')->find('all')->where(['contract_id' => 2, 'casino_id' => $id])->all();
-        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all();   
-        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y')."- 2 month"))])->all();
-        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id])->all();
-        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id])->first();
-        $totalAccountants = $this->fetchTable('Totalaccountants')->find('all')->where(['casino_id' => $id ]);
+        $accountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y') . "- 1 month"))])->all();
+        $lastaccountants = $this->fetchTable('Accountants')->find('all')->where(['casino_id' => $id, 'month_id' => date('m', strtotime(date('d-m-Y') . "- 2 month"))])->all();
+        $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->all();
+        $erasesCant = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->count();
+        $totalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->first();
+        $cantTotalErases = $this->fetchTable('Totalerases')->find('all')->where(['casino_id' => $id, date('m', strtotime(date('d-m-Y') . "- 1 month"))])->count();
+        $totalAccountants = $this->fetchTable('Totalaccountants')->find('all')->where(['casino_id' => $id]);
 
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
@@ -238,23 +240,20 @@ class CasinosController extends AppController
             ]
         );
 
-        $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino', 'erases', 'totalErases', 'totalAccountants'));
+        $this->set(compact('accountants', 'lastaccountants', 'machines', 'casino', 'erases', 'totalErases', 'totalAccountants', 'erasesCant', 'cantTotalErases'));
     }
 
-    public function searchCasinoName($name =  null) 
+    public function searchCasinoName($name =  null)
     {
         $this->autoRender = false;
 
         $name = $this->request->getQuery('name');
 
         $query = $this->Casinos->find('all')->where(['name' => $name])->all();
-        
-        if(sizeof($query) > 0){
+
+        if (sizeof($query) > 0) {
             echo json_encode('error');
             die;
         }
-
     }
-
-    
 }

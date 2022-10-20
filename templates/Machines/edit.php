@@ -85,10 +85,17 @@
                 <div class="mb-3">
                     <div class="row">
                         <div class="col">
-                            <?= $this->Form->control('image', ['type' => 'file', 'class' => 'form-control', 'label' => false, 'require' => false]); ?>
+                            <?= $this->Form->control('image', ['type' => 'file', 'class' => 'form-control', 'label' => false, 'required' => false]); ?>
                         </div>
                         <div class="col">
                             <?= $this->Form->control('dateInstalling', ['class' => 'form-control', 'label' => 'Fecha de Instalación', 'require' => true]) ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col">
+                            <?= $this->Form->control('value', ['type' => 'number', 'class' => 'form-control', 'placeholder' => 'Valor de la maquina', 'label' => false, 'require' => true]) ?>
                         </div>
                     </div>
                 </div>

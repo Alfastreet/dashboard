@@ -45,6 +45,7 @@ class ClientscasinosController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $clientscasino = $this->Clientscasinos->get($id, [
             'contain' => ['Client', 'Casinos'],
         ]);
@@ -67,6 +68,7 @@ class ClientscasinosController extends AppController
         }
 
         $clientscasino = $this->Clientscasinos->newEmptyEntity();
+        $this->Authorization->authorize($clientscasino);
         if ($this->request->is('post')) {
             $clientscasino = $this->Clientscasinos->patchEntity($clientscasino, $this->request->getData());
             if ($this->Clientscasinos->save($clientscasino)) {
@@ -100,6 +102,7 @@ class ClientscasinosController extends AppController
         $clientscasino = $this->Clientscasinos->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($clientscasino);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $clientscasino = $this->Clientscasinos->patchEntity($clientscasino, $this->request->getData());
             if ($this->Clientscasinos->save($clientscasino)) {

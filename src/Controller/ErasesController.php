@@ -61,19 +61,25 @@ class ErasesController extends AppController
      */
     public function add($token = null, $casinoId = null)
     {
+        $this->Authorization->skipAuthorization();
         $token = $this->request->getQuery('token');
         $casinoId = $this->request->getQuery('casinoId');
         $machineId = $this->request->getQuery('machineId');
+
+        $coljuegosValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 2 ])->first()->value;
+        $adminValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 3 ])->first()->value;
+        $iva = $this->fetchTable('dataiportants')->find()->where(['id' => 1])->first()->value;
+        $alfaValue = $this->fetchTable('dataiportants')->find()->where(['id' => 4])->first()->value;
         
         $erase = $this->Erases->newEmptyEntity();
         $erase = $this->Erases->patchEntity($erase, $this->request->getData());
         if ($this->request->is('post')) {
         
         $erase->profit = $erase->cashin - $erase->cashout;
-            $erase->coljuegos = $erase->profit * 0.12;
-            $erase->admin = $erase->coljuegos * 0.01;
-            $erase->total = $erase->profit - $erase->coljuegos - $erase->admin - 144415;
-            $erase->alfastreet = $erase->total * 0.40;
+            $erase->coljuegos = $erase->profit * $coljuegosValue;
+            $erase->admin = $erase->coljuegos * $adminValue;
+            $erase->total = $erase->profit - $erase->coljuegos - $erase->admin - $iva;
+            $erase->alfastreet = $erase->total * $alfaValue;
             $erase->casino_id = $casinoId;
             $erase->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
             $erase->year = date('Y');

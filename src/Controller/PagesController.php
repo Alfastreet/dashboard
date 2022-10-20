@@ -45,6 +45,7 @@ class PagesController extends AppController
      */
     public function display(string ...$path): ?Response
     {
+        $this->Authorization->skipAuthorization();
         if (!$path) {
             return $this->redirect('/');
         }
@@ -70,7 +71,13 @@ class PagesController extends AppController
         $accountantsTotal = $this->fetchTable('Accountants')->find()->count();
         $accountantsSum = $this->fetchTable('Accountants')->find()->select(['alfastreet'])->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all(); 
 
-        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed'));
+        //Query Ordenes de trabajo
+        $orders = $this->fetchTable('Orders')->find()->count();
+        $ordersComplete =  $this->fetchTable('Orders')->find()->where(['orderstatus_id' => 1 ])->count();
+        $ordersPending =  $this->fetchTable('Orders')->find()->where(['orderstatus_id' => 2 ])->count();
+        $ordersCanceled =  $this->fetchTable('Orders')->find()->where(['orderstatus_id' => 3 ])->count();
+
+        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed', 'orders', 'ordersComplete', 'ordersPending', 'ordersCanceled'));
 
         try {
             return $this->render(implode('/', $path));

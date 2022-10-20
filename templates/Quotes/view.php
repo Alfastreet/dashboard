@@ -20,7 +20,9 @@
                     </a>
                 </div>
                 <div class="d-none d-lg-block">
-                    <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']) ?>
+                    <?php if ($isAdmin) : ?>
+                        <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']) ?>
+                    <?php endif ?>
                     <?= $this->Html->link(__('Descargar Cotización'), ['action' => 'getpdf', $quote->id], ['class' => 'btn btn-success me-md-2']) ?>
                     <?php if ($orders !== null) : echo $this->Html->link(__('Ver Orden de trabajo'), ['controller' => 'orders', 'action' => 'view', $orders->id], ['class' => 'btn btn-info me-md-2']);
                     endif; ?>
@@ -31,13 +33,13 @@
                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
                         </svg>
                     </a>
-                    <a href="/quotes/getpdf/<?=$quote->id?>" class="btn btn-success">
+                    <a href="/quotes/getpdf/<?= $quote->id ?>" class="btn btn-success">
                         <svg class="icon">
                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
                         </svg>
                     </a>
                     <?php if ($orders !== null) : ?>
-                        <a href="/orders/view/<?=$orders->id?>" class="btn btn-info">
+                        <a href="/orders/view/<?= $orders->id ?>" class="btn btn-info">
                             <svg class="icon">
                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-tag"></use>
                             </svg>

@@ -18,6 +18,7 @@ class BusinessController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();   
         $this->paginate = [
             'contain' => ['Owner'],
         ];
@@ -35,6 +36,7 @@ class BusinessController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $busines = $this->Business->get($id, [
             'contain' => ['Owner'],
         ]);
@@ -50,6 +52,7 @@ class BusinessController extends AppController
     public function add()
     {
         $busines = $this->Business->newEmptyEntity();
+        $this->Authorization->authorize($busines);
         if ($this->request->is('post')) {
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
             $nit = $busines->nit;
@@ -81,6 +84,7 @@ class BusinessController extends AppController
         $busines = $this->Business->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($busines);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
             if ($this->Business->save($busines)) {
@@ -115,6 +119,7 @@ class BusinessController extends AppController
 
     public function searchBussines($nit = null) 
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
         $nit = $this->request->getQuery('nit');
 

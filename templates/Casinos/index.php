@@ -36,7 +36,9 @@
                                 </div>
                                 <div class="card-footer text-white bg-dark actions d-grid gap-2 d-md-flex justify-content-md-center">
                                     <?= $this->Html->link(__('Ver Casino'), ['action' => 'view', $casino->id, '?' => ['token' => $casino->token]], ['class' => 'btn btn-primary']) ?>
-                                    <?= $this->Html->link(__('Editar Información'), ['action' => 'edit', $casino->id], ['class' => 'btn btn-primary']) ?>
+                                    <?php if ($isAdmin) : ?>
+                                        <?= $this->Html->link(__('Editar Información'), ['action' => 'edit', $casino->id], ['class' => 'btn btn-primary']) ?>
+                                    <?php endif ?>
                                 </div>
                             </div>
                         </div>
@@ -48,4 +50,4 @@
 </div>
 </div>
 
-<?= $this->element('paginator')?>
+<?= $this->element('paginator') ?>

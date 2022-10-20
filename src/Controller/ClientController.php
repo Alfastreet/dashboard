@@ -28,6 +28,7 @@ class ClientController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Clientposition', 'Business'],
         ];
@@ -48,6 +49,7 @@ class ClientController extends AppController
         $client = $this->Client->get($id, [
             'contain' => ['Clientposition', 'Business', 'Clientscasinos'],
         ]);
+        $this->Authorization->authorize($client);
 
         $casinos = $this->fetchTable('casinos')->find('all')->all();
         $this->set(compact('client', 'casinos'));
@@ -60,7 +62,9 @@ class ClientController extends AppController
      */
     public function add()
     {
+
         $client = $this->Client->newEmptyEntity();
+        $this->Authorization->authorize($client);
         if ($this->request->is('post')) {
             
             $client = $this->Client->patchEntity($client, $this->request->getData());
@@ -92,6 +96,7 @@ class ClientController extends AppController
         $client = $this->Client->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($client);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $client = $this->Client->patchEntity($client, $this->request->getData());
             $client->token = uniqid();
@@ -118,6 +123,7 @@ class ClientController extends AppController
     {
         
         $client = $this->Client->get($id);
+        $this->Authorization->authorize($client);
         if ($this->Client->delete($client)) {
              (__('The client has been deleted.'));
         } else {

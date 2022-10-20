@@ -14,6 +14,7 @@
                     <h3 class="card-title mb-0"><?= __('Cotizaciones') ?></h3>
                     <p class="small text-medium-emphasis">Total de cotizaciones registrados a la fecha</p>
                 </div>
+                <?php if($isAdmin) : ?>
                 <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Generar una Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
                 </div>
@@ -24,6 +25,7 @@
                         </svg>
                     </a>
                 </div>
+                <?php endif ?>
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-responsive text-center table-hover" id="myTable">

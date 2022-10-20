@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,24 +15,30 @@ declare(strict_types=1);
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
-use Authentication\AuthenticationService;
-use Authentication\AuthenticationServiceInterface;
-use Authentication\AuthenticationServiceProviderInterface;
-use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\Configure;
-use Cake\Core\ContainerInterface;
-use Cake\Datasource\FactoryLocator;
-use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
-use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Core\ContainerInterface;
 use Cake\ORM\Locator\TableLocator;
+use Cake\Datasource\FactoryLocator;
+use Authentication\AuthenticationService;
 use Cake\Routing\Middleware\AssetMiddleware;
-use Cake\Routing\Middleware\RoutingMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
+use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Authentication\AuthenticationServiceInterface;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\OrmResolver;
+use Authentication\AuthenticationServiceProviderInterface;
 
 /**
  * Application setup class.
@@ -39,7 +46,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication implements AuthenticationServiceProviderInterface
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -66,12 +73,15 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
          */
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit');
+            // $this->Authorization->skipAuthorization();
         }
 
         // Load more plugins here
         $this->addPlugin('CakePdf');
         $this->addPlugin('CsvView');
         $this->addPlugin('Authentication');
+        $this->addPlugin('Authorization');
+        $this->addPlugin('DebugKit');
     }
 
     /**
@@ -100,17 +110,26 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
             ->add(new AuthenticationMiddleware($this))
+            ->add(new AuthorizationMiddleware($this))
 
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
-            ->add(new BodyParserMiddleware());
+            ->add(new BodyParserMiddleware())
 
-            // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
-            // ->add(new CsrfProtectionMiddleware([
-            //     'httponly' => true,
-            // ]));
+        // Cross Site Request Forgery (CSRF) Protection Middleware
+        // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
+        // ->add(new CsrfProtectionMiddleware([
+        //     'httponly' => true,
+        // ]));
+
+        ->add(function ($req, $res, $next) {
+                if ($req->getParam('plugin') === 'DebugKit') {
+                    $req->getAttribute('authorization')->skipAuthorization();
+                }
+                return $next($req, $res);
+            });
+        
 
         return $middlewareQueue;
     }
@@ -155,7 +174,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'username' => 'email',
                 'password' => 'password'
             ]
-        ] );
+        ]);
 
         $authenticaionService->loadAuthenticator('Authentication.Session');
 
@@ -169,4 +188,12 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
         return  $authenticaionService;
     }
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
+    {
+        $resolver = new OrmResolver();
+
+        return new AuthorizationService($resolver);
+    }
+
+    
 }

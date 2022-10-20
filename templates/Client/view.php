@@ -11,17 +11,19 @@
             <div class="d-none d-sm-block">
                 <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
             </div>
-            <div class="d-block d-sm-none">
-                <a href="/client/add" class="btn btn-primary">
-                    <svg class="icon">
-                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
-                    </svg>
-                </a>
-            </div>
-            <div class="">
-                <?= $this->Html->link(__('Editar'), ['action' => 'edit', $client->id], ['class' => 'btn btn-primary me-md-2']) ?>
-                <?= $this->Form->postLink(__('Borrar'), ['action' => 'delete', $client->id], ['confirm' => __('Estas Seguro de eliminar la entrada # {0}?', $client->id), 'class' => 'btn btn-danger me-md-2']) ?>
-            </div>
+            <?php if ($user_init->rol_id === 1) : ?>
+                <div class="d-block d-sm-none">
+                    <a href="/client/add" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
+                        </svg>
+                    </a>
+                </div>
+                <div class="">
+                    <?= $this->Html->link(__('Editar'), ['action' => 'edit', $client->id], ['class' => 'btn btn-primary me-md-2']) ?>
+                    <?= $this->Form->postLink(__('Borrar'), ['action' => 'delete', $client->id], ['confirm' => __('Estas Seguro de eliminar la entrada # {0}?', $client->id), 'class' => 'btn btn-danger me-md-2']) ?>
+                </div>
+            <?php endif ?>
         </div>
     </div>
     <div class="card mb-4">
@@ -59,7 +61,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="related">
-                <h4><?= __('Relacion de los Clientes con los Casicos') ?></h4>
+                <h4><?= __('Relacion de los Clientes con los Casinos') ?></h4>
                 <?php if (!empty($client->clientscasinos)) : ?>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-responsive text-center table-hover">
@@ -83,20 +85,22 @@
                                 <tr>
                                     <td><?= h($clientName) ?></td>
                                     <td><?= h($casinoName) ?></td>
-                                    <td class="actions">
-                                        <div class="btn-group btn-group-toggle mx-3">
-                                            <a class="nav-link nav-group-toggle" href="/Clientscasinos/edit/<?= $clientscasinos->id ?>?casinoid=<?= $casinoId ?>">
-                                                <svg class="nav-icon" width="20" height="20">
-                                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                                                </svg>
-                                            </a>
-                                            <a class="nav-link nav-group-toggle" href="/Clientscasinos/delete/<?= $clientscasinos->id ?>">
-                                                <svg class="nav-icon" width="20" height="20">
-                                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </td>
+                                    <?php if ($user_init->rol_id === 1) : ?>
+                                        <td class="actions">
+                                            <div class="btn-group btn-group-toggle mx-3">
+                                                <a class="nav-link nav-group-toggle" href="/Clientscasinos/edit/<?= $clientscasinos->id ?>?casinoid=<?= $casinoId ?>">
+                                                    <svg class="nav-icon" width="20" height="20">
+                                                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                                                    </svg>
+                                                </a>
+                                                <a class="nav-link nav-group-toggle" href="/Clientscasinos/delete/<?= $clientscasinos->id ?>">
+                                                    <svg class="nav-icon" width="20" height="20">
+                                                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    <?php endif ?>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

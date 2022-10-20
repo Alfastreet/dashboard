@@ -56,7 +56,9 @@
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todas las empresas', ['controller' => 'Business', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-                <li class="nav-items"><?= $this->Html->link('Registrar Empresa', ['controller' => 'Business', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php if ($user_init->rol_id === 1 || $user_init->rol_id === 2) : ?>
+                    <li class="nav-items"><?= $this->Html->link('Registrar Empresa', ['controller' => 'Business', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php endif ?>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
@@ -68,7 +70,9 @@
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todos los Clientes', ['controller' => 'Client', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-                <li class="nav-items"><?= $this->Html->link('Registrar Cliente', ['controller' => 'Client', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php if ($user_init->rol_id === 1) : ?>
+                    <li class="nav-items"><?= $this->Html->link('Registrar Cliente', ['controller' => 'Client', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php endif ?>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
@@ -81,7 +85,9 @@
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todos los Casinos', ['controller' => 'Casinos', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-                <li class="nav-items"><?= $this->Html->link('Registrar Casino', ['controller' => 'Casinos', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php if ($user_init->rol_id === 1 || $user_init->rol_id === 2) : ?>
+                    <li class="nav-items"><?= $this->Html->link('Registrar Casino', ['controller' => 'Casinos', 'action' => 'add'], ['class' => 'nav-link']) ?></li>
+                <?php endif ?>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
@@ -130,25 +136,27 @@
 
         <!-- Submenus -->
         <li class="nav-title">Administración General</li>
+        <?php if ($user_init->rol_id === 1) : ?>
+            <!-- Submenus de navegacion -->
+            <li class="nav-group">
+                <a class="nav-link nav-group-toggle" href="#">
+                    <svg class="nav-icon">
+                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                    </svg><?= __('Usuarios') ?>
+                </a>
+                <ul class="nav-group-items">
+                    <li class="nav-item">
+                        <?= $this->Html->link('Ver Todos los Usuarios', ['controller' => 'Users', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Añadir Nuevo Usuario', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link']) ?>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin Submenus de navegacion -->
+        <?php endif ?>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
-                </svg><?= __('Usuarios') ?>
-            </a>
-            <ul class="nav-group-items">
-                <li class="nav-item">
-                    <?= $this->Html->link('Ver Todos los Usuarios', ['controller' => 'Users', 'action' => 'index'], ['class' => 'nav-link']) ?>
-                </li>
-                <li class="nav-item">
-                    <?= $this->Html->link('Añadir Nuevo Usuario', ['controller' => 'Users', 'action' => 'add'], ['class' => 'nav-link']) ?>
-                </li>
-            </ul>
-        </li>
-        <!-- Fin Submenus de navegacion -->
-         <!-- Submenus de navegacion -->
-         <li class="nav-group">
             <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-router"></use>
@@ -167,5 +175,3 @@
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
-
-

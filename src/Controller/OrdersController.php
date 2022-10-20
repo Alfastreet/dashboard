@@ -35,7 +35,9 @@ class OrdersController extends AppController
             'contain' => ['Quotes', 'Users', 'Orderstatuses'],
         ];
         $orders = $this->paginate($this->Orders);
-
+        $this->Authorization->skipAuthorization();
+        $user = $this->request->getAttribute('identity');
+        $query = $user->applyScope('index', $this->Orders->find()->contain('Users'));
         $this->set(compact('orders'));
     }
 
@@ -51,6 +53,7 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id, [
             'contain' => ['Quotes', 'Users', 'Orderstatuses', 'Machines'],
         ]);
+        $this->Authorization->authorize($order);
 
         $clientFetch = $this->fetchTable('Business')->find()->all();
         $detailsquotes = $this->fetchTable('Detailsquotes')->find('all')->where(['quote_id' => $order->quote_id])->all();
@@ -74,6 +77,7 @@ class OrdersController extends AppController
             throw new NotFoundException();
         }
         $order = $this->Orders->newEmptyEntity();
+        $this->Authorization->authorize($order);
         if ($this->request->is('post')) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
             // echo json_encode($order);
@@ -86,7 +90,7 @@ class OrdersController extends AppController
             die;
         }
         $quotes = $this->Orders->Quotes->find()->where(['id' => $quoteId])->first();
-        $users = $this->Orders->Users->find('list', ['limit' => 200])->where(['rol_id' => 3])->all();
+        $users = $this->Orders->Users->find('list', ['limit' => 200])->where(['rol_id' => 4])->all();
         $casino = $this->fetchTable('Casinos')->find()->select(['id'])->where(['business_id' => $clientId])->first();
         $machine = $this->Orders->Machines->find('list', ['limit' => 200])->where(['casino_id' => $casino->id])->all();
         $detailsquotes = $this->fetchTable('Detailsquotes')->find('all')->where(['quote_id' => $quoteId])->all();
@@ -131,6 +135,7 @@ class OrdersController extends AppController
 
     public function completedOrder($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
 
         $id = $this->request->getQuery('id');
@@ -153,6 +158,7 @@ class OrdersController extends AppController
 
     public function canceledOrder($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
 
         $id = $this->request->getQuery('id');
@@ -177,14 +183,9 @@ class OrdersController extends AppController
     {
         $this->viewBuilder()->enableAutoLayout(false);
         $order = $this->Orders->get($id);
+        $this->Authorization->authorize($order);
 
         $data = $this->db->execute('SELECT MA.serial, MMO.name AS modelMachine, Q.comments AS comment, QS.invoice, O.order_id, OS.status, O.comments, O.*, B.name AS businessName, D.id, D.amount, D.value, P.name AS productName, M.name AS moneyName, U.name, U.lastName, C.name AS casinoName, C.address, C.phone FROM orders O INNER JOIN business B ON O.client_id = B.id INNER JOIN detailsquotes D ON O.quote_id = D.quote_id INNER JOIN monies M ON D.money_id = M.id INNER JOIN parts P ON D.product_id = P.id INNER JOIN users U ON o.user_id = U.id INNER JOIN orderstatuses OS ON O.orderstatus_id = OS.id INNER JOIN casinos C ON C.business_id = B.id INNER JOIN quotes Q ON O.quote_id = Q.id INNER JOIN quotestatuses QS ON QS.quote_id = O.quote_id INNER JOIN machines MA ON O.machine_id = MA.id INNER JOIN model MMO ON MA.model_id = MMO.ID WHERE O.id = '.$order->id.' LIMIT 1')->fetchAll('obj');
-
-        // $data = $this->Orders->find()->select([
-        //     'order_id', 
-        //     'user_id' => 'Users.name',
-        // ])->innerJoinWith('Users')
-        // ->where(['id' => $id]);
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
         $this->viewBuilder()->setOption(

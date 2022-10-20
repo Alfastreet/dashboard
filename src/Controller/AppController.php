@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,9 +15,12 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
+
 
 /**
  * Application Controller
@@ -44,6 +48,7 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
+        $this->loadComponent('Authorization.Authorization');
 
 
         /*
@@ -53,5 +58,11 @@ class AppController extends Controller
         //$this->loadComponent('FormProtection');
     }
 
-
+    public function beforeFilter(EventInterface $event)
+    {
+        $this->set('user_init', $this->request->getSession()->read('Auth'));
+        $this->set('isAdmin', $this->request->getSession()->read('Auth.rol_id') === 1 ? true :( $this->request->getSession()->read('Auth.rol_id') === 2 ? true : false));
+        $this->set('isTecBoss', $this->request->getSession()->read('Auth.rol_id') === 3 ? true : false );
+        $this->set('isTec', $this->request->getSession()->read('Auth.rol_id') === 4 ? true : false );
+    }
 }

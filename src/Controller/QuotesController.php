@@ -30,8 +30,7 @@ class QuotesController extends AppController
      */
     public function index()
     {
-
-
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Users', 'Business', 'Status'],
         ];
@@ -49,6 +48,7 @@ class QuotesController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $quote = $this->Quotes->get($id, [
             'contain' => ['Users', 'Business', 'Status', 'Detailsquotes'],
         ]);
@@ -68,6 +68,7 @@ class QuotesController extends AppController
     public function add()
     {
         $quote = $this->Quotes->newEmptyEntity();
+        $this->Authorization->authorize($quote);
         if ($this->request->is('post')) {
 
             $quote = $this->Quotes->patchEntity($quote, $this->request->getData());
@@ -145,43 +146,9 @@ class QuotesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-
-    // public function pdf()
-    // {
-
-    //     $this->autoRender = false;
-
-    //     if ($this->request->is('ajax')) {
-
-    //         $data = $_POST;
-
-    //         if (empty($data['codClient'])) {
-    //             $clientId = 1;
-    //         }
-
-    //         $clientId = $data['codClient'];
-
-    //         $token = md5($data['token']);
-    //         $user = 8;
-
-    //         $query = $this->db->execute('SELECT * FROM tmpdetailsquote WHERE token = "' . $token . '"')->fetchAll('assoc');
-
-
-    //         if ($query) {
-
-    //             $queryPros = $this->db->execute('CALL procesar_cotizacion(' . $user . ', ' . $clientId . ', "' . $token . '")')->fetchAll('assoc');
-
-    //             echo json_encode($queryPros, JSON_UNESCAPED_UNICODE);
-    //         } else {
-    //             echo 'error';
-    //         }
-    //     }
-    // }
-
-
     public function getpdf($id = null)
     {
-        
+        $this->Authorization->skipAuthorization();
         $this->viewBuilder()->enableAutoLayout(false);
         $quote = $this->Quotes->get($id);
 
@@ -210,10 +177,9 @@ class QuotesController extends AppController
 
     public function search()
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $business_id = $this->request->getQuery("business_id");
-
         $user = $this->db->execute("SELECT c.id, c.name, cp.position FROM client c INNER JOIN clientposition cp ON c.position_id = cp.id WHERE c.business_id = " . $business_id)->fetchAll('assoc');
 
         if ($user !== null || $user !== ['']) {
@@ -224,39 +190,30 @@ class QuotesController extends AppController
 
     public function getCasino()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $client_id = $this->request->getQuery('client_id');
-
         $casino = $this->db->execute('SELECT cs.id, cs.name FROM clientscasinos clcs  INNER JOIN casinos cs ON clcs.casino_id = cs.id WHERE clcs.client_id = ' . $client_id)->fetchAll('assoc');
-
         echo json_encode($casino);
         die;
     }
 
     public function getPart()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $serial_id = $this->request->getQuery('serial_id');
-
         $serial = $this->db->execute("SELECT * FROM parts WHERE serial = '" . $serial_id . "'")->fetchAll('assoc');
-
         echo json_encode($serial);
         die;
     }
 
     public function addTmpQuote()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $data = $_POST;
-
         $token = rand();
-
         $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, money_id, value, token) VALUES (' . $data['typeProduct_id'] . ', ' . $data['product_id'] . ', ' . $data['amount'] . ', ' . $data['money_id'] . ', ' . $data['value'] . ', ' . $token . ')');
         if ($query) {
             echo json_encode('ok');
@@ -266,30 +223,23 @@ class QuotesController extends AppController
 
     public function detailsQuote()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN monies m ON p.money_id = m.id')->fetchAll('assoc');
-
         echo json_encode($query);
         exit;
     }
 
     public function dataQuote()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $register = $this->db->execute('SELECT * FROM tmpdetailsquote')->fetchAll('assoc');
-
-
         if ($register) {
             $data = $_POST;
             $insertQuoteP1 = $this->db->execute('INSERT INTO quotes(user_id, business_id) VALUES (' . $data['user_id'] . ', ' . $data['business_id'] . ')');
-
             if ($insertQuoteP1) {
                 $selectLast = $this->db->execute('SELECT * FROM quotes ORDER BY ID DESC LIMIT 1')->fetchAll('assoc');
-
                 if ($selectLast) {
                     foreach ($register as $res) {
                         $insertDetails = $this->db->execute('INSERT INTO detailsquotes(quote_id, typeProduct_id, product_id, amount, money_id, value) VALUES (' . $selectLast[0]['id'] . ', ' . $res['typeProduct_id'] . ', ' . $res['product_id'] . ', ' . $res['amount'] . ', ' . $res['money_id'] . ', ' . $res['value'] . ')');
@@ -316,22 +266,19 @@ class QuotesController extends AppController
 
     public function deleteTmp()
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $delete = $this->db->execute('DELETE FROM tmpdetailsquote');
-
         echo json_encode('delete');
         exit;
     }
 
     public function comments($value = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $value = $_GET['comment'];
-
         $insertComment = $this->db->execute("UPDATE quotes SET comments = '" . $value . "' ORDER BY ID DESC LIMIT 1");
-
         if ($insertComment) {
             echo json_encode('ok');
             exit;
@@ -340,19 +287,18 @@ class QuotesController extends AppController
 
     public function changestatus($quote = null, $status = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-
         $quote = $_GET['quote'];
         $status = $_GET['status'];
-
         $this->db->execute("UPDATE quotes SET estatus_id = '" . $status . "' WHERE id = '" . $quote . "'");
-
         echo json_encode('ok');
         die;
     }
 
     public function grafica()
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
         // Valores con PHP. Estos podrían venir de una base de datos o de cualquier lugar del servidor
         $etiquetas = ["Enero", "Febrero", "Marzo", "Abril"];

@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\AgreementsTable;
+use App\Model\Table\EstimatedsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\AgreementsTable Test Case
+ * App\Model\Table\EstimatedsTable Test Case
  */
-class AgreementsTableTest extends TestCase
+class EstimatedsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\AgreementsTable
+     * @var \App\Model\Table\EstimatedsTable
      */
-    protected $Agreements;
+    protected $Estimateds;
 
     /**
      * Fixtures
@@ -24,11 +24,8 @@ class AgreementsTableTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
+        'app.Estimateds',
         'app.Agreements',
-        'app.Machines',
-        'app.Client',
-        'app.Business',
-        'app.Agreementstatuses',
     ];
 
     /**
@@ -39,8 +36,8 @@ class AgreementsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Agreements') ? [] : ['className' => AgreementsTable::class];
-        $this->Agreements = $this->getTableLocator()->get('Agreements', $config);
+        $config = $this->getTableLocator()->exists('Estimateds') ? [] : ['className' => EstimatedsTable::class];
+        $this->Estimateds = $this->getTableLocator()->get('Estimateds', $config);
     }
 
     /**
@@ -50,7 +47,7 @@ class AgreementsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Agreements);
+        unset($this->Estimateds);
 
         parent::tearDown();
     }
@@ -59,7 +56,7 @@ class AgreementsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\AgreementsTable::validationDefault()
+     * @uses \App\Model\Table\EstimatedsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -70,7 +67,7 @@ class AgreementsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\AgreementsTable::buildRules()
+     * @uses \App\Model\Table\EstimatedsTable::buildRules()
      */
     public function testBuildRules(): void
     {

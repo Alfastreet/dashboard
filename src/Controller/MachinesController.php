@@ -42,7 +42,7 @@ class MachinesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $machine = $this->Machines->get($id, [
-            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract', 'Machinepart'],
+            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
         ]);
 
         $this->set(compact('machine'));

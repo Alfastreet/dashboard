@@ -11,7 +11,7 @@
 <div class="mb-3">
     <div class="row">
         <div class="col">
-            <?= $this->Form->control('name', ['class' => 'form-control', 'placeholder' => 'Nombre del Cliente', 'label' => false]) ?>
+            <?= $this->Form->control('name', ['class' => 'form-control', 'placeholder' => 'Nombre del Cliente', 'label' => false, 'id' => 'clientName']) ?>
         </div>
         <div class="col">
             <?= $this->Form->control('phone', ['class' => 'form-control', 'placeholder' => 'Telefono', 'label' => false]) ?>

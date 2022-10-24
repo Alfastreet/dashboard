@@ -33,29 +33,29 @@
                                 <div class="mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <?= $this->Form->control('serial', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Serial']); ?>
+                                            <?= $this->Form->control('serial', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Serial', 'id' => 'serial']); ?>
                                         </div>
                                         <div class="col">
-                                            <?= $this->Form->control('name', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Nombre de la pieza']); ?>
+                                            <?= $this->Form->control('name', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Nombre de la pieza', 'id' => 'name']); ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="row">
                                         <div class="col">
-                                            <?= $this->Form->control('money_id', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Tipo de Moneda']); ?>
+                                            <?= $this->Form->control('money_id', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Tipo de Moneda', 'id' => 'money']); ?>
                                         </div>
                                         <div class="col">
-                                            <?= $this->Form->control('value', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Valor de la pieza']); ?>
+                                            <?= $this->Form->control('value', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Valor de la pieza', 'id' => 'value']); ?>
                                         </div>
                                         <div class="col">
-                                            <?= $this->Form->control('amount', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Cantidad disponible']); ?>
+                                            <?= $this->Form->control('amount', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Cantidad disponible', 'id' => 'amount']); ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?= $this->Form->button(__('Añadir'), ['class' => 'btn btn-primary']) ?>
+                        <?= $this->Form->button(__('Añadir'), ['class' => 'btn btn-primary', 'id' => 'anadir']) ?>
                         <?= $this->Form->end() ?>
                     </div>
                 </div>

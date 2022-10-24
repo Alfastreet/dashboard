@@ -30,10 +30,12 @@
                 <div class="business form content">
                     <?= $this->Form->create($client, ['class' => 'row g-3 needs-validation']) ?>
                     <?php include_once __DIR__ . '/layouts/form.php' ?>
-                    <?= $this->Form->button(__('Enviar'), ['class' => 'btn btn-primary']) ?>
+                    <?= $this->Form->button(__('Enviar'), ['class' => 'btn btn-primary', 'id' => 'add']) ?>
                     <?= $this->Form->end() ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?= $this->Html->script('client') ?>

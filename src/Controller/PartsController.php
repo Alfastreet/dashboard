@@ -61,6 +61,7 @@ class PartsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $part = $this->Parts->newEmptyEntity();
         if ($this->request->is('post')) {
 
@@ -178,5 +179,22 @@ class PartsController extends AppController
             echo json_encode($serial);
             die;
         }
+    }
+
+    public function searchpart($serial = null) 
+    {
+        $this->autoRender = false;
+        $serial = $this->request->getQuery('serial');
+
+        $query = $this->Parts->find()->where(['serial' => $serial])->count();
+
+        if($query === 0){
+            echo json_encode('ok');
+            die;
+        }
+
+        echo json_encode('error');
+        die;
+
     }
 }

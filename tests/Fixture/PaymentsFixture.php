@@ -6,9 +6,9 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * AgreementsFixture
+ * PaymentsFixture
  */
-class AgreementsFixture extends TestFixture
+class PaymentsFixture extends TestFixture
 {
     /**
      * Init method
@@ -20,19 +20,11 @@ class AgreementsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'client_id' => 1,
-                'business_id' => 1,
-                'machine_id' => 1,
-                'discount' => 'Lorem ipsum dolor sit amet',
-                'agreementvalue' => 'Lorem ipsum dolor sit amet',
-                'nquote' => 'Lorem ipsum dolor sit amet',
-                'quoteini' => 'Lorem ipsum dolor sit amet',
-                'separation' => 'Lorem ipsum dolor sit amet',
-                'agreementstatus_id' => 1,
-                'datesigned' => '2022-10-24',
+                'agreement_id' => 1,
+                'paymentquote' => 'Lorem ipsum dolor sit amet',
+                'valuequote' => 'Lorem ipsum dolor sit amet',
+                'paymentstatus_id' => 1,
                 'comments' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'percentinicial' => 'Lorem ipsum dolor sit amet',
-                'quotevalue' => 'Lorem ipsum dolor sit amet',
             ],
         ];
         parent::init();

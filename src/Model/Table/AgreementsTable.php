@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -45,21 +44,27 @@ class AgreementsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Machines', [
-            'foreignKey' => 'machine_id',
+        $this->belongsTo('Business', [
+            'foreignKey' => 'business_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Client', [
             'foreignKey' => 'client_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Business', [
-            'foreignKey' => 'business_id',
+        $this->belongsTo('Machines', [
+            'foreignKey' => 'machine_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Agreementstatuses', [
             'foreignKey' => 'agreementstatus_id',
             'joinType' => 'INNER',
+        ]);
+        $this->hasMany('Estimateds', [
+            'foreignKey' => 'agreement_id',
+        ]);
+        $this->hasMany('Payments', [
+            'foreignKey' => 'agreement_id',
         ]);
     }
 
@@ -83,7 +88,6 @@ class AgreementsTable extends Table
 
         $validator
             ->integer('machine_id')
-            ->requirePresence('machine_id', 'create')
             ->notEmptyString('machine_id');
 
         $validator
@@ -118,13 +122,11 @@ class AgreementsTable extends Table
 
         $validator
             ->integer('agreementstatus_id')
-            ->requirePresence('agreementstatus_id', 'create')
             ->notEmptyString('agreementstatus_id');
 
         $validator
             ->date('datesigned')
-            ->requirePresence('datesigned', 'create')
-            ->notEmptyDate('datesigned');
+            ->allowEmptyDate('datesigned');
 
         $validator
             ->scalar('comments')
@@ -135,8 +137,12 @@ class AgreementsTable extends Table
         $validator
             ->scalar('percentinicial')
             ->maxLength('percentinicial', 255)
-            ->requirePresence('percentinicial', 'create')
-            ->notEmptyString('percentinicial');
+            ->allowEmptyString('percentinicial');
+
+        $validator
+            ->scalar('quotevalue')
+            ->maxLength('quotevalue', 255)
+            ->allowEmptyString('quotevalue');
 
         return $validator;
     }
@@ -150,9 +156,9 @@ class AgreementsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->add($rules->existsIn('client_id', 'Client'), ['errorField' => 'client_id']);
+        $rules->add($rules->existsIn('business_id', 'Business'), ['errorField' => 'business_id']);
         $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
-        $rules->add($rules->existsIn('client_id', 'Client'), ['errorField' => 'machine_id']);
-        $rules->add($rules->existsIn('business_id', 'Business'), ['errorField' => 'machine_id']);
         $rules->add($rules->existsIn('agreementstatus_id', 'Agreementstatuses'), ['errorField' => 'agreementstatus_id']);
 
         return $rules;

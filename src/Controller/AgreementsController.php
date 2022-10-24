@@ -18,8 +18,10 @@ class AgreementsController extends AppController
      */
     public function index()
     {
+        
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
-            'contain' => ['Machines', 'Agreementstatuses'],
+            'contain' => ['Machines', 'Agreementstatuses', 'Client', 'Business'],
         ];
         $agreements = $this->paginate($this->Agreements);
 
@@ -35,8 +37,9 @@ class AgreementsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $agreement = $this->Agreements->get($id, [
-            'contain' => ['Machines', 'Agreementstatuses'],
+            'contain' => ['Machines', 'Agreementstatuses', 'Client', 'Business'],
         ]);
 
         $this->set(compact('agreement'));
@@ -49,15 +52,20 @@ class AgreementsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $agreement = $this->Agreements->newEmptyEntity();
         if ($this->request->is('post')) {
             $agreement = $this->Agreements->patchEntity($agreement, $this->request->getData());
+            $agreement->agreementstatus_id = 2;
+            $agreement->datesigned = null;
+            // echo json_encode($agreement);
+            // die;
             if ($this->Agreements->save($agreement)) {
-                $this->Flash->success(__('The agreement has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                echo json_encode('ok');
+                die;
             }
-            $this->Flash->error(__('The agreement could not be saved. Please, try again.'));
+            echo json_encode('error');
+            die;
         }
         $machines = $this->Agreements->Machines->find('list', ['limit' => 200])->all();
         $clients = $this->Agreements->Client->find('list', ['limit' => 200])->all();
@@ -92,23 +100,14 @@ class AgreementsController extends AppController
         $this->set(compact('agreement', 'machines', 'agreementstatuses'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Agreement id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+   
+    public function searchagreement()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $agreement = $this->Agreements->get($id);
-        if ($this->Agreements->delete($agreement)) {
-            $this->Flash->success(__('The agreement has been deleted.'));
-        } else {
-            $this->Flash->error(__('The agreement could not be deleted. Please, try again.'));
-        }
+        $this->Authorization->skipAuthorization();
+        $this->autoRender = false;
+        $query = $this->Agreements->find()->order(['id' => 'DESC'])->limit(1)->first();
+        echo json_encode($query);
+        die;
 
-        return $this->redirect(['action' => 'index']);
     }
 }

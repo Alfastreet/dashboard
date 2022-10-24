@@ -47,7 +47,7 @@ if ($quotesTotal !== 0) {
     $percentRechazed = round($quotesRechazed / $quotesTotal  * 100);
 }
 
-if($orders !== 0) {
+if ($orders !== 0) {
     $ordersApp = round($ordersComplete / $orders * 100);
     $ordersP = round($ordersPending / $orders * 100);
     $ordersCan = round($ordersCanceled / $orders * 100);
@@ -150,66 +150,69 @@ if($orders !== 0) {
     <?php endif ?>
 </div>
 
-<?php if($isAdmin || $isTecBoss):  ?>
+<?php if ($isAdmin || $isTecBoss) :  ?>
 
-<div class="row">
-    <!-- Col Ordenes de trabajo -->
+    <div class="row">
+        <!-- Col Ordenes de trabajo -->
 
-    <div class="col-sm-6 col-lg-6">
-        <div class="card mb-4 text-white bg-info">
-            <div class="card-body pb-0 d-flex justify-content-between align-items-start">
-                <div>
-                    <div class="fw-bold"><?= __('Ordenes de trabajo') ?></div>
-                    <div class="fs-4 fw-semibold">
-                        <?= h($orders) ?>
-                        <span class="fs-6 fw-normal"> <?= __('(100%)') ?> </span>
-                        <!-- Aqui ira el total de las participaciones Ingresadas en el año  -->
-                    </div>
-
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon">
-                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-options"></use>
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="/orders"><?= __('Ver todas las Ordenes') ?></a>
-                    </div>
-                </div>
-            </div>
-            <div class="c-chart-wrapper mt-3 mx-3" style="height:100%;">
-                <!-- <canvas class="chart" id="card-chart1" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas> -->
-                <div class="row">
-                    <div class="col">
-                        <div class="fw-bold"><?= __('Aprobadas') ?></div>
+        <div class="col-sm-6 col-lg-6">
+            <div class="card mb-4 text-white bg-info">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="fw-bold"><?= __('Ordenes de trabajo') ?></div>
                         <div class="fs-4 fw-semibold">
-                            <?= __($ordersComplete) ?>
-                            <span class="fs-6 fw-normal"> <?= __('(' . $ordersApp . '%)') ?></span>
+                            <?= h($orders) ?>
+                            <span class="fs-6 fw-normal"> <?= __('(100%)') ?> </span>
+                            <!-- Aqui ira el total de las participaciones Ingresadas en el año  -->
+                        </div>
+
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="icon">
+                                <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-options"></use>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="/orders"><?= __('Ver todas las Ordenes') ?></a>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="fw-bold"><?= __('Pendientes') ?></div>
-                        <div class="fs-4 fw-semibold">
-                            <?= __($ordersPending) ?>
-                            <span class="fs-6 fw-normal"> <?= __('(' . $ordersP . '%)') ?></span>
+                </div>
+                <div class="c-chart-wrapper mt-3 mx-3" style="height:100%;">
+                    <!-- <canvas class="chart" id="card-chart1" height="70" width="225" style="display: block; box-sizing: border-box; height: 70px; width: 225px;"></canvas> -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="fw-bold"><?= __('Aprobadas') ?></div>
+                            <div class="fs-4 fw-semibold">
+                                <?= __($ordersComplete) ?>
+                                <span class="fs-6 fw-normal"> <?= __('(' . $ordersApp . '%)') ?></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col mb-3">
-                        <div class="fw-bold"><?= __('Rechazadas') ?></div>
-                        <div class="fs-4 fw-semibold">
-                            <?= __($ordersCanceled) ?>
-                            <span class="fs-6 fw-normal"> <?= __('(' . $ordersCan . '%)') ?></span>
+                        <div class="col">
+                            <div class="fw-bold"><?= __('Pendientes') ?></div>
+                            <div class="fs-4 fw-semibold">
+                                <?= __($ordersPending) ?>
+                                <span class="fs-6 fw-normal"> <?= __('(' . $ordersP . '%)') ?></span>
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <div class="fw-bold"><?= __('Rechazadas') ?></div>
+                            <div class="fs-4 fw-semibold">
+                                <?= __($ordersCanceled) ?>
+                                <span class="fs-6 fw-normal"> <?= __('(' . $ordersCan . '%)') ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <?php endif ?>
 
+<div>
+    <canvas id="myChart"></canvas>
+</div>
 
 <!-- <?php
         $vCuota = 3500;
@@ -229,5 +232,48 @@ if($orders !== 0) {
         echo $impuesto + $vCuota;
 
         ?> -->
-
-<?= $this->Html->script('graficas') ?>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    /*
+Encierro todo en una función asíncrona para poder usar async y await cómodamente
+https://parzibyte.me/blog
+*/
+    (async () => {
+        // Llamar a nuestra API. Puedes usar cualquier librería para la llamada, yo uso fetch, que viene nativamente en JS
+        const respuestaRaw = await fetch(`${window.location.protocol}//${window.location.hostname}/users/data`);
+        // Decodificar como JSON
+        const respuesta = await respuestaRaw.json();
+        // Ahora ya tenemos las etiquetas y datos dentro de "respuesta"
+        // Obtener una referencia al elemento canvas del DOM
+        const $grafica = document.querySelector("#grafica");
+        const etiquetas = respuesta.etiquetas; // <- Aquí estamos pasando el valor traído usando AJAX
+        // Podemos tener varios conjuntos de datos. Comencemos con uno
+        const datosVentas2020 = {
+            label: "Ventas por mes",
+            // Pasar los datos igualmente desde PHP
+            data: respuesta.datos, // <- Aquí estamos pasando el valor traído usando AJAX
+            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+            borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
+            borderWidth: 1, // Ancho del borde
+        };
+        new Chart($grafica, {
+            type: 'line', // Tipo de gráfica
+            data: {
+                labels: etiquetas,
+                datasets: [
+                    datosVentas2020,
+                    // Aquí más datos...
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                },
+            }
+        });
+    })();
+</script>

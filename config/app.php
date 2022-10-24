@@ -114,10 +114,18 @@ return [
      * Configure the cache adapters.
      */
     'Cache' => [
-        'default' => [
-            'className' => FileEngine::class,
+        'short' => [
+            'className' => 'File',
+            'duration' => '+1 hours',
             'path' => CACHE,
-            'url' => env('CACHE_DEFAULT_URL', null),
+            'prefix' => 'cake_short_'
+        ],
+        // Using a fully namespaced name.
+        'long' => [
+            'className' => 'Cake\Cache\Engine\FileEngine',
+            'duration' => '+1 week',
+            'probability' => 100,
+            'path' => CACHE . 'long' . DS,
         ],
 
         /*

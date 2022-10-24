@@ -147,5 +147,35 @@ class ClientController extends AppController
 
     }
 
+    public function searchclient($client = null)
+    {
+        $this->autoRender = false;
+        $client = $this->request->getQuery('client');
+
+        $query = $this->Client->find()->where(['name' => $client])->count();
+
+        if($query === 1){
+            echo json_encode('error');
+            die;
+        }
+        echo json_encode('ok');
+        die;
+    }
+
+    public function searchClientBusiness($id = null)
+    {
+        $this->autoRender = false;
+        $id = $this->request->getQuery('id');
+
+        $query = $this->Client->find()->select(['id', 'name'])->where(['business_id' => $id])->all();
+
+        if(sizeof($query) !== 0){
+            echo json_encode($query);
+            die;
+        }
+        echo json_encode('error');
+        die;
+
+    }
     
 }

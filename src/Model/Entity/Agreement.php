@@ -18,10 +18,14 @@ use Cake\ORM\Entity;
  * @property string $quoteini
  * @property string $separation
  * @property int $agreementstatus_id
- * @property \Cake\I18n\FrozenDate $datesigned
+ * @property \Cake\I18n\FrozenDate|null $datesigned
  * @property string $comments
+ * @property string|null $percentinicial
+ * @property string|null $quotevalue
  *
  * @property \App\Model\Entity\Machine $machine
+ * @property \App\Model\Entity\Client $client
+ * @property \App\Model\Entity\Busines $busines
  * @property \App\Model\Entity\Agreementstatus $agreementstatus
  */
 class Agreement extends Entity
@@ -47,8 +51,11 @@ class Agreement extends Entity
         'agreementstatus_id' => true,
         'datesigned' => true,
         'comments' => true,
-        'machine' => true,
-        'agreementstatus' => true,
         'percentinicial' => true,
+        'quotevalue' => true,
+        'machine' => true,
+        'client' => true,
+        'busines' => true,
+        'agreementstatus' => true,
     ];
 }

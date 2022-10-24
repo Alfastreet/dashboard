@@ -35,10 +35,10 @@
                                 <h4 class="text-center mb-3"><?= __('Datos Basicos del Contrato') ?></h4>
                                 <div class="row d-block d-sm-flex">
                                     <div class="col mb-3">
-                                        <?= $this->Form->control('business_id', ['class' => 'form-select', 'id' => 'business', 'label' => false, 'empty' => ['' => 'Empresa Dirigida']]) ?>
+                                        <?= $this->Form->control('business_id', ['options' => $business,  'class' => 'form-select', 'id' => 'business', 'label' => false, 'empty' => ['' => 'Empresa Dirigida']]) ?>
                                     </div>
                                     <div class="col mb-3">
-                                        <?= $this->Form->control('client_id', ['class' => 'form-select', 'id' => 'client', 'label' => false, 'empty' => ['' => 'Representante Legal']]) ?>
+                                        <select name="client_id" id="client" class="form-select"></select>
                                     </div>
                                     <div class="col mb-3">
                                         <?= $this->Form->control('machine_id', ['class' => 'form-select', 'id' => 'machine', 'label' => false, 'empty' => ['0' => 'Maquina']]) ?>
@@ -101,7 +101,8 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-floating">
-                                                <?= $this->Form->control('comments', ['class' => 'form-control', 'id' => 'floatingTextarea', 'label' => false, 'placeholder' => 'Comentarios']) ?>
+                                                <?= $this->Form->control('comments', ['class' => 'form-control', 'id' => 'comments', 'label' => false, 'placeholder' => 'Comentarios']) ?>
+                                                <input type="hidden" id="quotevalue" value="">
                                             </div>
                                         </div>
                                     </div>

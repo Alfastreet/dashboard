@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
+use Cake\Utility\Security;
+use Cake\Event\EventInterface;
+use Cake\Mailer\TransportFactory;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 
 /**
  * Users Controller
@@ -15,6 +20,49 @@ use Cake\I18n\FrozenTime;
  */
 class UsersController extends AppController
 {
+
+    public function forgotpass()
+    {
+        $this->Authorization->skipAuthorization();
+        if($this->request->is('post')){
+            $email = $this->request->getData('email');
+            $thisToken = Security::hash(Security::randomBytes(25));
+
+            $user = $this->Users->find('all')->where(['email' => $email])->first();
+            $user->password = '';
+            $user->token = $thisToken;
+            
+            if($this->Users->save($user)){
+                $this->Flash->success('El link de reinicio de contraseña ha sido enviado al correo ('.$email.'),  Verifica tu bandeja de entrada o tu spam');
+
+                $emailSet = new Mailer('default');
+                $emailSet->setEmailFormat('html');
+                $emailSet->setFrom('Ingenieria@alfastreet.co', 'Departamento de Sistemas');
+                $emailSet->setSubject('Confirmar el reseteo de tu contraseña');
+                $emailSet->setTo($email);
+                $emailSet->deliver('Hola '.$email.'<br/> Por favor has click aqui para reiniciar tu contraseña: <br/><br/><br/><a href="localhost/users/resetpass/'.$thisToken.'">Reiniciar Contraseña</a>');
+            }
+        }
+    }
+
+    public function resetpass($token)
+    {
+        $this->Authorization->skipAuthorization();
+        if($this->request->is('post')) {
+            $pass = $this->request->getData('password');
+            $hasher = new DefaultPasswordHasher();
+            $passNew = $hasher->hash($pass);
+            $user = $this->Users->find()->where(['token' => $token])->first();
+            $user->password = $passNew;
+            
+            if($this->Users->save($user)) {
+                $user->token = '';
+
+                return $this->redirect(['action' => 'login']);
+            }
+        }
+    }
+
     /**
      * Index method
      *
@@ -60,8 +108,8 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $user = $this->Users->newEmptyEntity();
-        $this->Authorization->authorize($user);
         if ($this->request->is('post')) {
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -182,40 +230,16 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-
-    // public function pdf($id = null)
-    // {
-    //     $this->viewBuilder()->enableAutoLayout(false);
-    //     $report = $this->Users->get($id);
-    //     $this->viewBuilder()->setClassName('CakePdf.Pdf');
-    //     $this->viewBuilder()->setOption(
-    //         'pdfConfig',
-    //         [
-    //             'orientation' => 'portrait',
-    //             'download' => true, // This can be omitted if "filename" is specified.
-    //             'filename' => 'Report_' . $id . '.pdf' //// This can be omitted if you want file name based on URL.
-    //         ]
-    //     );
-    //     $this->set('report', $report);
-    // }
-
     public function login()
     {
         $this->Authorization->skipAuthorization();
-        $this->request->allowMethod(['get', 'post']);
-
         $result = $this->Authentication->getResult();
-
         if ($result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'users',
-                'action' => 'index'
-            ]);
-
+            $redirect = $this->Authentication->getLoginRedirect() ?? '/home';
             return $this->redirect($redirect);
         }
 
-        if ($this->request->is('post') && !$result->isValid()) {
+        if ($this->request->is('post')) {
             $this->Flash->error('Credenciales Invalidas');
         }
     }
@@ -234,8 +258,8 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Authentication->addUnauthenticatedActions([
-            'login', 'add'
+        $this->Authentication->allowUnauthenticated([
+            'login', 'add', 'forgotpass', 'resetpass'
         ]);
     }
 

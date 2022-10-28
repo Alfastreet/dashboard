@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\I18n\FrozenTime;
+use Cake\Event\EventInterface;
 
 /**
  * Machines Controller
@@ -170,6 +171,17 @@ class MachinesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    public function search($serial = null)
+    {
+        $this->autoRender = false;
+        $serial = $this->request->getQuery('serial');
+
+        $query = $this->Machines->find()->select(['id'])->where(['serial' => $serial])->first();
+        
+        echo json_encode($query);
+        die;
+    }
+
     public function searchIdInt($idint = null)
     {
         $this->autoRender = false;
@@ -210,5 +222,14 @@ class MachinesController extends AppController
             echo json_encode($query);
             die;
         }
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+
+        parent::beforeFilter($event);
+        $this->Authentication->allowUnauthenticated([
+            'search'
+        ]);
     }
 }

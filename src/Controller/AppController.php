@@ -58,6 +58,16 @@ class AppController extends Controller
         //$this->loadComponent('FormProtection');
     }
 
+    public function isAdmin($user) 
+    {
+        $user = $this->request->getSession()->read('Auth.rol_id');
+        if($user === 1 || $user === 2){
+            return true;
+        }
+
+        return false;
+    }
+
     public function beforeFilter(EventInterface $event)
     {
         $this->set('user_init', $this->request->getSession()->read('Auth'));

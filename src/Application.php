@@ -39,6 +39,8 @@ use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
 use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Identifier\IdentifierInterface;
+use Cake\Routing\Router;
 
 /**
  * Application setup class.
@@ -73,7 +75,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
          */
         if (Configure::read('debug')) {
             $this->addPlugin('DebugKit');
-            // $this->Authorization->skipAuthorization();
         }
 
         // Load more plugins here
@@ -109,13 +110,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
-            ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this))
-
+            
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
+            ->add(new AuthenticationMiddleware($this))
+            ->add(new AuthorizationMiddleware($this))
 
         // Cross Site Request Forgery (CSRF) Protection Middleware
         // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
@@ -156,7 +157,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         $this->addOptionalPlugin('Cake/Repl');
         $this->addOptionalPlugin('Bake');
-
         $this->addPlugin('Migrations');
 
         // Load more plugins here
@@ -164,27 +164,35 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $authenticaionService = new AuthenticationService([
-            'unauthenticatedRedirect' => '/Users/login',
+        $authenticaionService = new AuthenticationService();
+
+        $authenticaionService->setConfig([
+            'unauthenticatedRedirect' => Router::url([
+                'prefix' => false,
+                'plugin' => null,
+                'controller' => 'Users',
+                'action' => 'login'
+            ]),
             'queryParam' => 'redirect'
         ]);
 
-        $authenticaionService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password'
-            ]
-        ]);
+        $fields =  [
+            IdentifierInterface::CREDENTIAL_USERNAME => 'email',
+            IdentifierInterface::CREDENTIAL_PASSWORD => 'password'
+        ];
 
         $authenticaionService->loadAuthenticator('Authentication.Session');
-
         $authenticaionService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password'
-            ],
-            'loginUrl' => '/Users/login'
+            'fields' => $fields,
+            'loginUrl' => Router::url([
+                'prefix' => false,
+                'plugin' => null,
+                'controller' => 'Users',
+                'action' => 'login'
+            ])
         ]);
+
+        $authenticaionService->loadIdentifier('Authentication.Password', compact('fields'));
 
         return  $authenticaionService;
     }

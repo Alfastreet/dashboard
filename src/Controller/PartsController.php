@@ -47,6 +47,7 @@ class PartsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $part = $this->Parts->get($id, [
             'contain' => ['Monies', 'Machinepart'],
         ]);
@@ -101,6 +102,7 @@ class PartsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $part = $this->Parts->get($id, [
             'contain' => [],
         ]);
@@ -138,7 +140,8 @@ class PartsController extends AppController
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
         $monies = $this->Parts->Monies->find('list', ['limit' => 200])->all();
-        $this->set(compact('part', 'monies'));
+        $typeparts = $this->Parts->Typeproducts->find('list', ['limit' => 200])->all();
+        $this->set(compact('part', 'monies', 'typeparts'));
     }
 
     /**

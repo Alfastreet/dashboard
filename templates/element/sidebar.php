@@ -104,6 +104,31 @@
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
+        <!-- Fin Submenus de navegacion -->
+        <li class="nav-group">
+            <a href="#" class="nav-link nav-group-toggle">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-casino"></use>
+                </svg><?= __('Acuerdos Comerciales') ?>
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-items"><?= $this->Html->link('Ver todo', ['controller' => 'Agreements', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+        <!-- Fin Submenus de navegacion -->
+        <li class="nav-group">
+            <a href="#" class="nav-link nav-group-toggle">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-info"></use>
+                </svg><?= __('Mesa de Ayuda') ?>
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-items"><?= $this->Html->link('Todos los Tickets', ['controller' => 'Tikets', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
+                <li class="nav-items"><?= $this->Html->link('Tickets Pendientes', ['controller' => 'Tikets', 'action' => 'pending'], ['class' => 'nav-link']) ?></li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
         <!-- Submenus -->
         <li class="nav-title">Inventarios</li>
         <!-- Submenus de navegacion -->

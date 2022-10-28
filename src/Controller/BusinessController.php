@@ -129,5 +129,7 @@ class BusinessController extends AppController
             echo json_encode('error');
             die;
         }
+        echo json_encode('ok');
+        die;
     }
 }

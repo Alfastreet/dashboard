@@ -41,6 +41,7 @@
                 <h2>Registrate</h2>
                 <p>Registrate para acceder al sistema, se necesitara una previa autorización para acceder</p></div>
                 <?= $this->Html->link(__('Registrar Ahora'), ['action' => 'add'], ['class' => 'btn btn-lg btn-outline-light mt-3']) ?>
+                <?= $this->Html->link(__('¿Olvidaste tu contraseña?'), ['action' => 'forgotpass'], ['class' => 'btn btn-lg btn-outline-light mt-3']) ?>
               </div>
             </div>
           </div>

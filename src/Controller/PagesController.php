@@ -68,7 +68,7 @@ class PagesController extends AppController
         $quotesRechazed = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 3])->count();
 
         // Query Contadores
-        $accountantsTotal = $this->fetchTable('Accountants')->find()->count();
+        $accountantsTotal = $this->fetchTable('Accountants')->find()->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->count();
         $accountantsSum = $this->fetchTable('Accountants')->find()->select(['alfastreet'])->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all(); 
 
         //Query Ordenes de trabajo
@@ -77,7 +77,12 @@ class PagesController extends AppController
         $ordersPending =  $this->fetchTable('Orders')->find()->where(['orderstatus_id' => 2 ])->count();
         $ordersCanceled =  $this->fetchTable('Orders')->find()->where(['orderstatus_id' => 3 ])->count();
 
-        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed', 'orders', 'ordersComplete', 'ordersPending', 'ordersCanceled'));
+        //Tickets generados 
+        $tickets = $this->fetchTable('Tikets')->find()->count();
+        $ticketsApp = $this->fetchTable('Tikets')->find()->where(['status' => 'Completado'])->count();
+        $ticketsPending = $this->fetchTable('Tikets')->find()->where(['status' => 'Pendiente'])->count();
+
+        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed', 'orders', 'ordersComplete', 'ordersPending', 'ordersCanceled', 'tickets', 'ticketsPending', 'ticketsApp'));
 
         try {
             return $this->render(implode('/', $path));

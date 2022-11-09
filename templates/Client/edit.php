@@ -4,6 +4,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Client $client
  */
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Clientes', 'url' => ['controller' => 'Client', 'action' => 'index']],
+    ['title' => $client->name],
+])
 ?>
 <div class="col-12">
     <div class="card mb-4">
@@ -26,7 +31,7 @@
                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-caret-left"></use>
                         </svg>
                     </a>
-                    <a href="/client/delete/<?=$client->id?>" class="btn btn-danger">
+                    <a href="/client/delete/<?= $client->id ?>" class="btn btn-danger">
                         <svg class="icon">
                             <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
                         </svg>

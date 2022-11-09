@@ -5,6 +5,12 @@
  * @var \App\Model\Entity\Quote $quote
  * @var \Cake\Collection\CollectionInterface|string[] $users
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Cotizaciones', 'url' => ['controller' => 'Quotes', 'action' => 'index']]
+]);
+
 ?>
 <div class="col-12">
     <div class="card mb-4">
@@ -129,6 +135,7 @@
                             <th scope="col">Precio UN</th>
                             <th scope="col">Tipo de moneda</th>
                             <th scope="col">Subtotal</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody id="controller">

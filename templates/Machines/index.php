@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Machine[]|\Cake\Collection\CollectionInterface $machines
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Maquinas']
+])
+
 ?>
 <div class="col-12">
     <div class="card mb-4">

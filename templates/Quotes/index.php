@@ -5,6 +5,14 @@
  * @var \App\Model\Entity\Quote[]|\Cake\Collection\CollectionInterface $quotes
  */
 ?>
+<?php
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Cotizaciones']
+]);
+
+?>
 
 <div class="col-12">
     <div class="card mb-4">
@@ -14,21 +22,21 @@
                     <h3 class="card-title mb-0"><?= __('Cotizaciones') ?></h3>
                     <p class="small text-medium-emphasis">Total de cotizaciones registrados a la fecha</p>
                 </div>
-                <?php if($isAdmin) : ?>
-                <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
-                    <?= $this->Html->link(__('Generar una Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
-                </div>
-                <div class="d-block d-sm-none">
-                    <a href="/quotes/add" class="btn btn-primary">
-                        <svg class="icon">
-                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
-                        </svg>
-                    </a>
-                </div>
+                <?php if ($isAdmin) : ?>
+                    <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
+                        <?= $this->Html->link(__('Generar una Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                    </div>
+                    <div class="d-block d-sm-none">
+                        <a href="/quotes/add" class="btn btn-primary">
+                            <svg class="icon">
+                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
+                            </svg>
+                        </a>
+                    </div>
                 <?php endif ?>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-responsive text-center table-hover" id="myTable">
+                <table class="table table-bordered table-striped table-responsive text-center table-hover" nowrap id="myTable">
                     <thead>
                         <tr>
                             <th><?= __('#') ?></th>
@@ -44,7 +52,7 @@
                     <tbody>
                         <?php foreach ($quotes as $quote) : ?>
 
-                            <tr class="<?= $quote->estatus_id === 1 ? 'table-success' : ($quote->estatus_id === 3  ? 'table-danger' : '')  ?>" >
+                            <tr class="<?= $quote->estatus_id === 1 ? 'table-success' : ($quote->estatus_id === 3  ? 'table-danger' : '')  ?>">
                                 <td><?= $this->Number->format($quote->id) ?></td>
                                 <td><?= $quote->has('busines') ? h($quote->busines->name) : '' ?></td>
                                 <td><?= h($quote->date) ?></td>

@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Machine $machine
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Maquinas', 'url' => ['controller' => 'Machines', 'action' => 'index']],
+    ['title' => $machine->name.', '.$machine->serial],
+])
 ?>
 <div class="col-12">
     <div class="mb-3">

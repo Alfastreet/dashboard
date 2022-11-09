@@ -19,7 +19,7 @@ class PaymentsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Agreements', 'Paymentstatuses'],
+            'contain' => ['Agreements'],
         ];
         $payments = $this->paginate($this->Payments);
 
@@ -36,7 +36,7 @@ class PaymentsController extends AppController
     public function view($id = null)
     {
         $payment = $this->Payments->get($id, [
-            'contain' => ['Agreements', 'Paymentstatuses'],
+            'contain' => ['Agreements'],
         ]);
 
         $this->set(compact('payment'));
@@ -49,19 +49,19 @@ class PaymentsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $payment = $this->Payments->newEmptyEntity();
         if ($this->request->is('post')) {
             $payment = $this->Payments->patchEntity($payment, $this->request->getData());
             if ($this->Payments->save($payment)) {
-                $this->Flash->success(__('The payment has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                echo json_encode('ok');
+                die;
             }
-            $this->Flash->error(__('The payment could not be saved. Please, try again.'));
+            echo json_encode('error');
+            die;
         }
         $agreements = $this->Payments->Agreements->find('list', ['limit' => 200])->all();
-        $paymentstatuses = $this->Payments->Paymentstatuses->find('list', ['limit' => 200])->all();
-        $this->set(compact('payment', 'agreements', 'paymentstatuses'));
+        $this->set(compact('payment', 'agreements'));
     }
 
     /**
@@ -86,8 +86,7 @@ class PaymentsController extends AppController
             $this->Flash->error(__('The payment could not be saved. Please, try again.'));
         }
         $agreements = $this->Payments->Agreements->find('list', ['limit' => 200])->all();
-        $paymentstatuses = $this->Payments->Paymentstatuses->find('list', ['limit' => 200])->all();
-        $this->set(compact('payment', 'agreements', 'paymentstatuses'));
+        $this->set(compact('payment', 'agreements'));
     }
 
     /**

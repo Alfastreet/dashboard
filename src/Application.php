@@ -116,7 +116,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
             ->add(new AuthenticationMiddleware($this))
-            ->add(new AuthorizationMiddleware($this))
+            ->add(new AuthorizationMiddleware($this, [
+                'unauthorizedHandler' => [
+                    'className' => 'Authorization.Redirect',
+                    'url' => '/users/login',
+                    'queryParam' => 'redirectUrl'
+                ],
+            ]))
 
         // Cross Site Request Forgery (CSRF) Protection Middleware
         // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware

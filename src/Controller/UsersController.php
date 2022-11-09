@@ -73,7 +73,8 @@ class UsersController extends AppController
 
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $query = $this->Users->find();
+        $this->Authorization->authorize($query);
         $this->paginate = [
             'contain' => ['Rol'],
         ];

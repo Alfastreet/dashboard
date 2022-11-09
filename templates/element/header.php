@@ -61,5 +61,15 @@
             </li>
         </ul>
     </div>
-
+    <div class="header-divider"></div>
+    <div class="container-fluid">
+        <?php
+            $this->Breadcrumbs->setTemplates([
+                'wrapper' => '<nav aria-label="breadcrumb"><ol class="breadcrumb my-0 ms-2"{{attrs}}>{{content}}</ol></nav>',
+                'item' => '<li class="breadcrumb-item" {{attrs}}><a href="{{url}}"{{innerAttrs}}>{{title}}</a></li>{{separator}}',
+                'itemWithoutLink' => '<li class="breadcrumb-item active" aria-current="page"{{attrs}}><span{{innerAttrs}}>{{title}}</span></li>{{separator}}',
+            ]);
+            echo $this->Breadcrumbs->render(); 
+        ?>
+    </div>
 </header>

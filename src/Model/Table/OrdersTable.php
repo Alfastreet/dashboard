@@ -60,6 +60,10 @@ class OrdersTable extends Table
             'foreignKey' => 'orderstatus_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Client', [
+            'foreignKey' => 'client_id',
+            'joinType' => 'INNER',
+        ]);
         $this->belongsTo('Machines', [
             'foreignKey' => 'machine_id',
         ]);
@@ -279,6 +283,7 @@ class OrdersTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('quote_id', 'Quotes'), ['errorField' => 'quote_id']);
+        $rules->add($rules->existsIn('client_id', 'Client'), ['errorField' => 'quote_id']);
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
         $rules->add($rules->existsIn('orderstatus_id', 'Orderstatuses'), ['errorField' => 'orderstatus_id']);
         $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);

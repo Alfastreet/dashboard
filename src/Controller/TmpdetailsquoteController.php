@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use Cake\Utility\Security;
 use Cake\Datasource\ConnectionManager;
 
 /**
@@ -59,32 +62,65 @@ class TmpdetailsquoteController extends AppController
      */
     public function add()
     {
-
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
+        $tmp = $this->Tmpdetailsquote->newEmptyEntity();
 
-        if($this->request->is('ajax')) {
+        if ($this->request->is('post')) {
 
-            $data = $_POST;
+            $tmp = $this->Tmpdetailsquote->patchEntity($tmp, $this->request->getData());
+            $money = $this->request->getData('money_id');
+            $token = Security::hash(Security::randomBytes(25));
+            $tmp->money_id = $money;
+            $tmp->token = $token;
 
-            $typeProducts = $data['typeProduct'];
-            $idProduct = $data['product_id'];
-            $amount = $data['amount'];
-            $value = $data['value'];
-            $token = md5($data['token']);
-            $money_id = $data['money_id'];
-
-            $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, token, value, money_id) VALUES ('.$typeProducts.', '.$idProduct.' , '.$amount.', "'.$token.'", "'.$value.'", '.$money_id.')')->fetchAll('assoc');
-            echo json_encode('ok');
-
+            if ($this->Tmpdetailsquote->save($tmp)) {
+                echo json_encode('ok');
+                die;
+            }
+            echo json_encode('error');
+            die;
         }
-        
+    }
+
+    public function detailsQuote()
+    {
+        $this->Authorization->skipAuthorization();
+        $this->autoRender = false;
+        $query = $this->Tmpdetailsquote->find()->select([
+            'id',
+            'product_id',
+            'amount',
+            'value'
+        ])->select([
+            'Parts.serial',
+            'Parts.name',
+            'Parts.money_id',
+            'Parts.value',
+            'Monies.name'
+        ])->join([
+            'Parts' => [
+                'table' => 'parts',
+                'type' => 'INNER',
+                'conditions' => 'Parts.id = Tmpdetailsquote.product_id'
+            ],
+            'Monies' => [
+                'table' => 'monies',
+                'type' => 'INNER',
+                'conditions' => 'Parts.money_id = Monies.id'
+            ]
+        ])->all();
+
+        echo (json_encode($query));
+        die;
     }
 
 
-    public function tokenget() {
+    public function tokenget()
+    {
         $this->autoRender = false;
 
-        if($this->request->is('ajax')) {
+        if ($this->request->is('ajax')) {
             $query = $this->db->execute('SELECT * FROM tmpdetailsquote');
 
             echo json_encode($query);
@@ -97,8 +133,6 @@ class TmpdetailsquoteController extends AppController
         if ($this->Tmpdetailsquote->delete($tmpdetailsquote)) {
             echo json_encode('ok');
             die;
-        } 
-
+        }
     }
-    
 }

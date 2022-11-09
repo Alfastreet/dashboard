@@ -4,6 +4,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Busines[]|\Cake\Collection\CollectionInterface $business
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Empresas'],
+])
 ?>
 
 <div class="col-12">

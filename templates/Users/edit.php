@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Usuarios', 'url' => ['controller' => 'User', 'action' => 'index']],
+    ['title' => $user->name],
+])
 ?>
 <div class="col-12">
     <div class="card mb-4">
@@ -49,13 +55,16 @@
                                 <div class="col">
                                     <?= $this->Form->control('email', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Correo Electronico', 'require' => true]) ?>
                                 </div>
+                                <div class="col">
+                                    <?= $this->Form->control('password', ['class' => 'form-control', 'label' => false, 'placeholder' => 'Correo Electronico', 'require' => true]) ?>
+                                </div>
                                 
                             </div>
                         </div>
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col">
-                                    <?= $this->Form->control('image',['type' => 'file', 'class' => 'form-control', 'label' => false, 'require' => false ]) ?>
+                                    <?= $this->Form->control('image',['type' => 'file', 'class' => 'form-control', 'label' => false, 'required' => false ]) ?>
                                 </div>
                             </div>
                         </div>

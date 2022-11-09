@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Quote $quote
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Cotizaciones', 'url' => ['controller' => 'Quotes', 'action' => 'index']],
+    ['title' => 'Cotizacion # '.$quote->id]
+]);
 ?>
 <div class="col-12">
     <div class="mb-3">

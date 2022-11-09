@@ -21,21 +21,19 @@ use Cake\ORM\Entity;
  * @property string $width
  * @property string $display
  * @property \Cake\I18n\FrozenTime $dateInstalling
- * @property int $casino_id
- * @property int $owner_id
- * @property int $company_id
+ * @property int|null $casino_id
+ * @property int|null $owner_id
+ * @property int|null $company_id
  * @property int $contract_id
  * @property int $cheked
  * @property string|null $value
  *
- * @property \App\Model\Entity\Model $model
- * @property \App\Model\Entity\Maker $maker
  * @property \App\Model\Entity\Casino $casino
- * @property \App\Model\Entity\Owner $owner
- * @property \App\Model\Entity\Company $company
  * @property \App\Model\Entity\Contract $contract
- * @property \App\Model\Entity\Accountant $accountant
- * @property \App\Model\Entity\Machinepart[] $machinepart
+ * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\Maker $maker
+ * @property \App\Model\Entity\Owner $owner
+ * @property \App\Model\Entity\Model $model
  */
 class Machine extends Entity
 {
@@ -67,13 +65,11 @@ class Machine extends Entity
         'contract_id' => true,
         'cheked' => true,
         'value' => true,
-        'model' => true,
-        'maker' => true,
         'casino' => true,
-        'owner' => true,
-        'company' => true,
         'contract' => true,
-        'accountant' => true,
-        'machinepart' => true,
+        'company' => true,
+        'maker' => true,
+        'owner' => true,
+        'model' => true,
     ];
 }

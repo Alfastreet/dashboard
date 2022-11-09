@@ -3,6 +3,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Part $part
  */
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Piezas y Servicios', 'url' => ['controller' => 'Parts', 'action' => 'index']],
+    ['title' => $part->name],
+])
 ?>
 <div class="row">
     <aside class="column">

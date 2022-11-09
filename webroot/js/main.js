@@ -17,6 +17,8 @@ Chart.defaults.defaultFontColor = '#646470';
 // Datatable
 
 let table = new DataTable('#myTable', {
+  "autoWidth":false,
+  fixedColumns: true,
   "lengthMenu": [50, 100],
   responsive: true,
   scrollY: 550,
@@ -30,7 +32,7 @@ let table = new DataTable('#myTable', {
     viewCount: false
   },
   "info": true,
-  "scrollX": true,
+  "scrollX": false,
   "language": {
     "processing": "Procesando...",
     "lengthMenu": "Mostrar _MENU_ registros",

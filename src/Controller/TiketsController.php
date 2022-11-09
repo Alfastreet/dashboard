@@ -7,6 +7,7 @@ namespace App\Controller;
 use Cake\ORM\Query;
 use Cake\Event\EventInterface;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Mailer\Mailer;
 
 /**
  * Tikets Controller
@@ -77,6 +78,16 @@ class TiketsController extends AppController
             $tiket->status = 'Pendiente';
             $tiket->resolved = 0;
             if ($this->Tikets->save($tiket)) {
+
+                $emailTo = $this->request->getData('email');
+
+                $email = new Mailer('default');
+                $email->setEmailFormat('both');
+                $email->setFrom('servicioalcliente@alfastreet.co', 'Servicio al Cliente y Mesa de ayuda Alfastreet Colombia');
+                $email->setSubject('Creacion de Ticket');
+                $email->setTo($emailTo);
+                $email->deliver('Se ha generado el Ticket de Servicio #'.$tiket->id.' En maximo 24 Horas su solicitud sera atendida');
+
                 echo json_encode('ok');
                 die;
             }

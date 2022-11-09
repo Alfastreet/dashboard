@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  * Payments Model
  *
  * @property \App\Model\Table\AgreementsTable&\Cake\ORM\Association\BelongsTo $Agreements
- * @property \App\Model\Table\PaymentstatusesTable&\Cake\ORM\Association\BelongsTo $Paymentstatuses
  *
  * @method \App\Model\Entity\Payment newEmptyEntity()
  * @method \App\Model\Entity\Payment newEntity(array $data, array $options = [])
@@ -48,10 +47,6 @@ class PaymentsTable extends Table
             'foreignKey' => 'agreement_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Paymentstatuses', [
-            'foreignKey' => 'paymentstatus_id',
-            'joinType' => 'INNER',
-        ]);
     }
 
     /**
@@ -78,16 +73,6 @@ class PaymentsTable extends Table
             ->requirePresence('valuequote', 'create')
             ->notEmptyString('valuequote');
 
-        $validator
-            ->integer('paymentstatus_id')
-            ->notEmptyString('paymentstatus_id');
-
-        $validator
-            ->scalar('comments')
-            ->maxLength('comments', 4294967295)
-            ->requirePresence('comments', 'create')
-            ->notEmptyString('comments');
-
         return $validator;
     }
 
@@ -101,7 +86,6 @@ class PaymentsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('agreement_id', 'Agreements'), ['errorField' => 'agreement_id']);
-        $rules->add($rules->existsIn('paymentstatus_id', 'Paymentstatuses'), ['errorField' => 'paymentstatus_id']);
 
         return $rules;
     }

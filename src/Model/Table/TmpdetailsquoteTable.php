@@ -44,7 +44,7 @@ class TmpdetailsquoteTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('TypeProduct', [
+        $this->belongsTo('Typeproducts', [
             'foreignKey' => 'typeProduct_id',
             'joinType' => 'INNER',
         ]);
@@ -52,7 +52,7 @@ class TmpdetailsquoteTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Money', [
+        $this->belongsTo('Monies', [
             'foreignKey' => 'money_id',
             'joinType' => 'INNER',
         ]);
@@ -111,7 +111,7 @@ class TmpdetailsquoteTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('typeProduct_id', 'TypeProduct'), ['errorField' => 'typeProduct_id']);
+        $rules->add($rules->existsIn('typeProduct_id', 'Typeproducts'), ['errorField' => 'typeProduct_id']);
         $rules->add($rules->existsIn('product_id', 'Parts'), ['errorField' => 'product_id']);
 
         return $rules;

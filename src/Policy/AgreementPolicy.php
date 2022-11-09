@@ -13,36 +13,21 @@ use Authorization\IdentityInterface;
 class AgreementPolicy
 {
     /**
-     * Check if $user can create Agreement
-     *
-     * @param Authorization\IdentityInterface $user The user.
-     * @param App\Model\Entity\Agreement $agreement
-     * @return bool
-     */
-    public function canCreate(IdentityInterface $user, Agreement $agreement)
-    {
-    }
-
-    /**
      * Check if $user can update Agreement
      *
      * @param Authorization\IdentityInterface $user The user.
      * @param App\Model\Entity\Agreement $agreement
      * @return bool
      */
-    public function canUpdate(IdentityInterface $user, Agreement $agreement)
+
+    public function canEdit(IdentityInterface $user, Agreement $agreement)
     {
+        return $user->rol_id === 1 || $user->rol_id === 2;
     }
 
-    /**
-     * Check if $user can delete Agreement
-     *
-     * @param Authorization\IdentityInterface $user The user.
-     * @param App\Model\Entity\Agreement $agreement
-     * @return bool
-     */
-    public function canDelete(IdentityInterface $user, Agreement $agreement)
+    public function canAdd(IdentityInterface $user, Agreement $agreement)
     {
+        return $user->rol_id === 1 || $user->rol_id === 2;
     }
 
     /**
@@ -54,10 +39,5 @@ class AgreementPolicy
      */
     public function canView(IdentityInterface $user, Agreement $agreement)
     {
-    }
-
-    public function canIndex(IdentityInterface $user, Agreement $agreement )
-    {
-        return true;
     }
 }

@@ -34,7 +34,10 @@ class QuotesController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'Business', 'Status'],
         ];
-        $quotes = $this->paginate($this->Quotes);
+        $quotes = $this->paginate($this->Quotes, [
+            'limit' => 10000,
+            'maxLimit' => 10000,
+        ]);
 
         $this->set(compact('quotes'));
     }
@@ -208,27 +211,7 @@ class QuotesController extends AppController
         die;
     }
 
-    public function addTmpQuote()
-    {
-        $this->Authorization->skipAuthorization();
-        $this->autoRender = false;
-        $data = $_POST;
-        $token = rand();
-        $query = $this->db->execute('INSERT INTO tmpdetailsquote (typeProduct_id, product_id, amount, money_id, value, token) VALUES (' . $data['typeProduct_id'] . ', ' . $data['product_id'] . ', ' . $data['amount'] . ', ' . $data['money_id'] . ', ' . $data['value'] . ', ' . $token . ')');
-        if ($query) {
-            echo json_encode('ok');
-            exit;
-        }
-    }
 
-    public function detailsQuote()
-    {
-        $this->Authorization->skipAuthorization();
-        $this->autoRender = false;
-        $query = $this->db->execute('SELECT tmp.id, tmp.typeProduct_id, tmp.product_id, tmp.amount, tmp.value AS total , p.name, p.serial, p.value, m.name as moneyId FROM tmpdetailsquote tmp INNER JOIN parts p ON tmp.product_id = p.id INNER JOIN monies m ON p.money_id = m.id')->fetchAll('assoc');
-        echo json_encode($query);
-        exit;
-    }
 
     public function dataQuote()
     {
@@ -277,7 +260,7 @@ class QuotesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-        $value = $_GET['comment'];
+        $value = $this->request->getQuery('comment');
         $insertComment = $this->db->execute("UPDATE quotes SET comments = '" . $value . "' ORDER BY ID DESC LIMIT 1");
         if ($insertComment) {
             echo json_encode('ok');
@@ -289,25 +272,14 @@ class QuotesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->autoRender = false;
-        $quote = $_GET['quote'];
-        $status = $_GET['status'];
-        $this->db->execute("UPDATE quotes SET estatus_id = '" . $status . "' WHERE id = '" . $quote . "'");
+        $quote = $this->request->getQuery('quote');
+        $status = $this->request->getQuery('status');
+        $this->Quotes->query()->update()->set([
+            'estatus_id' => $status
+        ])->where([
+            'id' => $quote
+        ])->execute();
         echo json_encode('ok');
         die;
-    }
-
-    public function grafica()
-    {
-        $this->Authorization->skipAuthorization();
-        $this->autoRender = false;
-        // Valores con PHP. Estos podrían venir de una base de datos o de cualquier lugar del servidor
-        $etiquetas = ["Enero", "Febrero", "Marzo", "Abril"];
-        $datosVentas = [5000, 1500, 8000, 5102];
-        // Ahora las imprimimos como JSON para pasarlas a AJAX, pero las agrupamos
-        $respuesta = [
-            "etiquetas" => $etiquetas,
-            "datos" => $datosVentas,
-        ];
-        echo json_encode($respuesta);
     }
 }

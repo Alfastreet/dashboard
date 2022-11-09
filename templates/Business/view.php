@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Busines $busines
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Emprresas', 'url' => ['controller' => 'Business', 'action' => 'index']],
+    ['title' => $busines->name]
+])
 ?>
 <div class="col-12">
     <div class="card mb-4">

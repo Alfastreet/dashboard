@@ -27,21 +27,6 @@ class UserPolicy
     }
 
     /**
-     * Check if $user can update User
-     *
-     * @param Authorization\IdentityInterface $user The user.
-     * @param App\Model\Entity\User $resource
-     * @return bool
-     */
-    public function canEdit(IdentityInterface $user, User $resource)
-    {
-        if($user->rol_id === 1 || $user->rol_id === 2 || $user === $resource ){
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Check if $user can delete User
      *
      * @param Authorization\IdentityInterface $user The user.
@@ -65,9 +50,18 @@ class UserPolicy
      */
     public function canView(IdentityInterface $user, User $resource)
     {
-        if($user->rol_id === 1 || $user->rol_id === 2 || $user === $resource ){
+        if($user->rol_id === 1 || $user->rol_id === 2 ){
             return true;
         }
-        return false;
+        return $resource->id === $user->id;
+    }
+
+    
+    public function canEdit(IdentityInterface $user, User $resource)
+    {
+        if($user->rol_id === 1 || $user->rol_id === 2 ){
+            return true;
+        }
+        return $resource->id === $user->id;
     }
 }

@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Client[]|\Cake\Collection\CollectionInterface $client
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Clientes'],
+])
+
 ?>
 
 <div class="col-12">
@@ -15,16 +21,16 @@
                     <p class="small text-medium-emphasis">Total de clientes registrados a la fecha</p>
                 </div>
                 <?php if ($isAdmin) : ?>
-                        <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
-                            <?= $this->Html->link(__('Agregar un Cliente'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
-                        </div>
-                        <div class="d-block d-sm-none">
-                            <a href="/client/add" class="btn btn-primary">
-                                <svg class="icon">
-                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
-                                </svg>
-                            </a>
-                        </div>
+                    <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
+                        <?= $this->Html->link(__('Agregar un Cliente'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+                    </div>
+                    <div class="d-block d-sm-none">
+                        <a href="/client/add" class="btn btn-primary">
+                            <svg class="icon">
+                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
+                            </svg>
+                        </a>
+                    </div>
                 <?php endif ?>
             </div>
             <div class="table-responsive">

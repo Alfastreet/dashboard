@@ -4,6 +4,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Usuarios']
+]);
 ?>
 <div class="col-12">
     <div class="card mb-4">

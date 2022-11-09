@@ -93,7 +93,10 @@ class MachinesController extends AppController
         $casinos = $this->Machines->Casinos->find('list', ['limit' => 200])->all();
         $owners = $this->Machines->Owner->find('list', ['limit' => 200])->all();
         $companies = $this->Machines->Company->find('list', ['limit' => 200])->all();
-        $contracts = $this->Machines->Contract->find('list', ['limit' => 200])->all();
+        $contracts = $this->Machines->Contract->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name',
+            'limit' => 200])->all();
         $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
     }
 
@@ -156,6 +159,7 @@ class MachinesController extends AppController
     public function delete($id = null)
     {
         $machine = $this->Machines->get($id);
+        $this->Authorization->authorize($machine);
         // Delete file
 
         if (file_exists(WWW_ROOT . "img/Machines/" . $machine['image'])) {
@@ -184,6 +188,7 @@ class MachinesController extends AppController
 
     public function searchIdInt($idint = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->autoRender = false;
 
         $idint = $this->request->getQuery('idint');

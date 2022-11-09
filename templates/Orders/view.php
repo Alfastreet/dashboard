@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Order $order
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Ordenes de Trabajo', 'url' => ['controller' => 'Orders', 'action' => 'index']],
+    ['title' => 'Orden de trabajo # '.$order->quote_id],
+])
 ?>
 <div class="col-12">
     <div class="card mb-4">

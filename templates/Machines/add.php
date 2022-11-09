@@ -5,6 +5,12 @@
  * @var \App\Model\Entity\Machine $machine
  * @var \Cake\Collection\CollectionInterface|string[] $casinos
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Maquinas', 'url' => ['controller' => 'Machines', 'action' => 'index']],
+])
+
 ?>
 <div class="col-12">
     <div class="card mb-4">
@@ -24,16 +30,16 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
-                                <?= $this->Form->control('casino_id', ['options' => $casinos, 'class' => 'form-control', 'empty' => ['' => 'Selecciona el Casino al que pertenece la maquina'], 'label' => false, 'require' => true, 'default' => $this->request->getQuery('casinoid')]); ?>
+                                <?= $this->Form->control('contract_id', ['options' => $contracts, 'empty' => ['0' => 'Tipo de Contrato'], 'class' => 'form-control', 'label' => false, 'required' => true, 'id' => 'contrato']); ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('owner_id', ['class' => 'form-control', 'empty' => ['' => 'Seleccione el dueño del Casino y la maquina'], 'label' => false, 'require' => true]);  ?>
+                                <?= $this->Form->control('casino_id', ['options' => $casinos, 'class' => 'form-control', 'empty' => ['' => 'Selecciona el Casino al que pertenece la maquina'], 'id' => 'casino' , 'label' => false, 'required' => false, 'default' => $this->request->getQuery('casinoid')]); ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('company_id', ['class' => 'form-control', 'empty' => ['Seleccione la compañia del Casino'], 'label' => false, 'require' => true]); ?>
+                                <?= $this->Form->control('owner_id', ['class' => 'form-control', 'empty' => ['0' => 'Seleccione el dueño del Casino y la maquina'], 'label' => false, 'require' => false, 'id' => 'owner' ]);  ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('contract_id', ['options' => $contracts, 'empty' => ['' => 'Tipo de Contrato'], 'class' => 'form-control', 'label' => false, 'require' => true]); ?>
+                                <?= $this->Form->control('company_id', ['class' => 'form-control', 'empty' => ['0' => 'Seleccione la compañia del Casino'], 'label' => false, 'required' => false, 'id' => 'company']); ?>
                             </div>
                         </div>
                     </div>
@@ -59,7 +65,7 @@
                                 <?= $this->Form->control('model_id', ['class' => 'form-control', 'empty' => ['' => 'Modelo de la Maquina o Modulo'], 'label' => false, 'require' => true, 'placeholder' => 'ID Interno de la maquina']); ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('maker_id', ['class' => 'form-control', 'label' => false, 'empty' => ['' => 'Fabricante', 'require' => true]]) ?>
+                                <?= $this->Form->control('maker_id', ['class' => 'form-control', 'label' => false, 'empty' => ['' => 'Fabricante'], 'required' => true]) ?>
                             </div>
                         </div>
                     </div>

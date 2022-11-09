@@ -8,6 +8,12 @@
  * @var \Cake\Collection\CollectionInterface|string[] $detailsquotes
  * @var \Cake\Collection\CollectionInterface|string[] $parts
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Ordenes de Trabajo', 'url' => ['controller' => 'Orders', 'action' => 'index']],
+    ['title' => 'Generar Orden de trabajo # '.$this->request->getQuery('quoteId')],
+])
 ?>
 
 <div class="col-12">

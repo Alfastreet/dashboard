@@ -60,6 +60,10 @@ if ($tickets !== 0) {
     $percentTicketsApp = round($ticketsApp / $tickets *100);
 }
 
+$this->Breadcrumbs->add(
+    'Inicio'
+)
+
 ?>
 
 

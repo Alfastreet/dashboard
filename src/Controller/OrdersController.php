@@ -31,13 +31,15 @@ class OrdersController extends AppController
      */
     public function index()
     {
+        $query = $this->Orders->find();
+        $this->Authorization->authorize($query);
         $this->paginate = [
-            'contain' => ['Quotes', 'Users', 'Orderstatuses'],
+            'contain' => ['Quotes', 'Users', 'Orderstatuses', 'Client'],
         ];
-        $orders = $this->paginate($this->Orders);
-        $this->Authorization->skipAuthorization();
-        $user = $this->request->getAttribute('identity');
-        $query = $user->applyScope('index', $this->Orders->find()->contain('Users'));
+        $orders = $this->paginate($this->Authorization->applyScope($query), [
+            'limit' => 10000,
+            'maxLimit' => 10000,
+        ]);
         $this->set(compact('orders'));
     }
 

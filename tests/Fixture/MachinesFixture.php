@@ -31,7 +31,7 @@ class MachinesFixture extends TestFixture
                 'height' => 'Lorem ipsum dolor sit amet',
                 'width' => 'Lorem ipsum dolor sit amet',
                 'display' => 'Lorem ipsum dolor sit amet',
-                'dateInstalling' => '2022-10-18 13:45:49',
+                'dateInstalling' => '2022-11-04 16:02:39',
                 'casino_id' => 1,
                 'owner_id' => 1,
                 'company_id' => 1,

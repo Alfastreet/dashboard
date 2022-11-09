@@ -12,8 +12,6 @@ use Cake\ORM\Entity;
  * @property int $agreement_id
  * @property string $paymentquote
  * @property string $valuequote
- * @property int $paymentstatus_id
- * @property string $comments
  *
  * @property \App\Model\Entity\Agreement $agreement
  * @property \App\Model\Entity\Paymentstatus $paymentstatus
@@ -33,8 +31,6 @@ class Payment extends Entity
         'agreement_id' => true,
         'paymentquote' => true,
         'valuequote' => true,
-        'paymentstatus_id' => true,
-        'comments' => true,
         'agreement' => true,
         'paymentstatus' => true,
     ];

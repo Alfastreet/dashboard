@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Date;
+use Cake\I18n\FrozenTime;
+use DateTime;
+
 /**
  * Agreements Controller
  *
@@ -19,11 +23,12 @@ class AgreementsController extends AppController
     public function index()
     {
         
-        $this->Authorization->skipAuthorization();
+        $query = $this->Agreements->find();
+        $this->Authorization->authorize($query);
         $this->paginate = [
             'contain' => ['Machines', 'Agreementstatuses', 'Client', 'Business'],
         ];
-        $agreements = $this->paginate($this->Agreements);
+        $agreements = $this->paginate($this->Authorization->applyScope($query));
 
         $this->set(compact('agreements'));
     }
@@ -41,8 +46,10 @@ class AgreementsController extends AppController
         $agreement = $this->Agreements->get($id, [
             'contain' => ['Machines', 'Agreementstatuses', 'Client', 'Business'],
         ]);
+        $client = $this->fetchTable('Client')->find()->where(['id' => $agreement->client_id])->first();
+        $machines = $this->fetchTable('Machines')->find('all', ['contain' => ['Model', 'Maker']])->where(['Machines.id' => $agreement->machine_id])->first();
 
-        $this->set(compact('agreement'));
+        $this->set(compact('agreement', 'client', 'machines'));
     }
 
     /**
@@ -52,8 +59,8 @@ class AgreementsController extends AppController
      */
     public function add()
     {
-        $this->Authorization->skipAuthorization();
         $agreement = $this->Agreements->newEmptyEntity();
+        $this->Authorization->authorize($agreement);
         if ($this->request->is('post')) {
             $agreement = $this->Agreements->patchEntity($agreement, $this->request->getData());
             $agreement->agreementstatus_id = 2;
@@ -67,7 +74,7 @@ class AgreementsController extends AppController
             echo json_encode('error');
             die;
         }
-        $machines = $this->Agreements->Machines->find('list', ['limit' => 200])->all();
+        $machines = $this->Agreements->Machines->find('list', ['limit' => 200])->where(['contract_id' => 3])->all();
         $clients = $this->Agreements->Client->find('list', ['limit' => 200])->all();
         $business = $this->Agreements->Business->find('list', ['limit' => 200])->all();
         $agreementstatuses = $this->Agreements->Agreementstatuses->find('list', ['limit' => 200])->all();
@@ -86,6 +93,7 @@ class AgreementsController extends AppController
         $agreement = $this->Agreements->get($id, [
             'contain' => [],
         ]);
+        $this->Authorization->authorize($agreement);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $agreement = $this->Agreements->patchEntity($agreement, $this->request->getData());
             if ($this->Agreements->save($agreement)) {
@@ -109,5 +117,21 @@ class AgreementsController extends AppController
         echo json_encode($query);
         die;
 
+    }
+
+    public function signed($id = null)
+    {
+        $this->autoRender = false;
+        $this->Authorization->skipAuthorization();
+        $id = $this->request->getQuery('id');
+        $dateNew = new Date();
+        $query = $this->Agreements->query()->update()->set(['datesigned' => $dateNew])->where(['id' => $id])->execute();
+
+        if ($query){
+            echo json_encode('ok');
+            die;
+        }
+        echo json_encode('error');
+        die;
     }
 }

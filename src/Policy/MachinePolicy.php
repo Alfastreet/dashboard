@@ -53,6 +53,7 @@ class MachinePolicy
      */
     public function canDelete(IdentityInterface $user, Machine $machine)
     {
+        return $user->rol_id === 1 || $user->rol_id === 2;
     }
 
     /**

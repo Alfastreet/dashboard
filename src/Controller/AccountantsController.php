@@ -66,10 +66,10 @@ class AccountantsController extends AppController
         $this->Authorization->skipAuthorization();
         $this->autoRender =  false;
 
-        $coljuegosValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 2 ])->first()->value;
-        $adminValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 3 ])->first()->value;
-        $iva = $this->fetchTable('dataiportants')->find()->where(['id' => 1])->first()->value;
-        $alfaValue = $this->fetchTable('dataiportants')->find()->where(['id' => 4])->first()->value;
+        $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2 ])->first()->value;
+        $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3 ])->first()->value;
+        $iva = $this->fetchTable('Dataiportants')->find()->where(['id' => 1])->first()->value;
+        $alfaValue = $this->fetchTable('Dataiportants')->find()->where(['id' => 4])->first()->value;
 
         $casinoid = $this->request->getQuery('casinoid');
         $token = $this->request->getQuery('token');
@@ -105,6 +105,8 @@ class AccountantsController extends AppController
             echo json_encode('ok');
             die;
         }
+        echo json_encode('error');
+        die;
     }
 
 
@@ -160,7 +162,10 @@ class AccountantsController extends AppController
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],
         ];
-        $accountants = $this->paginate($this->Accountants);
+        $accountants = $this->paginate($this->Accountants, [
+            'limit' => 10000,
+            'maxLimit' => 10000,
+        ]);
 
         $this->set(compact('accountants'));
     }

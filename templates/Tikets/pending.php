@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Tiket> $tikets
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Tickets', 'url' => ['controller' => 'Tikets', 'action' => 'index']],
+    ['title' => 'Tickets Pendientes']
+])
 ?>
 <div class="col-12">
     <div class="card mb-4">

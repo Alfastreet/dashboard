@@ -4,6 +4,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Accountant[]|\Cake\Collection\CollectionInterface $accountants
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Participaciones']
+])
+
 ?>
 <div class="col-12">
     <div class="card mb-4">

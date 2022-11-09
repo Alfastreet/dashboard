@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
+use Cake\ORM\Query;
 use App\Model\Entity\Order;
 use Authorization\IdentityInterface;
 
@@ -61,5 +62,4 @@ class OrderPolicy
 
         return false;
     }
-
 }

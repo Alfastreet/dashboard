@@ -5,6 +5,12 @@
  * @var \App\Model\Entity\Machine $machine
  * @var string[]|\Cake\Collection\CollectionInterface $casinos
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Maquinas', 'url' => ['controller' => 'Machines', 'action' => 'index']],
+])
+
 ?>
 <div class="col-12">
     <div class="card mb-4">

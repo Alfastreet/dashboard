@@ -4,6 +4,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Order> $orders
  */
+
+$this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Ordenes De Trabajo']
+])
 ?>
 <div class="col-12">
     <div class="card mb-3">
@@ -27,13 +32,13 @@
                     </thead>
                     <tbody>
                         <?php foreach ($orders as $order) : ?>
-                            <tr class="class="<?= $order->orderstatus_id === 1 ? 'table-success' : ($order->orderstatus_id === 3  ? 'table-danger' : '')  ?>">
+                            <tr class="class=" <?= $order->orderstatus_id === 1 ? 'table-success' : ($order->orderstatus_id === 3  ? 'table-danger' : '')  ?>">
                                 <td><?= $order->has('quote') ? $this->Html->link($order->quote->id, ['controller' => 'Quotes', 'action' => 'view', $order->quote->id]) : '' ?></td>
                                 <td><?= $order->has('user') ? $this->Html->link($order->user->name, ['controller' => 'Users', 'action' => 'view', $order->user->id]) : '' ?></td>
-                                <td><?= $this->Number->format($order->client_id) ?></td>
+                                <td><?= $order->has('client') ? $order->client->name : '' ?></td>
                                 <td><?= $order->has('orderstatus') ? h($order->orderstatus->status) : '' ?></td>
                                 <td class="actions">
-                                <div class="btn-group btn-group-toggle mx-3">
+                                    <div class="btn-group btn-group-toggle mx-3">
                                         <a class="nav-link nav-group-toggle" href="/orders/view/<?= $order->id ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>

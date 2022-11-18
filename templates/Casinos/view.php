@@ -66,7 +66,7 @@ $this->Breadcrumbs->add([
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h3 class="card-title mb-0"><?= __('Clientes pertenecientes a este Casino') ?></h3>
-                                    <p class="small text-medium-emphasis">Lista de los clientes relacionados con este casino</p>
+                                    <p class="small text-medium-emphasis"><?= __('Lista de los clientes relacionados con este casino')?></p>
                                 </div>
                                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                                     <?= $this->Html->link(__('Relacionar un cliente'), ['controller' => 'Clientscasinos', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
@@ -127,7 +127,7 @@ $this->Breadcrumbs->add([
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h3 class="card-title mb-0"><?= __('Tus Maquinas') ?></h3>
-                                    <p class="small text-medium-emphasis">Maquinas inscritas a este Casino</p>
+                                    <p class="small text-medium-emphasis"><?= __('Maquinas inscritas a este Casino')?></p>
                                 </div>
                                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                                     <?= $this->Html->link(__('Agregar una Nueva Maquina'), ['controller' => 'Machines', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
@@ -190,10 +190,24 @@ $this->Breadcrumbs->add([
                 <div class="d-flex justify-content-between">
                     <div>
                         <h3 class="card-title mb-0"><?= __('Participaciones') ?></h3>
-                        <p class="small text-medium-emphasis">Ingreso de datos para la liquidación de participaciones</p>
+                        <p class="small text-medium-emphasis"><?= __('Ingreso de datos para la liquidación de participaciones')?></p>
                     </div>
                     <div>
-                        <button id="erase" class="btn btn-warning">Ingresar Borrados</button>
+                        <button id="erase" class="btn btn-warning"><?= __('Ingresar Borrados')?></button>
+                        <?= $this->Html->link(
+                            'Resumen de Contadores', 
+                            [
+                                'controller' => 'totalaccountants',
+                                'action' => 'resume',
+                                '?' => [
+                                    'casino_id' => $casino->id,
+                                    'token' => $casino->token
+                                ]
+                            ], 
+                            [
+                                'class' => 'btn btn-info'
+                            ]
+                            ) ?>
                     </div>
                 </div>
                 <div class="row">

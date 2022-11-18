@@ -26,7 +26,6 @@ class TotalaccountantsTableTest extends TestCase
     protected $fixtures = [
         'app.Totalaccountants',
         'app.Casinos',
-        'app.Machines',
         'app.Month',
     ];
 

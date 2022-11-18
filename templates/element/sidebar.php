@@ -16,13 +16,13 @@
             </a>
         </li>
         <!-- Submenus -->
-        <li class="nav-title">Contabilidad</li>
+        <li class="nav-title"><?= __('Contabilidad') ?></li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a class="nav-link nav-group-toggle" href="/accountants">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-money"></use>
-                </svg>Participaciones
+                </svg><?= __('Participaciones') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">
@@ -36,11 +36,25 @@
             <a class="nav-link nav-group-toggle" href="/accountants">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                </svg>Cotizaciones
+                </svg><?= __('Cotizaciones') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">
                     <?= $this->Html->link('Ver Cotizaciones', ['controller' => 'Quotes', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
+            </ul>
+        </li>
+        <!-- Fin Submenus de navegacion -->
+        <!-- Submenus de navegacion -->
+        <li class="nav-group">
+            <a class="nav-link nav-group-toggle" href="/accountants">
+                <svg class="nav-icon">
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-description"></use>
+                </svg><?= __('Cartera') ?>
+            </a>
+            <ul class="nav-group-items">
+                <li class="nav-item">
+                    <?= $this->Html->link('Ver Consolidado General', ['controller' => 'Wallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
                 </li>
             </ul>
         </li>
@@ -161,7 +175,7 @@
 
         <!-- Submenus -->
         <li class="nav-title">Administración General</li>
-        <?php if ($user_init->rol_id === 1) : ?>
+        <?php if ($isAdmin) : ?>
             <!-- Submenus de navegacion -->
             <li class="nav-group">
                 <a class="nav-link nav-group-toggle" href="#">
@@ -179,24 +193,43 @@
                 </ul>
             </li>
             <!-- Fin Submenus de navegacion -->
+
+            <!-- Submenus de navegacion -->
+            <li class="nav-group">
+                <a class="nav-link nav-group-toggle" href="#">
+                    <svg class="nav-icon">
+                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-router"></use>
+                    </svg><?= __('Modelo de maquinas') ?>
+                </a>
+                <ul class="nav-group-items">
+                    <li class="nav-item">
+                        <?= $this->Html->link('Ver Todos los Modelos', ['controller' => 'Model', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Añadir Nuevo Modelo', ['controller' => 'Model', 'action' => 'add'], ['class' => 'nav-link']) ?>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin Submenus de navegacion -->
+
+            <!-- Submenus de navegacion -->
+            <li class="nav-group">
+                <a class="nav-link nav-group-toggle" href="#">
+                    <svg class="nav-icon">
+                        <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-external-link"></use>
+                    </svg><?= __('Enlaces Generales') ?>
+                </a>
+                <ul class="nav-group-items">
+                    <li class="nav-item">
+                        <?= $this->Html->link('Ver Enlaces', ['controller' => 'Links', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Añadir Nuevo Enlace', ['controller' => 'Links', 'action' => 'add'], ['class' => 'nav-link']) ?>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin Submenus de navegacion -->
         <?php endif ?>
-        <!-- Submenus de navegacion -->
-        <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-router"></use>
-                </svg><?= __('Modelo de maquinas') ?>
-            </a>
-            <ul class="nav-group-items">
-                <li class="nav-item">
-                    <?= $this->Html->link('Ver Todos los Modelos', ['controller' => 'Model', 'action' => 'index'], ['class' => 'nav-link']) ?>
-                </li>
-                <li class="nav-item">
-                    <?= $this->Html->link('Añadir Nuevo Modelo', ['controller' => 'Model', 'action' => 'add'], ['class' => 'nav-link']) ?>
-                </li>
-            </ul>
-        </li>
-        <!-- Fin Submenus de navegacion -->
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>

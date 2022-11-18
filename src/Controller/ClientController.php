@@ -79,7 +79,10 @@ class ClientController extends AppController
             }
             $this->Flash->error(__('The client could not be saved. Please, try again.'));
         }
-        $clientposition = $this->Client->Clientposition->find('list', ['limit' => 200])->all();
+        $clientposition = $this->Client->Clientposition->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'position',
+            'limit' => 200])->all();
         $business = $this->Client->Business->find('list', ['limit' => 200])->all();
         $this->set(compact('client', 'clientposition', 'business'));
     }

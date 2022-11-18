@@ -39,8 +39,8 @@ $this->Breadcrumbs->add([
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user) :
-                            foreach($rol as $ro){
-                                if($user->rol_id === $ro->id){
+                            foreach ($rol as $ro) {
+                                if ($user->rol_id === $ro->id) {
                                     $rolName = $ro->rol;
                                 }
                             } ?>
@@ -54,7 +54,7 @@ $this->Breadcrumbs->add([
                                 <td><?= h($rolName) ?></td>
                                 <td><?= $this->Html->image('imgusers/' . $user->image, ['class' => 'card-img-top']) ?></td>
                                 <td class="actions">
-                                <div class="btn-group btn-group-toggle mx-3">
+                                    <div class="btn-group btn-group-toggle mx-3">
                                         <a class="nav-link nav-group-toggle" href="/users/edit/<?= $user->id ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
@@ -80,4 +80,3 @@ $this->Breadcrumbs->add([
         </div>
     </div>
 </div>
-

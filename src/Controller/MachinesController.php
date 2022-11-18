@@ -22,12 +22,65 @@ class MachinesController extends AppController
      */
     public function index()
     {
-
         $this->Authorization->skipAuthorization();
-        $this->paginate = [
-            'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
-        ];
-        $machines = $this->paginate($this->Machines, ['limit' => 10000]);
+        $machines = $this->Machines->find()->select([
+            'id',
+            'idint',
+            'serial',
+            'name',
+            'yearmodel',
+            'warranty',
+            'image',
+            'height',
+            'width',
+            'display',
+            'dateInstalling',
+            'value'
+        ])->select([
+            'Casino.name'
+        ])->select([
+            'Model.name'
+        ])->select([
+            'Owner.name'
+        ])->select([
+            'Company.name'
+        ])->select([
+            'Contract.name'
+        ])->select([
+            'Maker.name'
+        ])->join([
+            'Casino' => [
+                'table' => 'casinos',
+                'type' => 'INNER',
+                'conditions' => 'Casino.id = Machines.casino_id'
+            ],
+            'Model' => [
+                'table' => 'model',
+                'type' => 'INNER',
+                'conditions' => 'Model.id = Machines.model_id'
+            ],
+            'Owner' => [
+                'table' => 'owner',
+                'type' => 'INNER',
+                'conditions' => 'Owner.id = Machines.owner_id'
+            ],
+            'Company' => [
+                'table' => 'company',
+                'type' => 'INNER',
+                'conditions' => 'Company.id = Machines.company_id'
+            ],
+            'Contract' => [
+                'table' => 'contract',
+                'type' => 'INNER',
+                'conditions' => 'Contract.id = Machines.contract_id'
+            ],
+            'Maker' => [
+                'table' => 'maker',
+                'type' => 'INNER',
+                'conditions' => 'Maker.id = Machines.maker_id'
+            ]
+        ])->all();
+
 
         $this->set(compact('machines'));
     }
@@ -59,6 +112,56 @@ class MachinesController extends AppController
         // $casinoId = $this->request->getQuery('casinoid');
         $this->Authorization->skipAuthorization();
         $machine = $this->Machines->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $machine = $this->Machines->patchEntity($machine, $this->request->getData());
+            // Add image
+            $image = $this->request->getData('image');
+
+
+            if ($image) {
+                $time =  FrozenTime::now()->toUnixString();
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
+                $image->moveTo($destiny);
+                $machine->image = $nameImage;
+            }
+
+            if ($this->Machines->save($machine)) {
+                echo json_encode('ok');
+                die;
+            }
+            echo json_encode('error');
+            die;
+        }
+        $models = $this->Machines->Model->find('list', ['limit' => 200])->all();
+        $makers = $this->Machines->Maker->find('list', ['limit' => 200])->all();
+        $casinos = $this->Machines->Casinos->find('list', ['limit' => 200])->all();
+        $owners = $this->Machines->Owner->find('list', ['limit' => 200])->all();
+        $companies = $this->Machines->Company->find('list', ['limit' => 200])->all();
+        $contracts = $this->Machines->Contract->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name',
+            'limit' => 200
+        ])->all();
+        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Machine id.
+     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $machine = $this->Machines->get(
+            $id,
+            [
+                'contain' => ['Model', 'Maker', 'Casinos', 'Owner', 'Company', 'Contract'],
+            ]
+        );
         if ($this->request->is('post')) {
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
             // Add image
@@ -96,56 +199,8 @@ class MachinesController extends AppController
         $contracts = $this->Machines->Contract->find('list', [
             'keyField' => 'id',
             'valueField' => 'name',
-            'limit' => 200])->all();
-        $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Machine id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $this->Authorization->skipAuthorization();
-        $machine = $this->Machines->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $machine = $this->Machines->patchEntity($machine, $this->request->getData());
-            // Add image
-            $machine->cheked = 1;
-            $image = $this->request->getData('image');
-            $idint = $machine->idint;
-            $serial = $machine->serial;
-            $queryidInt = $this->Machines->find('all')->where(['idint' => $idint])->all();
-            $queryserial = $this->Machines->find('all')->where(['serial' => $serial])->all();
-
-            if (sizeof($queryserial) === 0) {
-                
-                if ($image) {
-                    
-                    $time =  FrozenTime::now()->toUnixString();
-                    $nameImage = $time . "_" . $image->getClientFileName();
-                    $destiny = WWW_ROOT . "img/Machines/" . $nameImage;
-                    $image->moveTo($destiny);
-                    $machine->image = $nameImage;
-                }
-                if ($this->Machines->save($machine)) {
-                    (__('The machine has been saved.'));
-
-                    return $this->redirect(['action' => 'index']);
-                }
-                $this->Flash->error(__('Hubo un error al procesar los Datos'));
-            }
-            $this->Flash->error(__('La maquina Ya esta registrada'));
-        }
-        $models = $this->Machines->Model->find('list', ['limit' => 200])->all();
-        $makers = $this->Machines->Maker->find('list', ['limit' => 200])->all();
-        $casinos = $this->Machines->Casinos->find('list', ['limit' => 200])->all();
-        $owners = $this->Machines->Owner->find('list', ['limit' => 200])->all();
-        $companies = $this->Machines->Company->find('list', ['limit' => 200])->all();
-        $contracts = $this->Machines->Contract->find('list', ['limit' => 200])->all();
+            'limit' => 200
+        ])->all();
         $this->set(compact('machine', 'models', 'makers', 'casinos', 'owners', 'companies', 'contracts'));
     }
 
@@ -181,7 +236,7 @@ class MachinesController extends AppController
         $serial = $this->request->getQuery('serial');
 
         $query = $this->Machines->find()->select(['id'])->where(['serial' => $serial])->first();
-        
+
         echo json_encode($query);
         die;
     }

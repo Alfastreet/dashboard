@@ -99,8 +99,7 @@ class MachinesTable extends Table
         $validator
             ->scalar('serial')
             ->maxLength('serial', 255)
-            ->requirePresence('serial', 'create')
-            ->notEmptyString('serial');
+            ->allowEmptyString('serial');
 
         $validator
             ->scalar('name')
@@ -150,28 +149,23 @@ class MachinesTable extends Table
         $validator
             ->scalar('display')
             ->maxLength('display', 255)
-            ->requirePresence('display', 'create')
-            ->notEmptyString('display');
+            ->allowEmptyString('display');
 
         $validator
-            ->dateTime('dateInstalling')
-            ->requirePresence('dateInstalling', 'create')
-            ->notEmptyDateTime('dateInstalling');
+            ->date('dateInstalling')
+            ->allowEmptyDate('dateInstalling');
 
         $validator
             ->integer('casino_id')
-            ->requirePresence('casino_id', 'create')
-            ->notEmptyString('casino_id');
+            ->allowEmptyString('casino_id');
 
         $validator
             ->integer('owner_id')
-            ->requirePresence('owner_id', 'create')
-            ->notEmptyString('owner_id');
+            ->allowEmptyString('owner_id');
 
         $validator
             ->integer('company_id')
-            ->requirePresence('company_id', 'create')
-            ->notEmptyString('company_id');
+            ->allowEmptyString('company_id');
 
         $validator
             ->integer('contract_id')

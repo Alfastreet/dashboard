@@ -63,12 +63,10 @@ class TotalaccountantsTable extends Table
     {
         $validator
             ->integer('casino_id')
-            ->requirePresence('casino_id', 'create')
             ->notEmptyString('casino_id');
 
         $validator
             ->integer('month_id')
-            ->requirePresence('month_id', 'create')
             ->notEmptyString('month_id');
 
         $validator
@@ -82,6 +80,22 @@ class TotalaccountantsTable extends Table
             ->maxLength('totalLiquidation', 255)
             ->requirePresence('totalLiquidation', 'create')
             ->notEmptyString('totalLiquidation');
+
+        $validator
+            ->scalar('estatus')
+            ->maxLength('estatus', 255)
+            ->requirePresence('estatus', 'create')
+            ->notEmptyString('estatus');
+
+        $validator
+            ->date('dateliquidation')
+            ->requirePresence('dateliquidation', 'create')
+            ->notEmptyDate('dateliquidation');
+
+        $validator
+            ->scalar('nfactura')
+            ->maxLength('nfactura', 255)
+            ->allowEmptyString('nfactura');
 
         return $validator;
     }

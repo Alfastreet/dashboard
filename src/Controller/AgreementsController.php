@@ -48,8 +48,9 @@ class AgreementsController extends AppController
         ]);
         $client = $this->fetchTable('Client')->find()->where(['id' => $agreement->client_id])->first();
         $machines = $this->fetchTable('Machines')->find('all', ['contain' => ['Model', 'Maker']])->where(['Machines.id' => $agreement->machine_id])->first();
-
-        $this->set(compact('agreement', 'client', 'machines'));
+        $wallets = $this->fetchTable('Wallets')->find()->where(['agreement_id' => $id])->first();
+        $paymentinitials = $this->fetchTable('Paymentinitials')->find()->where(['agreement_id' => $id])->all();
+        $this->set(compact('agreement', 'client', 'machines', 'wallets', 'paymentinitials'));
     }
 
     /**
@@ -76,7 +77,7 @@ class AgreementsController extends AppController
         }
         $machines = $this->Agreements->Machines->find('list', ['limit' => 200])->where(['contract_id' => 3])->all();
         $clients = $this->Agreements->Client->find('list', ['limit' => 200])->all();
-        $business = $this->Agreements->Business->find('list', ['limit' => 200])->all();
+        $business = $this->Agreements->Business->find('list', ['limit' => 200])->order(['name' => 'ASC'])->all();
         $agreementstatuses = $this->Agreements->Agreementstatuses->find('list', ['limit' => 200])->all();
         $this->set(compact('agreement', 'machines', 'agreementstatuses', 'clients', 'business'));
     }
@@ -125,7 +126,10 @@ class AgreementsController extends AppController
         $this->Authorization->skipAuthorization();
         $id = $this->request->getQuery('id');
         $dateNew = new Date();
-        $query = $this->Agreements->query()->update()->set(['datesigned' => $dateNew])->where(['id' => $id])->execute();
+        $query = $this->Agreements->query()->update()->set([
+            'datesigned' => $dateNew,
+            'agreementstatus_id' => 1
+            ])->where(['id' => $id])->execute();
 
         if ($query){
             echo json_encode('ok');

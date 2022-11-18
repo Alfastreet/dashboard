@@ -32,14 +32,14 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-md-5 ">
-                                <?= $this->Form->control('owner_id', ['options' => $owner, 'class' => 'form-control', 'label' => false, 'require' => true, 'empty' => ['' => 'Dueño de la Empresa']]) ?>
+                                <?= $this->Form->control('owner_id', ['options' => $owner, 'class' => 'form-control', 'id' => 'owner', 'label' => false, 'require' => true, 'empty' => ['0' => 'Dueño de la Empresa']]) ?>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
-                                <?= $this->Form->control('name', ['class' => 'form-control', 'placeholder' => 'Razon Social', 'label' => false]) ?>
+                                <?= $this->Form->control('name', ['class' => 'form-control', 'placeholder' => 'Razon Social', 'label' => false, 'id' => 'name']) ?>
                             </div>
                             <div class="col">
                                 <?= $this->Form->control('nit', ['class' => 'form-control', 'placeholder' => 'Nit', 'label' => false, 'id' => 'nit']) ?>
@@ -49,13 +49,13 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
-                                <?= $this->Form->control('email', ['class' => 'form-control', 'placeholder' => 'Correo Electronico', 'label' => false]) ?>
+                                <?= $this->Form->control('email', ['class' => 'form-control', 'placeholder' => 'Correo Electronico', 'label' => false, 'id' => 'email']) ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('phone', ['class' => 'form-control', 'placeholder' => 'Telefono', 'label' => false]) ?>
+                                <?= $this->Form->control('phone', ['class' => 'form-control', 'placeholder' => 'Telefono', 'label' => false, 'id' => 'phone']) ?>
                             </div>
                             <div class="col">
-                                <?= $this->Form->control('address', ['class' => 'form-control', 'placeholder' => 'Direccion', 'label' => false]) ?>
+                                <?= $this->Form->control('address', ['class' => 'form-control', 'placeholder' => 'Direccion', 'label' => false, 'id' => 'address']) ?>
                             </div>
                         </div>
                     </div>

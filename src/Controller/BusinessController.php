@@ -57,15 +57,16 @@ class BusinessController extends AppController
             $busines = $this->Business->patchEntity($busines, $this->request->getData());
             $nit = $busines->nit;
             $query = $this->Business->find('all')->where(['nit' => $nit])->all();
-
             if(sizeof($query) === 0){
-                
                 if ($this->Business->save($busines)) {    
-                    return $this->redirect(['action' => 'index']);
+                    echo json_encode('ok');
+                    die;
                 }
-                $this->Flash->error(__('Hubo un error al Guardar los datos'));
+                echo json_encode('error');
+                die;
             }
-            $this->Flash->error(__('La empresa ya existe'));
+            echo json_encode('error');
+            die;
 
         }
         $owner = $this->Business->Owner->find('list', ['limit' => 200])->all();

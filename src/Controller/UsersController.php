@@ -79,7 +79,6 @@ class UsersController extends AppController
             'contain' => ['Rol'],
         ];
         $users = $this->paginate($this->Users);
-
         $rol = $this->fetchTable('Rol')->find('all')->all();
         $this->set(compact('users', 'rol'));
     }
@@ -97,7 +96,6 @@ class UsersController extends AppController
             'contain' => ['Rol', 'Quotes'],
         ]);
         $this->Authorization->authorize($user);
-
         $rol = $this->fetchTable('Rol')->find('all')->all();
         $this->set(compact('user', 'rol'));
     }

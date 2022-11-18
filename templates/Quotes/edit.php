@@ -23,11 +23,9 @@
             <fieldset>
                 <legend><?= __('Edit Quote') ?></legend>
                 <?php
-                    echo $this->Form->control('user_id', ['options' => $users]);
                     echo $this->Form->control('business_id');
-                    echo $this->Form->control('date');
                     echo $this->Form->control('total');
-                    echo $this->Form->control('estatus_id');
+                    echo $this->Form->control('comments');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

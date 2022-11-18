@@ -66,10 +66,10 @@ class ErasesController extends AppController
         $casinoId = $this->request->getQuery('casinoId');
         $machineId = $this->request->getQuery('machineId');
 
-        $coljuegosValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 2 ])->first()->value;
-        $adminValue =  $this->fetchTable('dataiportants')->find()->where(['id' => 3 ])->first()->value;
-        $iva = $this->fetchTable('dataiportants')->find()->where(['id' => 1])->first()->value;
-        $alfaValue = $this->fetchTable('dataiportants')->find()->where(['id' => 4])->first()->value;
+        $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2 ])->first()->value;
+        $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3 ])->first()->value;
+        $iva = $this->fetchTable('Dataiportants')->find()->where(['id' => 1])->first()->value;
+        $alfaValue = $this->fetchTable('Dataiportants')->find()->where(['id' => 4])->first()->value;
         
         $erase = $this->Erases->newEmptyEntity();
         $erase = $this->Erases->patchEntity($erase, $this->request->getData());

@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * Payments Model
  *
  * @property \App\Model\Table\AgreementsTable&\Cake\ORM\Association\BelongsTo $Agreements
+ * @property \App\Model\Table\DestiniesTable&\Cake\ORM\Association\BelongsTo $Destinies
  *
  * @method \App\Model\Entity\Payment newEmptyEntity()
  * @method \App\Model\Entity\Payment newEntity(array $data, array $options = [])
@@ -47,6 +48,13 @@ class PaymentsTable extends Table
             'foreignKey' => 'agreement_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Destinies', [
+            'foreignKey' => 'destiny_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Banks', [
+            'foreignKey' => 'bank_id',
+        ]);
     }
 
     /**
@@ -73,6 +81,34 @@ class PaymentsTable extends Table
             ->requirePresence('valuequote', 'create')
             ->notEmptyString('valuequote');
 
+        $validator
+            ->date('datepayment')
+            ->allowEmptyDate('datepayment');
+
+        $validator
+            ->integer('destiny_id')
+            ->notEmptyString('destiny_id');
+
+        $validator
+            ->integer('bank_id')
+            ->allowEmptyString('bank_id');
+
+        $validator
+            ->scalar('cop')
+            ->maxLength('cop', 255)
+            ->allowEmptyString('cop');
+
+        $validator
+            ->scalar('trm')
+            ->maxLength('trm', 255)
+            ->allowEmptyString('trm');
+
+        $validator
+            ->scalar('referencepay')
+            ->maxLength('referencepay', 255)
+            ->requirePresence('referencepay', 'create')
+            ->notEmptyString('referencepay');
+
         return $validator;
     }
 
@@ -86,6 +122,8 @@ class PaymentsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('agreement_id', 'Agreements'), ['errorField' => 'agreement_id']);
+        $rules->add($rules->existsIn('destiny_id', 'Destinies'), ['errorField' => 'destiny_id']);
+        $rules->add($rules->existsIn('bank_id', 'Banks'), ['errorField' => 'bank_id']);
 
         return $rules;
     }

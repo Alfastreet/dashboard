@@ -73,7 +73,7 @@ class TiketsTable extends Table
     {
         $validator
             ->integer('machine_id')
-            ->notEmptyString('machine_id');
+            ->allowEmptyString('machine_id');
 
         $validator
             ->email('email')

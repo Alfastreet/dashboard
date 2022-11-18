@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use Cake\Controller\Exception\MissingActionException;
 
 /**
  * Totalaccountants Controller
@@ -18,6 +21,7 @@ class TotalaccountantsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $this->paginate = [
             'contain' => ['Casinos', 'Month'],
         ];
@@ -49,10 +53,13 @@ class TotalaccountantsController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $totalaccountant = $this->Totalaccountants->newEmptyEntity();
         if ($this->request->is('post')) {
             $totalaccountant = $this->Totalaccountants->patchEntity($totalaccountant, $this->request->getData());
-            $totalaccountant->month_id = date('m', strtotime(date('d-m-Y')."- 1 month"));
+            $totalaccountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
+            $totalaccountant->dateliquidation = date('Y-m-d');
+            $totalaccountant->estatus = 'Pendiente';
             $totalaccountant->year = date('Y');
             if ($this->Totalaccountants->save($totalaccountant)) {
                 echo json_encode('ok');
@@ -66,50 +73,37 @@ class TotalaccountantsController extends AppController
         $this->set(compact('totalaccountant', 'casinos', 'months'));
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Totalaccountant id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    public function resume($id = null, $token = null)
     {
-        $totalaccountant = $this->Totalaccountants->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $totalaccountant = $this->Totalaccountants->patchEntity($totalaccountant, $this->request->getData());
-            if ($this->Totalaccountants->save($totalaccountant)) {
-                $this->Flash->success(__('The totalaccountant has been saved.'));
+        $this->Authorization->skipAuthorization();
+        $id = $this->request->getQuery('casino_id');
+        $token = $this->request->getQuery('token');
+        $tokenCasino = $this->fetchTable('Casinos')->find()->select(['token'])->where(['id' => $id])->first();
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The totalaccountant could not be saved. Please, try again.'));
-        }
-        $casinos = $this->Totalaccountants->Casinos->find('list', ['limit' => 200])->all();
-        $machines = $this->Totalaccountants->Machines->find('list', ['limit' => 200])->all();
-        $months = $this->Totalaccountants->Months->find('list', ['limit' => 200])->all();
-        $this->set(compact('totalaccountant', 'casinos', 'machines', 'months'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Totalaccountant id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $totalaccountant = $this->Totalaccountants->get($id);
-        if ($this->Totalaccountants->delete($totalaccountant)) {
-            $this->Flash->success(__('The totalaccountant has been deleted.'));
-        } else {
-            $this->Flash->error(__('The totalaccountant could not be deleted. Please, try again.'));
+        if ($token != $tokenCasino->token) {
+            throw new MissingActionException();
         }
 
-        return $this->redirect(['action' => 'index']);
+        $totalaccountant = $this->Totalaccountants->find()->select([
+            'id',
+            'year',
+            'totalLiquidation',
+            'dateliquidation',
+            'estatus'
+        ])->select([
+            'Month.month'
+        ])->join([
+            'Month' => [
+                'table' => 'month',
+                'type' => 'INNER',
+                'conditions' => 'Month.id = Totalaccountants.month_id'
+            ]
+        ])->where([
+            'casino_id' => $id
+        ])->all();
+        $casinoBusiness = $this->fetchTable('Casinos')->find()->select(['business_id'])->where(['id' => $id])->first();
+        $business = $this->fetchTable('Business')->find()->where(['id' => $casinoBusiness->business_id])->first();
+
+        $this->set(compact('totalaccountant', 'business'));
     }
 }

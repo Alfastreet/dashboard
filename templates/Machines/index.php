@@ -49,16 +49,16 @@ $this->Breadcrumbs->add([
                         <?php foreach ($machines as $machine) : ?>
                             <tr>
                                 <td><?= $machine->idint === null ? '' : $this->Number->format($machine->idint) ?></td>
-                                <td><?= h($machine->serial) ?></td>
+                                <td><?= $machine->serial != 0 ? $machine->serial : 'Serial No Asignado' ?></td>
                                 <td><?= h($machine->name) ?></td>
-                                <td><?= $this->Number->format($machine->yearModel) ?></td>
-                                <td><?= $machine->has('model') ? h($machine->model->name) : '' ?></td>
+                                <td><?= h($machine->yearmodel) ?></td>
+                                <td><?= h($machine->Model['name']) ?></td>
                                 <td><?= h($machine->warranty) ?></td>
-                                <td><?= h($machine->dateInstalling) ?></td>
-                                <td><?= $machine->has('casino') ? h($machine->casino->name) : '' ?></td>
-                                <td><?= $machine->has('owner') ? h($machine->owner->name) : '' ?></td>
-                                <td><?= $machine->has('company') ? h($machine->company->name) : '' ?></td>
-                                <td><?= $machine->has('contract') ? h($machine->contract->name) : '' ?></td>
+                                <td><?= $machine->dateInstalling != '' ? $machine->dateInstalling : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->Casino['name']!= 0 ? $machine->Casino['name'] : 'Maquina no instalada'  ?></td>
+                                <td><?= $machine->Owner['name'] != 0 ? $machine->Owner['name'] : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->Company['name'] != 0 ? $machine->Company['name'] : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->Contract['name'] != 0 ? $machine->Contract['name'] : 'Maquina no instalada' ?></td>
                                 <td><?= $this->Html->image('Machines/' . $machine->image, ['class' => 'img-thumbnail']) ?></td>
                                 <td><?= $this->Number->currency($machine->value, 'USD') . __(' USD') ?></td>
                                 <td class="actions">

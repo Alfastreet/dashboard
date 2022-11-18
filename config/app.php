@@ -4,6 +4,7 @@ use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
+use Cake\Cache\Cache;
 use Cake\Mailer\Transport\MailTransport;
 
 return [
@@ -106,8 +107,8 @@ return [
      * enable timestamping regardless of debug value.
      */
     'Asset' => [
-        //'timestamp' => true,
-        // 'cacheTime' => '+1 year'
+        'timestamp' => true,
+        'cacheTime' => '+1 year'
     ],
 
     /*
@@ -356,7 +357,7 @@ return [
              * mysql configuration directive 'innodb_stats_on_metadata = 0'
              * which is the recommended value in production environments
              */
-            //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+            'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
 
         /*
@@ -404,6 +405,7 @@ return [
             'url' => env('LOG_QUERIES_URL', null),
             'scopes' => ['queriesLog'],
         ],
+        
     ],
 
     /*
@@ -447,5 +449,8 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'ini' => [
+            'session.cookie_samesite' => 'Strict'
+        ]
     ],
 ];

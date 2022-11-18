@@ -11,6 +11,7 @@ $this->Breadcrumbs->add([
     ['title' => 'Cotizacion # '.$quote->id]
 ]);
 ?>
+<input type="hidden" name="_csrfToken" value="<?= $this->request->getAttribute('csrfToken') ?>">
 <div class="col-12">
     <div class="mb-3">
         <aside class="column">

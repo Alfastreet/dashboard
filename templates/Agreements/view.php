@@ -4,6 +4,15 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Agreement $agreement
  */
+
+$paymentinitial = 0;
+$coprecauded = 0;
+
+foreach ($paymentinitials as $pay) {
+    $paymentinitial += $pay->valuequote;
+    $coprecauded += $pay->cop;
+}
+
 ?>
 <div class="col-12">
     <div class="mb-4 card">
@@ -19,14 +28,11 @@
                             <?php if ($agreement->datesigned === NULL) : ?>
                                 <?= $this->Html->link(__('Editar'), ['action' => 'edit', $agreement->id], ['class' => 'btn btn-primary me-md-2']) ?>
                                 <?php if ($agreement->agreementstatus_id === 2) : ?>
-                                    <button type="button" class="btn btn-success" id="confirmed">
-                                        <svg class="nav-icon" width="20" height="20">
-                                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-check"></use>
-                                        </svg> <?= __('Firmar') ?>
-                                    </button>
+                                    <?= $paymentinitial >= $agreement->quoteini ? $this->Form->button('Confirmar Instalacion', ['type' => 'button', 'class' => 'btn btn-success', 'id' => 'confirmed'])  : $this->Html->link('Pagos Cuota Inicial', ['controller' => 'paymentinitials', 'action' => 'add', '?' => ['agreement' => $agreement->id]], ['class' => 'btn btn-success'])
+                                    ?>
                                 <?php endif ?>
                             <?php endif; ?>
-                            <?= $agreement->datesigned !== NULL ? $this->Html->link(__('Ver Cartera'), ['action' => 'edit', $agreement->id], ['class' => 'btn btn-info me-md-2']) : '' ?>
+                            <?= $wallets !== NULL ? $this->Html->link(__('Ver Cartera'), ['controller' => 'wallets', 'action' => 'view', $wallets->id], ['class' => 'btn btn-info me-md-2']) : '' ?>
                         </div>
                     <?php endif ?>
                 </div>
@@ -63,7 +69,8 @@
                         </div>
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Valor del Contrato:') ?></label>
                         <div class="col-sm-4">
-                            <input type="text" readonly class="form-control-plaintext" id="agreementvalue" value="<?= $this->Number->currency($agreement->agreementvalue, 'USD')  ?>">
+                            <input type="text" readonly class="form-control-plaintext" value="<?= $this->Number->currency($agreement->agreementvalue, 'USD')  ?>">
+                            <input type="hidden" id="agreementvalue" value="<?= $agreement->agreementvalue ?>">
                         </div>
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Valor de las coutas:') ?></label>
                         <div class="col-sm-4">
@@ -72,9 +79,9 @@
                         </div>
                     </div>
                     <div class="col">
-                        <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Cuota inicial:') ?></label>
-                        <div class="col-sm-4">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $this->Number->currency($agreement->quoteini, 'USD')  ?>">
+                        <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Cuota inicial - Pagada hasta la fecha:') ?></label>
+                        <div class="col-sm-6">
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $this->Number->currency($agreement->quoteini, 'USD') . ' - ' . $this->Number->currency($paymentinitial, 'USD') ?>">
                         </div>
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Descuento:') ?></label>
                         <div class="col-sm-4">
@@ -83,7 +90,8 @@
                         <?php if ($agreement->separation > 0) : ?>
                             <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Pago por separacion:') ?></label>
                             <div class="col-sm-4">
-                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $this->Number->currency($agreement->separation, 'USD')  ?>">
+                                <input type="text" readonly class="form-control-plaintext" value="<?= $this->Number->currency($agreement->separation, 'USD')  ?>">
+                                <input type="hidden" id="separation" value="<?= $agreement->separation ?>">
                             </div>
                         <?php endif ?>
                     </div>
@@ -165,6 +173,52 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title text-center"><?= __('Resumen de pagos de la cuota inicial') ?></h2>
+            <div class="table-responsive mt-4">
+                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th><?= __('Fecha de Pago') ?></th>
+                            <th><?= __('Valor pagado USD') ?></th>
+                            <th><?= __('TRM') ?></th>
+                            <th><?= __('Valor en Pesos Colombianos') ?></th>
+                            <th><?= __('Banco') ?></th>
+                            <th><?= __('Empresa') ?></th>
+                            <th><?= __('Referencia de pago') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($paymentinitials as $payment): ?>
+                            <tr>
+                                <td><?= h($payment->datepayment) ?></td>
+                                <td><?= $this->Number->currency($payment->valuequote, 'USD') ?></td>
+                                <td><?= $this->Number->currency($payment->trm, 'COP') ?></td>
+                                <td><?= $this->Number->currency($payment->cop, 'COP') ?></td>
+                                <td><?= h($payment->destiny_id) ?></td>
+                                <td><?= h($payment->bank_id) ?></td>
+                                <td><?= h($payment->referencepay) ?></td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5"><?= __('Total recaudado USD') ?></th>
+                            <th colspan="2"><?= $this->Number->currency($paymentinitial, 'USD') ?></th>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><?= __('Total recaudado COP') ?></th>
+                            <th colspan="2"><?= $this->Number->currency($coprecauded, 'COP') ?></th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>

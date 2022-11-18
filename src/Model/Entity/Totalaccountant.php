@@ -13,9 +13,11 @@ use Cake\ORM\Entity;
  * @property int $month_id
  * @property string $year
  * @property string $totalLiquidation
+ * @property string $estatus
+ * @property \Cake\I18n\FrozenDate $dateliquidation
+ * @property string|null $nfactura
  *
  * @property \App\Model\Entity\Casino $casino
- * @property \App\Model\Entity\Machine $machine
  * @property \App\Model\Entity\Month $month
  */
 class Totalaccountant extends Entity
@@ -34,8 +36,10 @@ class Totalaccountant extends Entity
         'month_id' => true,
         'year' => true,
         'totalLiquidation' => true,
+        'estatus' => true,
+        'dateliquidation' => true,
+        'nfactura' => true,
         'casino' => true,
-        'machine' => true,
         'month' => true,
     ];
 }

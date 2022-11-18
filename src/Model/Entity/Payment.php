@@ -12,9 +12,15 @@ use Cake\ORM\Entity;
  * @property int $agreement_id
  * @property string $paymentquote
  * @property string $valuequote
+ * @property \Cake\I18n\FrozenDate|null $datepayment
+ * @property int $destiny_id
+ * @property int|null $bank_id
+ * @property string|null $cop
+ * @property string|null $trm
+ * @property string $referencepay
  *
  * @property \App\Model\Entity\Agreement $agreement
- * @property \App\Model\Entity\Paymentstatus $paymentstatus
+ * @property \App\Model\Entity\Destiny $destiny
  */
 class Payment extends Entity
 {
@@ -31,7 +37,13 @@ class Payment extends Entity
         'agreement_id' => true,
         'paymentquote' => true,
         'valuequote' => true,
+        'datepayment' => true,
+        'destiny_id' => true,
+        'bank_id' => true,
+        'cop' => true,
+        'trm' => true,
+        'referencepay' => true,
         'agreement' => true,
-        'paymentstatus' => true,
+        'destiny' => true,
     ];
 }

@@ -8,11 +8,14 @@
 <div class="col-12">
     <div class="card mb-4 ">
         <div class="card-body">
-            <h2 class="card-title text-center"><?= __('Acuerdos Comerciales') ?></h2>
+            <div class="d-flex justify-content-between mb-4">
+                <h2 class="card-title text-center"><?= __('Acuerdos Comerciales') ?></h2>
+                <?= $this->Html->link('Nuevo Acuerdo Comercial', ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+            </div>
             <div class="container mt-4">
                 <div class="row">
                     <?php foreach ($agreements as $agreement) :  ?>
-                        <div class="col">
+                        <div class="col-sm-6 mb-3">
                             <div class="card <?= $agreement->agreementstatus_id === 2 ? 'border-danger' : 'border-success' ?>" style="width: auto;">
                                 <div class="card-body <?= $agreement->agreementstatus_id === 2 ? 'text-danger' : 'text-success' ?>">
                                     <h5 class="card-title  text-center"><?= __('Acuerdo Comercial # ' . $agreement->id) ?></h5>

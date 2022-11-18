@@ -24,6 +24,9 @@ class TotalaccountantsFixture extends TestFixture
                 'month_id' => 1,
                 'year' => 'Lorem ipsum dolor sit amet',
                 'totalLiquidation' => 'Lorem ipsum dolor sit amet',
+                'estatus' => 'Lorem ipsum dolor sit amet',
+                'dateliquidation' => '2022-11-10',
+                'nfactura' => 'Lorem ipsum dolor sit amet',
             ],
         ];
         parent::init();

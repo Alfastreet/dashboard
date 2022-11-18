@@ -24,8 +24,7 @@ class TotalaccountantsControllerTest extends TestCase
     protected $fixtures = [
         'app.Totalaccountants',
         'app.Casinos',
-        'app.Machines',
-        'app.Months',
+        'app.Month',
     ];
 
     /**

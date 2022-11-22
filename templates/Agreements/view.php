@@ -14,6 +14,7 @@ foreach ($paymentinitials as $pay) {
 }
 
 ?>
+<input type="hidden" name="_csrfToken" value="<?= $this->request->getAttribute('csrfToken') ?>">
 <div class="col-12">
     <div class="mb-4 card">
         <div class="card-body">

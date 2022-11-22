@@ -14,6 +14,7 @@ use Cake\I18n\FrozenTime;
  */
 class CasinosController extends AppController
 {
+
     /**
      * Index method
      *
@@ -22,10 +23,14 @@ class CasinosController extends AppController
     public function index()
     {
         $this->Authorization->skipAuthorization();
+
         $this->paginate = [
             'contain' => ['City', 'State', 'Owner', 'Business'],
         ];
-        $casinos = $this->paginate($this->Casinos);
+        $casinos = $this->paginate($this->Casinos, [
+            'limit' => 10000,
+            'maxLimit' => 10000,
+        ]);
 
         $this->set(compact('casinos'));
     }

@@ -60,7 +60,8 @@ class QuotesController extends AppController
         $money = $this->fetchTable('Monies')->find('all')->all();
         $quotestatus = $this->fetchTable('Quotestatuses')->find('all')->where(['quote_id' => $id])->all();
         $orders = $this->fetchTable('Orders')->find()->where(['quote_id' => $id])->first();
-        $this->set(compact('quote', 'products', 'money', 'quotestatus', 'orders'));
+        $installments = $this->fetchTable('Installments')->find()->where(['quote_id' => $id])->first();
+        $this->set(compact('quote', 'products', 'money', 'quotestatus', 'orders', 'installments'));
     }
 
     /**

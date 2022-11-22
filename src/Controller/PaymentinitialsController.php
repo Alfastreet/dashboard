@@ -55,6 +55,7 @@ class PaymentinitialsController extends AppController
         $this->Authorization->skipAuthorization();
         $idAgreement = $this->request->getQuery('agreement');
         $agreements = $this->Paymentinitials->Agreements->find()->where(['id' => $idAgreement])->first();
+        $wallet = $this->fetchTable('Wallets')->find()->where(['agreement_id' => $idAgreement])->first();
 
         if ($idAgreement === NULL || $idAgreement === '') {
             throw new RecordNotFoundException();
@@ -63,7 +64,8 @@ class PaymentinitialsController extends AppController
         $paymentinitial = $this->Paymentinitials->newEmptyEntity();
         if ($this->request->is('post')) {
             $paymentinitial = $this->Paymentinitials->patchEntity($paymentinitial, $this->request->getData());
-
+            $totalRecaudo = $wallet->collection + $paymentinitial->valuequote;
+            
             if ($paymentinitial->valuequote > $agreements->quoteini) {
                 //Obtener el sobrante
                 $residuo = $paymentinitial->valuequote - $agreements->quoteini;

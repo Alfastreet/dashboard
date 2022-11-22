@@ -26,8 +26,9 @@ class WalletsController extends AppController
             'contain' => ['Agreements'],
         ];
         $wallets = $this->paginate($this->Wallets);
+        $payments = $this->fetchTable('Payments')->find()->all();
 
-        $this->set(compact('wallets'));
+        $this->set(compact('wallets', 'payments'));
     }
 
     /**

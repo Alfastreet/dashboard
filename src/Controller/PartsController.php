@@ -1,7 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\FrozenTime;
 
@@ -70,14 +72,13 @@ class PartsController extends AppController
 
             $image =  $this->request->getData('image');
 
-            if($image) {
+            if ($image) {
 
                 $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time. "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT."img/Parts/".$nameImage;
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Parts/" . $nameImage;
                 $image->moveTo($destiny);
                 $part->image = $nameImage;
-
             }
 
 
@@ -116,20 +117,18 @@ class PartsController extends AppController
 
             $part->image = $nameImageOld;
 
-            if($image->getClientFileName()) {
+            if ($image->getClientFileName()) {
 
-                if(file_exists(WWW_ROOT."img/Parts/".$nameImageOld)){
+                if (file_exists(WWW_ROOT . "img/Parts/" . $nameImageOld)) {
 
-                    unlink(WWW_ROOT."img/Parts/".$nameImageOld);
-        
+                    unlink(WWW_ROOT . "img/Parts/" . $nameImageOld);
                 }
 
                 $time =  FrozenTime::now()->toUnixString();
-                $nameImage = $time. "_" . $image->getClientFileName();
-                $destiny = WWW_ROOT."img/Parts/".$nameImage;
+                $nameImage = $time . "_" . $image->getClientFileName();
+                $destiny = WWW_ROOT . "img/Parts/" . $nameImage;
                 $image->moveTo($destiny);
-                $part->image = $nameImage;                
-
+                $part->image = $nameImage;
             }
 
             if ($this->Parts->save($part)) {
@@ -156,10 +155,9 @@ class PartsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $part = $this->Parts->get($id);
 
-        if(file_exists(WWW_ROOT."img/Parts/".$part['image'])){
+        if (file_exists(WWW_ROOT . "img/Parts/" . $part['image'])) {
 
-            unlink(WWW_ROOT."img/Parts/".$part['image']);
-
+            unlink(WWW_ROOT . "img/Parts/" . $part['image']);
         }
 
         if ($this->Parts->delete($part)) {
@@ -171,33 +169,56 @@ class PartsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function getPart() {
+    public function getPart()
+    {
 
-        if($this->request->is('ajax')) {
+        if ($this->request->is('ajax')) {
 
             $serial_id = $this->request->getQuery('serial_id');
 
-            $serial = $this->db->execute("SELECT * FROM parts WHERE serial = '" .$serial_id."'")->fetchAll('assoc');
+            $serial = $this->db->execute("SELECT * FROM parts WHERE serial = '" . $serial_id . "'")->fetchAll('assoc');
 
             echo json_encode($serial);
             die;
         }
     }
 
-    public function searchpart($serial = null) 
+    public function searchpart($serial = null)
     {
         $this->autoRender = false;
         $serial = $this->request->getQuery('serial');
 
         $query = $this->Parts->find()->where(['serial' => $serial])->count();
 
-        if($query === 0){
+        if ($query === 0) {
             echo json_encode('ok');
             die;
         }
 
         echo json_encode('error');
         die;
+    }
 
+    public function downproducts($idQuote = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $idQuote = $this->request->getQuery('quoteid');
+        $products = $this->fetchTable('Detailsquotes')->find()->where(['quote_id' => $idQuote])->all();
+        $nproducts = $this->fetchTable('Detailsquotes')->find()->where(['quote_id' => $idQuote])->count();
+        $parts = $this->Parts->find()->all();
+        $newCantidad = 0;
+
+        foreach ($parts as $part) {
+            foreach ($products as $product) {
+                $newCantidad = $part->amount - $product->amount;
+                $query = $this->Parts->query()->update()->set(['amount' => $newCantidad])->where(['id' => $product->product_id])->execute();
+                if ($query) {
+                    echo json_encode('ok');
+                    die;
+                }
+                echo json_encode('error');
+                die;
+            }
+        }
     }
 }

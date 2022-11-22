@@ -11,15 +11,15 @@
         <li class="nav-item">
             <a class="nav-link" href="/">
                 <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-                </svg>Inicio
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
+                </svg><?= __('Inicio') ?>
             </a>
         </li>
         <!-- Submenus -->
         <li class="nav-title"><?= __('Contabilidad') ?></li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="/accountants">
+            <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-money"></use>
                 </svg><?= __('Participaciones') ?>
@@ -33,23 +33,31 @@
         <!-- Fin Submenus de navegacion -->
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="/accountants">
+            <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-description"></use>
-                </svg><?= __('Cotizaciones') ?>
+                </svg><?= __('Cotizaciones Y Ordenes') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">
                     <?= $this->Html->link('Ver Cotizaciones', ['controller' => 'Quotes', 'action' => 'index'], ['class' => 'nav-link']) ?>
                 </li>
+                <?php if ($isAdmin || $isTecBoss) : ?>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Ordenes de Salida', ['controller' => 'installments', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Ordenes de Trabajo', ['controller' => 'orders', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                    </li>
+                <?php endif; ?>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
         <!-- Submenus de navegacion -->
         <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="/accountants">
+            <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-description"></use>
+                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-wallet"></use>
                 </svg><?= __('Cartera') ?>
             </a>
             <ul class="nav-group-items">
@@ -60,7 +68,7 @@
         </li>
         <!-- Fin Submenus de navegacion -->
         <!-- Submenus -->
-        <li class="nav-title">Administracion</li>
+        <li class="nav-title"><?= __('Administracion')?></li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a href="#" class="nav-link nav-group-toggle">
@@ -80,7 +88,7 @@
             <a href="#" class="nav-link nav-group-toggle">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-people"></use>
-                </svg>Clientes
+                </svg><?= __('Clientes') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todos los Clientes', ['controller' => 'Client', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
@@ -95,7 +103,7 @@
             <a href="#" class="nav-link nav-group-toggle">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-casino"></use>
-                </svg>Casinos
+                </svg><?= __('Casinos') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-items"><?= $this->Html->link('Ver todos los Casinos', ['controller' => 'Casinos', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
@@ -144,13 +152,13 @@
         </li>
         <!-- Fin Submenus de navegacion -->
         <!-- Submenus -->
-        <li class="nav-title">Inventarios</li>
+        <li class="nav-title"><?= __('Inventarios') ?></li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
-                </svg>Piezas y Servicios
+                </svg><?= __('Piezas y Servicios')?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">
@@ -158,23 +166,9 @@
                 </li>
             </ul>
         </li>
-        <!-- Fin Submenus de navegacion -->
-        <li class="nav-group">
-            <a class="nav-link nav-group-toggle" href="#">
-                <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
-                </svg>Ordenes de Trabajo
-            </a>
-            <ul class="nav-group-items">
-                <li class="nav-item">
-                    <?= $this->Html->link('Ver Ordenes', ['controller' => 'orders', 'action' => 'index'], ['class' => 'nav-link']) ?>
-                </li>
-            </ul>
-        </li>
-        <!-- Fin Submenus de navegacion -->
 
         <!-- Submenus -->
-        <li class="nav-title">Administración General</li>
+        <li class="nav-title"><?= __('Administración General') ?></li>
         <?php if ($isAdmin) : ?>
             <!-- Submenus de navegacion -->
             <li class="nav-group">

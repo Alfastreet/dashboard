@@ -56,6 +56,8 @@ class PaymentsController extends AppController
         $idAgreement = $this->request->getQuery('agreement');
         $agreements = $this->Payments->Agreements->find()->where(['id' => $idAgreement])->first();
         $puchito = $this->Payments->find()->select()->where(['agreement_id' => $idAgreement])->order(['id' => 'DESC'])->first();
+        $seguimientoPagos = $this->Payments->find()->where(['agreement_id' => $idAgreement])->all();
+        $wallet = $this->fetchTable('Wallets')->find()->where(['agreement_id' => $idAgreement])->first();
 
         if ($idAgreement === NULL || $idAgreement === '') {
             throw new RecordNotFoundException();
@@ -65,63 +67,97 @@ class PaymentsController extends AppController
         if ($this->request->is('post')) {
             $payment = $this->Payments->patchEntity($payment, $this->request->getData());
 
-            if ($payment->valuequote > $agreements->quotevalue) {
-                $maxQuote = $agreements->quotevalue;
-                $residuo = $payment->valuequote - $maxQuote;
-                $trm = $payment->trm;
-                $i = $payment->paymentquote;
+            $totalAbonado =  $payment->valuequote;
+            $totalRecaudo = $wallet->collection + $totalAbonado;
+            $maxQuote = $agreements->quotevalue;
+            $trm = $payment->trm;
+            $mesAbono = $payment->paymentquote;
+            $this->fetchTable('Wallets')->query()->update()->set(['collection' => $totalRecaudo])->where(['agreement_id' => $idAgreement])->execute();
 
-                if ($puchito->valuequote > 0) {
-                    $residuo = $residuo + $puchito->valuequote;
 
-                    if ($residuo > $maxQuote) {
-                        for ($residuo; $residuo > $maxQuote; $i++) {
-                            $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                                'agreement_id' => $idAgreement,
-                                'paymentquote' => $i + 1,
-                                'valuequote' => $maxQuote,
-                                'datepayment' => $payment->datepayment,
-                                'destiny_id' => $payment->destiny_id,
-                                'bank_id' => $payment->bank_id,
-                                'cop' => $maxQuote * $trm,
-                                'trm' => $trm,
-                                'referencepay' => $payment->referencepay
-                            ])->execute();
+            // Si abona mas de la cuota minima
+            if ($totalAbonado > $maxQuote) {
 
-                            $residuo = $residuo - $maxQuote;
-                        }
+                if ($totalAbonado > $maxQuote) {
+                    for ($totalAbonado; $totalAbonado > $maxQuote; $mesAbono++) {
 
-                        if ($residuo > 0) {
-                            $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                                'agreement_id' => $idAgreement,
-                                'paymentquote' => $i + 1,
-                                'valuequote' => $residuo,
-                                'datepayment' => $payment->datepayment,
-                                'destiny_id' => $payment->destiny_id,
-                                'bank_id' => $payment->bank_id,
-                                'cop' => $residuo * $trm,
-                                'trm' => $trm,
-                                'referencepay' => $payment->referencepay
-                            ])->execute();
-                        }
+                        $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
+                            'agreement_id' => $idAgreement,
+                            'paymentquote' => $mesAbono,
+                            'valuequote' => $maxQuote,
+                            'datepayment' => $payment->datepayment,
+                            'destiny_id' => $payment->destiny_id,
+                            'bank_id' => $payment->bank_id,
+                            'cop' => $maxQuote * $trm,
+                            'trm' => $trm,
+                            'referencepay' => $payment->referencepay
+                        ])->execute();
 
-                        $payment->valuequote = $agreements->quotevalue;
-                        $payment->cop = $payment->valuequote * $payment->trm;
+                        $totalAbonado = $totalAbonado - $maxQuote;
                     }
                 }
-            }
 
-            if ($this->Payments->save($payment)) {
+                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
+                    'agreement_id' => $idAgreement,
+                    'paymentquote' => $mesAbono,
+                    'valuequote' => $totalAbonado,
+                    'datepayment' => $payment->datepayment,
+                    'destiny_id' => $payment->destiny_id,
+                    'bank_id' => $payment->bank_id,
+                    'cop' => $totalAbonado * $trm,
+                    'trm' => $trm,
+                    'referencepay' => $payment->referencepay
+                ])->execute();
+
                 echo json_encode('ok');
                 die;
             }
+            // Si el valor abonado es menor a la cuota
+            else if ($totalAbonado < $maxQuote) {
+                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
+                    'agreement_id' => $idAgreement,
+                    'paymentquote' => $mesAbono,
+                    'valuequote' => $totalAbonado,
+                    'datepayment' => $payment->datepayment,
+                    'destiny_id' => $payment->destiny_id,
+                    'bank_id' => $payment->bank_id,
+                    'cop' => $totalAbonado * $trm,
+                    'trm' => $trm,
+                    'referencepay' => $payment->referencepay
+                ])->execute();
+
+                echo json_encode('ok');
+                die;
+            }
+
+            //Si el valor abonado es igual a la cuota
+            else if ($totalAbonado = $maxQuote) {
+                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
+                    'agreement_id' => $idAgreement,
+                    'paymentquote' => $mesAbono,
+                    'valuequote' => $totalAbonado,
+                    'datepayment' => $payment->datepayment,
+                    'destiny_id' => $payment->destiny_id,
+                    'bank_id' => $payment->bank_id,
+                    'cop' => $totalAbonado * $trm,
+                    'trm' => $trm,
+                    'referencepay' => $payment->referencepay
+                ])->execute();
+
+                echo json_encode('ok');
+                die;
+            }
+
+            
+
+
             echo json_encode('error');
             die;
         }
-        $wallet = $this->fetchTable('Wallets')->find()->select(['id'])->where(['agreement_id' => $agreements->id])->first();
+
         $destinies = $this->Payments->Destinies->find('list', ['limit' => 200])->all();
         $banks = $this->Payments->Banks->find('list', ['limit' => 200])->all();
-        $this->set(compact('payment', 'agreements', 'destinies', 'wallet', 'banks'));
+        $this->set(compact('payment', 'agreements', 'destinies', 'wallet', 'banks', 'seguimientoPagos'));
     }
 
     /**

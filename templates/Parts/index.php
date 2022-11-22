@@ -24,7 +24,7 @@ $this->Breadcrumbs->add([
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="display table table-responsive table-striped table-hover table-sm table-bordered text-center " id="myTable">
+                <table class="display table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
                     <thead>
                         <tr>
                             <th><?= __('') ?></th>

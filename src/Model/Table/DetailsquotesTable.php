@@ -57,7 +57,7 @@ class DetailsquotesTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Money', [
+        $this->belongsTo('Monies', [
             'foreignKey' => 'money_id',
             'joinType' => 'INNER',
         ]);
@@ -112,7 +112,7 @@ class DetailsquotesTable extends Table
         $rules->add($rules->existsIn('quote_id', 'Quotes'), ['errorField' => 'quote_id']);
         $rules->add($rules->existsIn('typeProduct_id', 'TypeProduct'), ['errorField' => 'typeProduct_id']);
         $rules->add($rules->existsIn('product_id', 'Parts'), ['errorField' => 'product_id']);
-        $rules->add($rules->existsIn('money_id', 'Money'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('money_id', 'Monies'), ['errorField' => 'product_id']);
 
         return $rules;
     }

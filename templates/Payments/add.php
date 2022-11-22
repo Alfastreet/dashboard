@@ -60,5 +60,37 @@
     </div>
 </div>
 
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title text-center"><?= __('Seguimiento de pagos del contrato # ' . $agreements->id) ?></h3>
+            <div class="table-responsive mt-4">
+                <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th><?= __('Fecha de Recaudo') ?></th>
+                            <th><?= __('Cuota') ?></th>
+                            <th><?= __('Valor recaudado USD') ?></th>
+                            <th><?= __('TRM') ?></th>
+                            <th><?= __('Valor en COP') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($seguimientoPagos as $pagos):?>
+                            <tr>
+                                <td><?= h($pagos->datepayment) ?></td>
+                                <td><?= $this->Number->format($pagos->paymentquote) ?></td>
+                                <td><?= $this->Number->currency($pagos->valuequote, 'USD') ?></td>
+                                <td><?= $this->Number->currency($pagos->trm, 'USD') ?></td>
+                                <td><?= $this->Number->currency($pagos->cop, 'USD') ?></td>
+                            </tr>
+                        <?php endforeach?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?= $this->Html->script('payments') ?>

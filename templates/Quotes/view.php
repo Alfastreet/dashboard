@@ -8,7 +8,7 @@
 $this->Breadcrumbs->add([
     ['title' => 'Inicio', 'url' => '/'],
     ['title' => 'Cotizaciones', 'url' => ['controller' => 'Quotes', 'action' => 'index']],
-    ['title' => 'Cotizacion # '.$quote->id]
+    ['title' => 'Cotizacion # ' . $quote->id]
 ]);
 ?>
 <input type="hidden" name="_csrfToken" value="<?= $this->request->getAttribute('csrfToken') ?>">
@@ -28,7 +28,10 @@ $this->Breadcrumbs->add([
                 </div>
                 <div class="d-none d-lg-block">
                     <?php if ($isAdmin) : ?>
-                        <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']) ?>
+                        <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']); ?>
+                        <?php if ($quote->estatus_id === 1 ) : ?>
+                            <?= $installments === NULL ? $this->Html->link('Generar Acta de Entrega', ['controller' => 'installments', 'action' => 'add', '?' => ['quoteid' => $quote->id]], ['class' => 'btn btn-info']) : ''; ?>
+                        <?php endif; ?>
                     <?php endif ?>
                     <?= $this->Html->link(__('Descargar Cotización'), ['action' => 'getpdf', $quote->id], ['class' => 'btn btn-success me-md-2']) ?>
                     <?php if ($orders !== null) : echo $this->Html->link(__('Ver Orden de trabajo'), ['controller' => 'orders', 'action' => 'view', $orders->id], ['class' => 'btn btn-info me-md-2']);
@@ -133,12 +136,12 @@ $this->Breadcrumbs->add([
                                         <button type="button" class="btn btn-success" id="confirmed">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-check"></use>
-                                            </svg> Confirmar
+                                            </svg> <?= __('Confirmar') ?>
                                         </button>
                                         <button type="button" class="btn btn-danger" id="canceled">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-x"></use>
-                                            </svg> No Apta
+                                            </svg><?= __('No Apta') ?>
                                         </button>
                                     </div>
                                 <?php endif ?>

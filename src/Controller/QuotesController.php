@@ -131,24 +131,6 @@ class QuotesController extends AppController
         $this->set(compact('quote', 'users', 'businesses', 'estatuses'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Quote id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $quote = $this->Quotes->get($id);
-        if ($this->Quotes->delete($quote)) {
-        } else {
-            $this->Flash->error(__('The quote could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
 
     public function getpdf($id = null)
     {

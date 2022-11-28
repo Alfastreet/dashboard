@@ -9,7 +9,14 @@ $this->Breadcrumbs->add([
     ['title' => 'Inicio', 'url' => '/'],
     ['title' => 'Casinos', 'url' => ['controller' => 'Casinos', 'action' => 'index']],
     ['title' => $casino->name]
-])
+]);
+
+$totalLiquidacion = 0;
+
+foreach($liquidations as $li){
+    $totalLiquidacion += $li->alfastreet;
+}
+
 ?>
 <div class="col-12">
     <div class="mb-3">
@@ -66,7 +73,7 @@ $this->Breadcrumbs->add([
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h3 class="card-title mb-0"><?= __('Clientes pertenecientes a este Casino') ?></h3>
-                                    <p class="small text-medium-emphasis"><?= __('Lista de los clientes relacionados con este casino')?></p>
+                                    <p class="small text-medium-emphasis"><?= __('Lista de los clientes relacionados con este casino') ?></p>
                                 </div>
                                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                                     <?= $this->Html->link(__('Relacionar un cliente'), ['controller' => 'Clientscasinos', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
@@ -127,7 +134,7 @@ $this->Breadcrumbs->add([
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h3 class="card-title mb-0"><?= __('Tus Maquinas') ?></h3>
-                                    <p class="small text-medium-emphasis"><?= __('Maquinas inscritas a este Casino')?></p>
+                                    <p class="small text-medium-emphasis"><?= __('Maquinas inscritas a este Casino') ?></p>
                                 </div>
                                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                                     <?= $this->Html->link(__('Agregar una Nueva Maquina'), ['controller' => 'Machines', 'action' => 'add', '?' => ['casinoid' => $casino->id]], ['class' => 'btn btn-primary']) ?>
@@ -190,12 +197,12 @@ $this->Breadcrumbs->add([
                 <div class="d-flex justify-content-between">
                     <div>
                         <h3 class="card-title mb-0"><?= __('Participaciones') ?></h3>
-                        <p class="small text-medium-emphasis"><?= __('Ingreso de datos para la liquidación de participaciones')?></p>
+                        <p class="small text-medium-emphasis"><?= __('Ingreso de datos para la liquidación de participaciones') ?></p>
                     </div>
                     <div>
-                        <button id="erase" class="btn btn-warning"><?= __('Ingresar Borrados')?></button>
+                        <button id="erase" class="btn btn-warning"><?= __('Ingresar Borrados') ?></button>
                         <?= $this->Html->link(
-                            'Resumen de Contadores', 
+                            'Resumen de Contadores',
                             [
                                 'controller' => 'totalaccountants',
                                 'action' => 'resume',
@@ -203,11 +210,11 @@ $this->Breadcrumbs->add([
                                     'casino_id' => $casino->id,
                                     'token' => $casino->token
                                 ]
-                            ], 
+                            ],
                             [
                                 'class' => 'btn btn-info'
                             ]
-                            ) ?>
+                        ) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -447,8 +454,6 @@ $this->Breadcrumbs->add([
                                             <tr>
                                                 <th scope="col"><?= __('Serial de la máquina') ?></th>
                                                 <th scope="col"><?= __('Nombre de la máquina') ?></th>
-                                                <th scope="col"><?= __('Dia de Inicio') ?></th>
-                                                <th scope="col"><?= __('Dia de Finalización') ?></th>
                                                 <th scope="col"><?= __('Mes') ?></th>
                                                 <th scope="col"><?= __('CashIn') ?></th>
                                                 <th scope="col"><?= __('CashOut') ?></th>
@@ -459,82 +464,47 @@ $this->Breadcrumbs->add([
                                                 <th scope="col"><?= __('Juegos Jugados') ?></th>
                                                 <th scope="col"><?= __('Coljuegos 12%') ?></th>
                                                 <th scope="col"><?= __('Administracion 1%') ?></th>
-                                                <th scope="col"><?= __('IVA') ?></th>
                                                 <th scope="col"><?= __('Total') ?></th>
                                                 <th scope="col"><?= __('Alfastreet 40%') ?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $total = 0;
-                                            $totalizate = 0;
-
-                                            foreach ($accountants as $accountant) :
+                                            <?php
+                                            foreach ($liquidations as $liquidation) :
                                                 foreach ($machinesName as $machine) :
-                                                    if ($accountant->machine_id == $machine->id) {
+                                                    if ($liquidation->machine_id == $machine->id) {
                                                         $serialMachine = $machine->serial;
                                                         $serialName = $machine->name;
                                                     }
-                                                endforeach;
-                                                foreach ($lastaccountants as $lastaccountant) :
-                                                    $totalCashin = 0;
-                                                    $totalCashout = 0;
-                                                    $totalBet = 0;
-                                                    $totalWin = 0;
-                                                    $totalProfit = 0;
-                                                    $totalJackpot = 0;
-                                                    $totalizate = 0;
-                                                    $alfasteet = 0;
-                                                    $coljuegos = 0;
-                                                    $admin = 0;
-                                                    $iva = 144415;
+                                                endforeach; ?>
 
-                                                    if ($lastaccountant->machine_id === $accountant->machine_id) {
-                                                        $totalCashin = $accountant->cashin - $lastaccountant->cashin;
-                                                        $totalCashout =  $accountant->cashout - $lastaccountant->cashout;
-                                                        $totalBet = $accountant->bet - $lastaccountant->bet;
-                                                        $totalWin = $accountant->win - $lastaccountant->win;
-                                                        $totalProfit = $accountant->profit - $lastaccountant->profit;
-                                                        $totalJackpot = $accountant->jackpot - $lastaccountant->jackpot;
-                                                        $totalizate = $accountant->profit - $lastaccountant->profit;
-                                                        $coljuegos = $totalizate * 0.12;
-                                                        $admin = $coljuegos * 0.01;
-                                                        $totalall = $totalizate - $coljuegos - $admin - $iva;
-                                                        $alfasteet = $totalall * 0.40;
+                                                <tr>
+                                                    <td><?= h($serialMachine) ?></td>
+                                                    <td><?= h($serialName) ?></td>
+                                                    <td><?= h($liquidation->month_id) ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->cashin, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->cashout, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->bet, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->win, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->profit, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->jackpot, 'COP') ?></td>
+                                                    <td><?= h($liquidation->games) ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->coljuegos, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->admin, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->total, 'COP') ?></td>
+                                                    <td><?= $this->Number->currency($liquidation->alfastreet, 'COP') ?></td>
+    
+                                                </tr>
+                                                
+                                           <?php endforeach; ?>
 
-
-                                            ?>
-
-                                                        <tr>
-                                                            <td><?= h($serialMachine) ?></td>
-                                                            <td><?= h($serialName) ?></td>
-                                                            <td><?= h($accountant->day_init) ?></td>
-                                                            <td><?= h($accountant->day_end) ?></td>
-                                                            <td><?= h($accountant->month_id) ?></td>
-                                                            <td><?= $this->Number->currency($totalCashin, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalCashout, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalBet, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalWin, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalProfit, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalJackpot, 'USD') ?></td>
-                                                            <td><?= h($accountant->gamesplayed) ?></td>
-                                                            <td><?= $this->Number->currency($coljuegos, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($admin, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($iva, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($totalall, 'USD') ?></td>
-                                                            <td><?= $this->Number->currency($alfasteet, 'USD') ?></td>
-                                                        </tr>
-
-                                            <?php }
-                                                    $total += $alfasteet;
-                                                endforeach;
-                                            endforeach; ?>
                                         </tbody>
                                     </table>
 
                                 </div>
                             </div>
-                            <h3 class="lead text-center">Total a pagar en el mes: <span><?= $this->Number->currency($total, 'USD') ?></span></h3>
-                            <input type="hidden" id="totalLiquidation" value="<?= $total ?>">
+                            <h3 class="lead text-center">Total a pagar en el mes: <span> <?= $this->Number->currency($totalLiquidacion , 'USD') ?> </span></h3>
+                            <input type="hidden" id="totalLiquidation" value="<?= $totalLiquidacion ?>">
                         </div>
                     </div>
                 </div>

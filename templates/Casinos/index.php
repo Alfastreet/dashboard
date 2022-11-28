@@ -21,15 +21,6 @@ $this->Breadcrumbs->add([
                 </div>
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Agregar un nuevo Casino'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
-                    <!-- <?php
-                            echo $this->Form->create(null, ['valueSources' => 'query']);
-                            echo $this->Form->control('name');
-                            echo $this->Form->button('Filter', ['type' => 'submit']);
-                            if ($this->Search->isSearch()) {
-                                echo $this->Search->resetLink(__('Reset'), ['class' => 'button']);
-                            }
-                            echo $this->Form->end();
-                            ?> -->
                 </div>
             </div>
             <div class="md-3">
@@ -60,7 +51,7 @@ $this->Breadcrumbs->add([
                                     <td><?= $casino->has('busines') ? h($casino->busines->name) : '' ?></td>
                                     <td><?= $casino->has('owner') ? h($casino->owner->name) : '' ?></td>
                                     <td class="actions">
-                                        <a class="nav-link nav-group-toggle" href="/casinos/view/<?= $casino->id ?>">
+                                        <a class="nav-link nav-group-toggle" href="/casinos/view/<?= $casino->id ?>?token=<?= $casino->token ?>">
                                             <svg class="nav-icon" width="20" height="20">
                                                 <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-address-book"></use>
                                             </svg>

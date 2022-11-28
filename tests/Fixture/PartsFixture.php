@@ -27,6 +27,7 @@ class PartsFixture extends TestFixture
                 'amount' => 1,
                 'image' => 'Lorem ipsum dolor sit amet',
                 'typeproduct_id' => 1,
+                'cellar_id' => 1,
             ],
         ];
         parent::init();

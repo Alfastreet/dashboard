@@ -64,11 +64,14 @@
                 <li class="nav-item">
                     <?= $this->Html->link('Ver Consolidado General', ['controller' => 'Wallets', 'action' => 'index'], ['class' => 'nav-link']) ?>
                 </li>
+                <li class="nav-items">
+                    <?= $this->Html->link('Acuerdos Comerciales', ['controller' => 'Agreements', 'action' => 'index'], ['class' => 'nav-link']) ?>
+                </li>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
         <!-- Submenus -->
-        <li class="nav-title"><?= __('Administracion')?></li>
+        <li class="nav-title"><?= __('Administracion') ?></li>
         <!-- Submenus de navegacion -->
         <li class="nav-group">
             <a href="#" class="nav-link nav-group-toggle">
@@ -126,18 +129,7 @@
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->
-        <!-- Fin Submenus de navegacion -->
-        <li class="nav-group">
-            <a href="#" class="nav-link nav-group-toggle">
-                <svg class="nav-icon">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-casino"></use>
-                </svg><?= __('Acuerdos Comerciales') ?>
-            </a>
-            <ul class="nav-group-items">
-                <li class="nav-items"><?= $this->Html->link('Ver todo', ['controller' => 'Agreements', 'action' => 'index'], ['class' => 'nav-link']) ?></li>
-            </ul>
-        </li>
-        <!-- Fin Submenus de navegacion -->
+
         <!-- Fin Submenus de navegacion -->
         <li class="nav-group">
             <a href="#" class="nav-link nav-group-toggle">
@@ -158,7 +150,7 @@
             <a class="nav-link nav-group-toggle" href="#">
                 <svg class="nav-icon">
                     <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-cart"></use>
-                </svg><?= __('Piezas y Servicios')?>
+                </svg><?= __('Piezas y Servicios') ?>
             </a>
             <ul class="nav-group-items">
                 <li class="nav-item">

@@ -66,91 +66,11 @@ class PaymentsController extends AppController
         $payment = $this->Payments->newEmptyEntity();
         if ($this->request->is('post')) {
             $payment = $this->Payments->patchEntity($payment, $this->request->getData());
-
-            $totalAbonado =  $payment->valuequote;
-            $totalRecaudo = $wallet->collection + $totalAbonado;
-            $maxQuote = $agreements->quotevalue;
-            $trm = $payment->trm;
-            $mesAbono = $payment->paymentquote;
-            $this->fetchTable('Wallets')->query()->update()->set(['collection' => $totalRecaudo])->where(['agreement_id' => $idAgreement])->execute();
-
-
-            // Si abona mas de la cuota minima
-            if ($totalAbonado > $maxQuote) {
-
-                if ($totalAbonado > $maxQuote) {
-                    for ($totalAbonado; $totalAbonado > $maxQuote; $mesAbono++) {
-
-                        $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                            'agreement_id' => $idAgreement,
-                            'paymentquote' => $mesAbono,
-                            'valuequote' => $maxQuote,
-                            'datepayment' => $payment->datepayment,
-                            'destiny_id' => $payment->destiny_id,
-                            'bank_id' => $payment->bank_id,
-                            'cop' => $maxQuote * $trm,
-                            'trm' => $trm,
-                            'referencepay' => $payment->referencepay
-                        ])->execute();
-
-                        $totalAbonado = $totalAbonado - $maxQuote;
-                    }
-                }
-
-                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                    'agreement_id' => $idAgreement,
-                    'paymentquote' => $mesAbono,
-                    'valuequote' => $totalAbonado,
-                    'datepayment' => $payment->datepayment,
-                    'destiny_id' => $payment->destiny_id,
-                    'bank_id' => $payment->bank_id,
-                    'cop' => $totalAbonado * $trm,
-                    'trm' => $trm,
-                    'referencepay' => $payment->referencepay
-                ])->execute();
-
+            if($this->Payments->save($payment)){
                 echo json_encode('ok');
                 die;
             }
-            // Si el valor abonado es menor a la cuota
-            else if ($totalAbonado < $maxQuote) {
-                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                    'agreement_id' => $idAgreement,
-                    'paymentquote' => $mesAbono,
-                    'valuequote' => $totalAbonado,
-                    'datepayment' => $payment->datepayment,
-                    'destiny_id' => $payment->destiny_id,
-                    'bank_id' => $payment->bank_id,
-                    'cop' => $totalAbonado * $trm,
-                    'trm' => $trm,
-                    'referencepay' => $payment->referencepay
-                ])->execute();
-
-                echo json_encode('ok');
-                die;
-            }
-
-            //Si el valor abonado es igual a la cuota
-            else if ($totalAbonado = $maxQuote) {
-                $this->Payments->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                    'agreement_id' => $idAgreement,
-                    'paymentquote' => $mesAbono,
-                    'valuequote' => $totalAbonado,
-                    'datepayment' => $payment->datepayment,
-                    'destiny_id' => $payment->destiny_id,
-                    'bank_id' => $payment->bank_id,
-                    'cop' => $totalAbonado * $trm,
-                    'trm' => $trm,
-                    'referencepay' => $payment->referencepay
-                ])->execute();
-
-                echo json_encode('ok');
-                die;
-            }
-
             
-
-
             echo json_encode('error');
             die;
         }

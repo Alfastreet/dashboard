@@ -88,13 +88,11 @@ foreach ($paymentinitials as $pay) {
                         <div class="col-sm-4">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $this->Number->currency($agreement->discount, 'USD')  ?>">
                         </div>
-                        <?php if ($agreement->separation > 0) : ?>
                             <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Pago por separacion:') ?></label>
                             <div class="col-sm-4">
                                 <input type="text" readonly class="form-control-plaintext" value="<?= $this->Number->currency($agreement->separation, 'USD')  ?>">
                                 <input type="hidden" id="separation" value="<?= $agreement->separation ?>">
                             </div>
-                        <?php endif ?>
                     </div>
                 </div>
             </div>

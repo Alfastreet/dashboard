@@ -8,7 +8,7 @@ $pending = 0;
 $recauded = 0;
 $suminitial = 0;
 $coprecauded = 0;
-$pending = $wallet->payment - $wallet->collection;
+
 
 $pay = $wallet->agreement->nquote * $wallet->agreement->quotevalue + $wallet->agreement->quoteini;
 
@@ -20,9 +20,11 @@ foreach ($initials as $i) {
 }
 
 foreach ($payments as $p) {
-    $recauded += $p->valuequote;
     $coprecauded += $p->cop;
 }
+
+$pending = $pay - $recauded;
+
 
 ?>
 
@@ -89,14 +91,14 @@ foreach ($payments as $p) {
                             </div>
                             <div class="col">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><?= $this->Number->currency($wallet->payment, 'USD') ?></li>
+                                    <li class="list-group-item"><?= $this->Number->currency($pay, 'USD') ?></li>
                                     <li class="list-group-item"><?= $this->Number->currency($recauded, 'USD') ?></li>
                                     <li class="list-group-item"><?= $this->Number->currency($pending, 'USD') ?></li>
                                     <?php if ($quote !== NULL) : ?>
                                         <li class="list-group-item"><?= $quote !== NULL ? $quote->paymentquote : 0 ?></li>
                                         <li class="list-group-item"><?= $quote->datepayment === NULL ? 'No se registra fecha' : $quote->datepayment  ?></li>
                                     <?php endif; ?>
-                                    <li class="list-group-item"><?= date('Y-m-d', strtotime($wallet->lastpay . '+ ' . $wallet->agreement->nquote . ' month')) ?></li>
+                                    <li class="list-group-item"><?= date('Y-m-d', strtotime($wallet->agreement->datesigned . '+ ' . $wallet->agreement->nquote . ' month')) ?></li>
                                 </ul>
                             </div>
                         </div>
@@ -146,13 +148,34 @@ foreach ($payments as $p) {
             </div>
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-2">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title"><?= __('Recaudos') ?></h2>
+                <div class="table-responsive mt-4">
+                    <table class="table table-responsive table-striped table-hover table-sm table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th><?= __('Valor Recaudado (USD)') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?= $this->Number->currency($suminitial, 'USD') ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
         <div class="card mb-4">
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-4">
                     <h2 class="card-title"><?= __('Seguimiento de Pagos') ?></h2>
                     <div class="d-grid gap-2 d-md-block">
-                        <?= $this->Html->link('Ingresar Pago', ['controller' => 'payments', 'action' => 'add', '?' => ['agreement' => $wallet->agreement_id ]], ['class' => 'btn btn-success']) ?>
+                        <?= $this->Html->link('Ingresar Pago', ['controller' => 'payments', 'action' => 'add', '?' => ['agreement' => $wallet->agreement_id]], ['class' => 'btn btn-success']) ?>
                         <?= $suminitial < $wallet->agreement->quoteini ? $this->Html->link('Ingresar Cuota Inicial', ['controller' => 'paymentinitials', 'action' => 'add', '?' => ['agreement' => $wallet->agreement_id]], ['class' => 'btn btn-success']) : '' ?>
                     </div>
                 </div>

@@ -16,10 +16,11 @@ use Cake\ORM\Entity;
  * @property int $amount
  * @property string $image
  * @property int $typeproduct_id
+ * @property int $cellar_id
  *
+ * @property \App\Model\Entity\Money $money
  * @property \App\Model\Entity\Typeproduct $typeproduct
  * @property \App\Model\Entity\Machinepart[] $machinepart
- * @property \App\Model\Entity\Money[] $money
  */
 class Part extends Entity
 {
@@ -40,8 +41,9 @@ class Part extends Entity
         'amount' => true,
         'image' => true,
         'typeproduct_id' => true,
+        'cellar_id' => true,
+        'money' => true,
         'typeproduct' => true,
         'machinepart' => true,
-        'money' => true,
     ];
 }

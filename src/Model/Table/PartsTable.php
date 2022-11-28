@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
 /**
  * Parts Model
  *
+ * @property \App\Model\Table\MoniesTable&\Cake\ORM\Association\BelongsTo $Monies
  * @property \App\Model\Table\TypeproductsTable&\Cake\ORM\Association\BelongsTo $Typeproducts
  * @property \App\Model\Table\MachinepartTable&\Cake\ORM\Association\HasMany $Machinepart
  *
@@ -52,6 +53,10 @@ class PartsTable extends Table
             'foreignKey' => 'typeproduct_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Cellars', [
+            'foreignKey' => 'cellar_id',
+            'joinType' => 'INNER',
+        ]);
         $this->hasMany('Machinepart', [
             'foreignKey' => 'part_id',
         ]);
@@ -79,7 +84,6 @@ class PartsTable extends Table
 
         $validator
             ->integer('money_id')
-            ->requirePresence('money_id', 'create')
             ->notEmptyString('money_id');
 
         $validator
@@ -100,8 +104,11 @@ class PartsTable extends Table
 
         $validator
             ->integer('typeproduct_id')
-            ->requirePresence('typeproduct_id', 'create')
             ->notEmptyString('typeproduct_id');
+
+        $validator
+            ->integer('cellar_id')
+            ->notEmptyString('cellar_id');
 
         return $validator;
     }
@@ -117,6 +124,7 @@ class PartsTable extends Table
     {
         $rules->add($rules->existsIn('money_id', 'Monies'), ['errorField' => 'money_id']);
         $rules->add($rules->existsIn('typeproduct_id', 'Typeproducts'), ['errorField' => 'typeproduct_id']);
+        $rules->add($rules->existsIn('cellar_id', 'Cellars'), ['errorField' => 'cellar_id']);
 
         return $rules;
     }

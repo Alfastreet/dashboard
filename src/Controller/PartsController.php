@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\FrozenTime;
+use Cake\Chronos\Date;
 
 /**
  * Parts Controller
@@ -33,7 +34,7 @@ class PartsController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->paginate = [
-            'contain' => ['Monies'],
+            'contain' => ['Monies', 'Typeproducts', 'Cellars'],
         ];
         $parts = $this->paginate($this->Parts, ['limit' => 10000]);
 
@@ -51,7 +52,7 @@ class PartsController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $part = $this->Parts->get($id, [
-            'contain' => ['Monies', 'Machinepart'],
+            'contain' => ['Monies', 'Typeproducts', 'Cellars'],
         ]);
 
         $this->set(compact('part'));
@@ -90,8 +91,17 @@ class PartsController extends AppController
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
         $monies = $this->Parts->Monies->find('list', ['limit' => 200])->all();
-        $typeparts = $this->Parts->Typeproducts->find('list', ['limit' => 200])->all();
-        $this->set(compact('part', 'monies', 'typeparts'));
+        $typeparts = $this->Parts->Typeproducts->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'type',
+            'limit' => 200
+        ])->all();
+        $cellars = $this->Parts->Cellars->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name',
+            'limit' => 200
+        ])->all();
+        $this->set(compact('part', 'monies', 'typeparts', 'cellars'));
     }
 
     /**
@@ -139,8 +149,17 @@ class PartsController extends AppController
             $this->Flash->error(__('The part could not be saved. Please, try again.'));
         }
         $monies = $this->Parts->Monies->find('list', ['limit' => 200])->all();
-        $typeparts = $this->Parts->Typeproducts->find('list', ['limit' => 200])->all();
-        $this->set(compact('part', 'monies', 'typeparts'));
+        $typeparts = $this->Parts->Typeproducts->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'type',
+            'limit' => 200
+        ])->all();
+        $cellars = $this->Parts->Cellars->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name',
+            'limit' => 200
+        ])->all();
+        $this->set(compact('part', 'monies', 'typeparts', 'cellars'));
     }
 
     /**
@@ -220,5 +239,26 @@ class PartsController extends AppController
                 die;
             }
         }
+    }
+
+    public function pdf()
+    {
+        $this->Authorization->skipAuthorization();
+
+        $this->viewBuilder()->enableAutoLayout(false);
+        $parts = $this->Parts->find()->contain(['Monies', 'Typeproducts'])->all();
+
+        $this->viewBuilder()->setClassName('CakePdf.Pdf');
+        $this->viewBuilder()->setOption(
+            'pdfConfig',
+            [
+                'orientation' => 'letter',
+                'download' => true,
+                'filename' => 'Inventario dia ' . Date::now() . '.pdf',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+            ]
+        );
+        $this->set(compact('parts'));
     }
 }

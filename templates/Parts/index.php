@@ -22,6 +22,13 @@ $this->Breadcrumbs->add([
                 <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Agregar una Pieza o Servicio'), ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
                 </div>
+                <div class="b-block d-sm-none">
+                    <a href="/parts/add" class="btn btn-primary">
+                        <svg class="icon">
+                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-note-add"></use>
+                        </svg>
+                    </a>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="display table table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
@@ -32,6 +39,7 @@ $this->Breadcrumbs->add([
                             <th><?= __('Nombre') ?></th>
                             <th><?= __('Moneda') ?></th>
                             <th><?= __('Precio') ?></th>
+                            <th><?= __('Ubicacion') ?></th>
                             <th><?= __('Tipo de Producto') ?></th>
                             <th><?= __('Cantidad Disponible') ?></th>
                             <th><?= __('') ?></th>
@@ -44,8 +52,9 @@ $this->Breadcrumbs->add([
                                 <td><?= h($part->serial) ?></td>
                                 <td><?= h($part->name) ?></td>
                                 <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
-                                <td><?= $this->Number->currency($part->value, 'USD') ?></td>
-                                <td><?= h($part->typeproduct_id) ?></td>
+                                <td><?= $this->Number->currency($part->value, $part->has('money') ? h($part->money->shortcode) : '' ) ?></td>
+                                <td><?= $part->has('cellar') ? 'Bodega '. h($part->cellar->name) : '' ?></td>
+                                <td><?= $part->has('typeproduct') ? h($part->typeproduct->type) : '' ?></td>
                                 <td><?= $this->Number->format($part->amount) ?></td>
                                 <td class="actions">
                                     <div class="btn-group btn-group-toggle mx-3">

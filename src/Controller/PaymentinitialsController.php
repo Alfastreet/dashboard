@@ -64,64 +64,6 @@ class PaymentinitialsController extends AppController
         $paymentinitial = $this->Paymentinitials->newEmptyEntity();
         if ($this->request->is('post')) {
             $paymentinitial = $this->Paymentinitials->patchEntity($paymentinitial, $this->request->getData());
-            $totalRecaudo = $wallet->collection + $paymentinitial->valuequote;
-            
-            if ($paymentinitial->valuequote > $agreements->quoteini) {
-                //Obtener el sobrante
-                $residuo = $paymentinitial->valuequote - $agreements->quoteini;
-                $trm = $paymentinitial->trm;
-
-                //Verificar el maximo valor a insertar
-                $maxQuote = $agreements->quotevalue;
-                $i = 0;
-
-                if ($residuo > $maxQuote) {
-                    for ($residuo; $residuo > $maxQuote; $i++) {
-                        $this->fetchTable('Payments')->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                            'agreement_id' => $idAgreement,
-                            'paymentquote' => $i + 1,
-                            'valuequote' => $maxQuote,
-                            'datepayment' => $paymentinitial->datepayment,
-                            'destiny_id' => $paymentinitial->destiny_id,
-                            'bank_id' => $paymentinitial->bank_id,
-                            'cop' => $maxQuote * $trm,
-                            'trm' => $trm,
-                            'referencepay' => $paymentinitial->referencepay,
-                        ])->execute();
-
-                        $residuo = $residuo - $maxQuote;
-                    }
-
-                    if ($residuo > 0) {
-                        $this->fetchTable('Payments')->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'datepayment', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                            'agreement_id' => $idAgreement,
-                            'paymentquote' => $i + 1,
-                            'valuequote' => $residuo,
-                            'datepayment' => $paymentinitial->datepayment,
-                            'destiny_id' => $paymentinitial->destiny_id,
-                            'bank_id' => $paymentinitial->bank_id,
-                            'cop' => $residuo * $trm,
-                            'trm' => $trm,
-                            'referencepay' => $paymentinitial->referencepay,
-                        ])->execute();
-                    }
-                } else if ($residuo <= $maxQuote) {
-                    $this->fetchTable('Payments')->query()->insert(['agreement_id', 'paymentquote', 'valuequote', 'destiny_id', 'bank_id', 'cop', 'trm', 'referencepay'])->values([
-                        'agreement_id' => $idAgreement,
-                        'paymentquote' => $i + 1,
-                        'valuequote' => $residuo,
-                        'destiny_id' => $paymentinitial->destiny_id,
-                        'bank_id' => $paymentinitial->bank_id,
-                        'cop' => $residuo * $trm,
-                        'trm' => $trm,
-                        'referencepay' => $paymentinitial->referencepay,
-                    ])->execute();
-                }
-
-                //Asignar los valores maximos
-                $paymentinitial->valuequote = $agreements->quoteini;
-                $paymentinitial->cop = $paymentinitial->valuequote * $paymentinitial->trm;
-            }
 
             if ($this->Paymentinitials->save($paymentinitial)) {
                 echo json_encode('ok');

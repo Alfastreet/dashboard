@@ -8,9 +8,144 @@
 $this->Breadcrumbs->add([
     ['title' => 'Inicio', 'url' => '/'],
     ['title' => 'Participaciones']
-])
+]);
 
 ?>
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="text-center card-title"><?= __('Informe de Participaciones') ?></h2>
+            <div class="table-responsive">
+                <table class="table  table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
+                    <thead>
+                        <tr>
+                            <th><?= __('Cliente') ?></th>
+                            <th><?= __('Enero') ?></th>
+                            <th><?= __('Febrero') ?></th>
+                            <th><?= __('Marzo') ?></th>
+                            <th><?= __('Abril') ?></th>
+                            <th><?= __('Mayo') ?></th>
+                            <th><?= __('Junio') ?></th>
+                            <th><?= __('Julio') ?></th>
+                            <th><?= __('Agosto') ?></th>
+                            <th><?= __('Septiembre') ?></th>
+                            <th><?= __('Octubre') ?></th>
+                            <th><?= __('Noviembre') ?></th>
+                            <th><?= __('Diciembre') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($clients as $client) : ?>
+                            <tr>
+                                <td><?= h($client->name) ?></td>
+
+                                <?php if ($enero !== null) {
+                                    if ($enero->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $enero->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($febrero !== null) {
+                                    if ($febrero->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $febrero->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+                                
+                                <?php if ($marzo !== null) {
+                                    if ($marzo->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $marzo->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($abril !== null) {
+                                    if ($abril->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $abril->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($mayo !== null) {
+                                    if ($mayo->casino_id === $client->Casino['id']) { ?>
+                                        <td><?= $mayo->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($junio !== null) {
+                                    if ($junio->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $junio->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($julio !== null) {
+                                    if ($julio->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $julio->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($agosto !== null) {
+                                    if ($agosto->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $agosto->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($septiembre !== null) {
+                                    if ($septiembre->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $septiembre->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($octubre !== null) {
+                                    if ($octubre->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $octubre->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($noviembre !== null) {
+                                    if ($noviembre->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $noviembre->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                                <?php if ($diciembre !== null) {
+                                    if ($diciembre->casino_id === $client->Casinos['id']) { ?>
+                                        <td><?= $diciembre->totalLiquidation ?></td>
+                                    <?php }
+                                } else { ?>
+                                    <td><?= __('No hay datos para mostrar') ?></td>
+                                <?php } ?>
+
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
@@ -79,4 +214,4 @@ $this->Breadcrumbs->add([
 <div class="col-12">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <?= $this->Html->link(__('Exportar'), ['action' => 'csv'], ['class' => 'btn btn-outline-primary']) ?>
-    </div>
+    </div> -->

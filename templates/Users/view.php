@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Nombres Completos</p>
+                            <p class="mb-0"><?= __('Nombres Completos')?></p>
                         </div>
                         <div class="col-sm-9">
                             <p class="text-muted mb-0"><?= __($user->name . ' ' . $user->lastName) ?></p>
@@ -81,58 +81,3 @@
     </div>
     </div>
 </section>
-<!-- 
-<div class="row">
-
-    <div class="column-responsive column-80">
-        <div class="users view content">
-            <table>
-                <tr>
-                    <th><?= __('Identification') ?></th>
-                    <td><?= $this->Number->format($user->identification) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Rol Id') ?></th>
-                    <td><?= $this->Number->format($user->rol_id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Checked') ?></th>
-                    <td><?= $this->Number->format($user->checked) ?></td>
-                </tr>
-            </table>
-            <div class="related">
-                <h4><?= __('Related Quotes') ?></h4>
-                <?php if (!empty($user->quotes)) : ?>
-                    <div class="table-responsive">
-                        <table>
-                            <tr>
-                                <th><?= __('Id') ?></th>
-                                <th><?= __('User Id') ?></th>
-                                <th><?= __('Business Id') ?></th>
-                                <th><?= __('Date') ?></th>
-                                <th><?= __('Total') ?></th>
-                                <th><?= __('Estatus Id') ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
-                            </tr>
-                            <?php foreach ($user->quotes as $quotes) : ?>
-                                <tr>
-                                    <td><?= h($quotes->id) ?></td>
-                                    <td><?= h($quotes->user_id) ?></td>
-                                    <td><?= h($quotes->business_id) ?></td>
-                                    <td><?= h($quotes->date) ?></td>
-                                    <td><?= h($quotes->total) ?></td>
-                                    <td><?= h($quotes->estatus_id) ?></td>
-                                    <td class="actions">
-                                        <?= $this->Html->link(__('View'), ['controller' => 'Quotes', 'action' => 'view', $quotes->id]) ?>
-                                        <?= $this->Html->link(__('Edit'), ['controller' => 'Quotes', 'action' => 'edit', $quotes->id]) ?>
-                                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'Quotes', 'action' => 'delete', $quotes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $quotes->id)]) ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</div> -->

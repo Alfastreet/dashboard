@@ -172,6 +172,11 @@ class MachinesTable extends Table
             ->requirePresence('contract_id', 'create')
             ->notEmptyString('contract_id');
 
+        $validator
+            ->scalar('value')
+            ->maxLength('value', 255)
+            ->allowEmptyString('value');
+
         return $validator;
     }
 

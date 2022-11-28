@@ -18,13 +18,13 @@ namespace App\Test\TestCase;
 
 use App\Application;
 use Cake\Core\Configure;
-use Cake\Error\Middleware\ErrorHandlerMiddleware;
-use Cake\Http\MiddlewareQueue;
-use Cake\Routing\Middleware\AssetMiddleware;
-use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
+use Cake\Http\MiddlewareQueue;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\Routing\Middleware\AssetMiddleware;
+use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Error\Middleware\ErrorHandlerMiddleware;
 
 /**
  * ApplicationTest class

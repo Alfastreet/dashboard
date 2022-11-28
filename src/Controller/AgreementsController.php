@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Chronos;
 use Cake\Chronos\Date;
 use Cake\I18n\FrozenTime;
 use DateTime;
@@ -125,7 +126,7 @@ class AgreementsController extends AppController
         $this->autoRender = false;
         $this->Authorization->skipAuthorization();
         $id = $this->request->getQuery('id');
-        $dateNew = new Date();
+        $dateNew = new Chronos();
         $query = $this->Agreements->query()->update()->set([
             'datesigned' => $dateNew,
             'agreementstatus_id' => 1

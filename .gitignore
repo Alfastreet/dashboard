@@ -54,3 +54,11 @@ nbproject/*
 # yarn
 yarn-debug.log
 yarn-error.log
+
+# Webroot Images
+/webroot/img/Accountants/*
+/webroot/img/Casinos/*
+/webroot/img/Erase/*
+/webroot/img/imgusers/*
+/webroot/img/Machines/*
+/webroot/img/Parts/*

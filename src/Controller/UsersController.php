@@ -24,23 +24,23 @@ class UsersController extends AppController
     public function forgotpass()
     {
         $this->Authorization->skipAuthorization();
-        if($this->request->is('post')){
+        if ($this->request->is('post')) {
             $email = $this->request->getData('email');
             $thisToken = Security::hash(Security::randomBytes(25));
 
             $user = $this->Users->find('all')->where(['email' => $email])->first();
             $user->password = '';
             $user->token = $thisToken;
-            
-            if($this->Users->save($user)){
-                $this->Flash->success('El link de reinicio de contraseña ha sido enviado al correo ('.$email.'),  Verifica tu bandeja de entrada o tu spam');
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success('El link de reinicio de contraseña ha sido enviado al correo (' . $email . '),  Verifica tu bandeja de entrada o tu spam');
 
                 $emailSet = new Mailer('default');
                 $emailSet->setEmailFormat('html');
                 $emailSet->setFrom('Ingenieria@alfastreet.co', 'Departamento de Sistemas');
                 $emailSet->setSubject('Confirmar el reseteo de tu contraseña');
                 $emailSet->setTo($email);
-                $emailSet->deliver('Hola '.$email.'<br/> Por favor has click aqui para reiniciar tu contraseña: <br/><br/><br/><a href="localhost/users/resetpass/'.$thisToken.'">Reiniciar Contraseña</a>');
+                $emailSet->deliver('Hola ' . $email . '<br/> Por favor has click aqui para reiniciar tu contraseña: <br/><br/><br/><a href="localhost/users/resetpass/' . $thisToken . '">Reiniciar Contraseña</a>');
             }
         }
     }
@@ -48,14 +48,14 @@ class UsersController extends AppController
     public function resetpass($token)
     {
         $this->Authorization->skipAuthorization();
-        if($this->request->is('post')) {
+        if ($this->request->is('post')) {
             $pass = $this->request->getData('password');
             $hasher = new DefaultPasswordHasher();
             $passNew = $hasher->hash($pass);
             $user = $this->Users->find()->where(['token' => $token])->first();
             $user->password = $passNew;
-            
-            if($this->Users->save($user)) {
+
+            if ($this->Users->save($user)) {
                 $user->token = '';
 
                 return $this->redirect(['action' => 'login']);
@@ -171,23 +171,20 @@ class UsersController extends AppController
 
                 $destiny =   WWW_ROOT . "img/imgusers/" . $oldImg;
 
-                if ($this->Users->delete($user)) {
+                if (file_exists($destiny)) {
 
-                    if (file_exists($destiny)) {
-
-                        unlink($destiny);
-                    }
-
-                    $time = FrozenTime::now()->toUnixString();
-
-                    $imgName = $time . '_' . $imgRequest->getClientFileName();
-
-                    $newDestiny = WWW_ROOT . "img/imgusers/" . $imgName;
-
-                    $imgRequest->moveTo($newDestiny);
-
-                    $user->image = $imgName;
+                    unlink($destiny);
                 }
+
+                $time = FrozenTime::now()->toUnixString();
+
+                $imgName = $time . '_' . $imgRequest->getClientFileName();
+
+                $newDestiny = WWW_ROOT . "img/imgusers/" . $imgName;
+
+                $imgRequest->moveTo($newDestiny);
+
+                $user->image = $imgName;
             }
 
             if ($this->Users->save($user)) {

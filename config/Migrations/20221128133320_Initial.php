@@ -183,23 +183,23 @@ class Initial extends AbstractMigration
             ])
             ->create();
 
-        $this->table('banks')
-            ->addColumn('name', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('numerocuenta', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('razonsocial', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->create();
+        // $this->table('banks')
+        //     ->addColumn('name', 'string', [
+        //         'default' => null,
+        //         'limit' => 255,
+        //         'null' => false,
+        //     ])
+        //     ->addColumn('numerocuenta', 'string', [
+        //         'default' => null,
+        //         'limit' => 255,
+        //         'null' => false,
+        //     ])
+        //     ->addColumn('razonsocial', 'string', [
+        //         'default' => null,
+        //         'limit' => 255,
+        //         'null' => false,
+        //     ])
+        //     ->create();
 
         $this->table('business')
             ->addColumn('name', 'string', [
@@ -1226,8 +1226,8 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('date', 'datetime', [
-                'default' => 'current_timestamp()',
+            ->addColumn('date', 'date', [
+                'default' => null,
                 'limit' => null,
                 'null' => false,
             ])
@@ -1621,7 +1621,7 @@ class Initial extends AbstractMigration
         $this->table('accountants')->drop()->save();
         $this->table('agreements')->drop()->save();
         $this->table('agreementstatuses')->drop()->save();
-        $this->table('banks')->drop()->save();
+        // $this->table('banks')->drop()->save();
         $this->table('business')->drop()->save();
         $this->table('casinos')->drop()->save();
         $this->table('city')->drop()->save();

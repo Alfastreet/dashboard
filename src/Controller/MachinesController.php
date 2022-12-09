@@ -284,6 +284,20 @@ class MachinesController extends AppController
         }
     }
 
+    public function participations($casinoid = null) {
+        $casinoid =  $this->request->getQuery('casinoid');
+
+        if($casinoid === '' || $casinoid === null || $casinoid === 0){
+            echo json_encode('error');
+            die;
+        }
+
+        $machines = $this->Machines->find()->where(['casino_id' => $casinoid, 'contract_id' => 2])->all();
+
+        echo json_encode($machines);
+        die;
+    }
+
     public function beforeFilter(EventInterface $event)
     {
 

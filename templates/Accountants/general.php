@@ -15,7 +15,10 @@ $this->Breadcrumbs->add([
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
-            <h2 class="text-center card-title"><?= __('Informe de Participaciones') ?></h2>
+            <div class="d-flex justify-content-between">
+                <h2 class="text-center card-title"><?= __('Informe de Participaciones') ?></h2>
+                <?= $this->Html->link('Nueva participacion', ['action' => 'add'], ['class' => 'btn btn-primary']) ?>
+            </div>
             <div class="table-responsive">
                 <table class="table  table-responsive table-striped table-hover table-sm table-bordered text-center" id="myTable">
                     <thead>

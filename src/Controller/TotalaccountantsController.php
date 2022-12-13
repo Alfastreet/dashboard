@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Chronos;
 use Cake\Controller\Exception\MissingActionException;
 
 /**
@@ -55,12 +56,15 @@ class TotalaccountantsController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $totalaccountant = $this->Totalaccountants->newEmptyEntity();
+        $date = Chronos::parse('-1 Month');
+        $dateNow = Chronos::today();
         if ($this->request->is('post')) {
             $totalaccountant = $this->Totalaccountants->patchEntity($totalaccountant, $this->request->getData());
-            $totalaccountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
-            $totalaccountant->dateliquidation = date('Y-m-d');
+            $totalaccountant->month_id = $date->month;
+            $totalaccountant->year = $date->year;
             $totalaccountant->estatus = 'Pendiente';
-            $totalaccountant->year = date('Y');
+            $totalaccountant->dateliquidation = $dateNow;
+            
             if ($this->Totalaccountants->save($totalaccountant)) {
                 echo json_encode('ok');
                 die;

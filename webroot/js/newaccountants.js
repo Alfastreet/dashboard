@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerInterval;
     let contadorDosMeses = [];
     let actuales = [];
-    let totalLiquidacion = 0;
 
     casino.addEventListener('change', (e) => {
         const idCasino = e.target.value;
@@ -334,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Obtener los contadores del mes
     async function obtenerContadorMes(machine) {
         const url = `${window.location.protocol}//${window.location.hostname}/accountants/accountMachine?machineid=${machine}`;
         const request = await fetch(url);
@@ -429,7 +429,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Liquidacion de los contadores
-
     async function crearLiquidacion(casino, last, news) {
         const porcentaje = document.querySelector('#porcentaje').value
         const totalcashin = news.cashin - last.cashin;
@@ -510,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Html para las liquidaciones
-    function htmlLiquidacion(liquidaciones){
+    function htmlLiquidacion(liquidaciones) {
         limpiarLiquidacion();
         const titulo = document.createElement('H5');
         titulo.setAttribute('class', 'text-center');
@@ -555,16 +554,17 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             tabla.appendChild(tbody);
         };
-        
+
         totalAlfastreet(casino.value);
 
         // Datos insertados
         tablaLiquidaciones.appendChild(titulo);
         tablaLiquidaciones.appendChild(tabla);
-        tablaLiquidaciones.appendChild(totalTitulo);
+
     }
 
-    async function totalAlfastreet(casino){
+    // Obtener el total de liquidación
+    async function totalAlfastreet(casino) {
         const url = `${window.location.protocol}//${window.location.hostname}/liquidations/totalLiquidation?casino=${casino}`;
         const request = await fetch(url);
         const result = await request.json();
@@ -573,7 +573,78 @@ document.addEventListener('DOMContentLoaded', () => {
         totalTitulo.classList.add('text-center');
         totalTitulo.textContent = `Total a Pagar = ${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseInt(result))}`;
 
+        const buttonSendLiquidationTotal = document.createElement('BUTTON');
+        buttonSendLiquidationTotal.setAttribute('type', 'button');
+        buttonSendLiquidationTotal.setAttribute('id', 'generarTotalLiquidacion');
+        buttonSendLiquidationTotal.classList.add('btn', 'btn-primary');
+        buttonSendLiquidationTotal.textContent = 'Generar liquidacion Total';
+
         tablaLiquidaciones.appendChild(totalTitulo);
+        if (result != 0) {
+            tablaLiquidaciones.appendChild(buttonSendLiquidationTotal);
+
+            const actionButtonLiquidation = document.querySelector('#generarTotalLiquidacion');
+            actionButtonLiquidation.addEventListener('click', (e) => {
+                e.preventDefault();
+                sendData(casino, result)
+            });
+        }
+
+    }
+
+    // Enviar los datos para totalizar la liquidación
+    async function sendData(casino, valor) {
+        const data = new FormData();
+        data.append('casino_id', casino);
+        data.append('totalLiquidation', valor);
+
+        Swal.fire({
+            title: 'Calculando su liquidacion, por favor espere!',
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        });
+
+        try {
+            const url = `${window.location.protocol}//${window.location.hostname}/totalaccountants/add`;
+            const request = await fetch(url, {
+                headers: {
+                    'X-CSRF-Token': _csrfToken,
+                },
+                method: 'POST',
+                body: data,
+            });
+            const result = await request.json();
+            if (result === 'ok') {
+                Swal.fire(
+                    'Gracias!!',
+                    'La liquidación de tus maquinas ha sido realizada con exito!!',
+                    'success'
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.replace(`${window.location.protocol}//${window.location.hostname}/accountants/general`);
+                    }
+                });
+            }
+
+        } catch (error) {
+            Swal.fire(
+                'Ups!!',
+                'Hubo un error al ingresar los datos, por favor contacte con Administrador :(',
+                'error'
+            );
+        }
+
+
     }
 
 

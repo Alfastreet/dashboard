@@ -6,8 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastAccountant = document.querySelector('#lasted');
     const newAccountant = document.querySelector('#formnewaccountant');
     const contadoresmes = document.querySelector('#tableAccountant');
+    const tablaLiquidaciones = document.querySelector('#liquidations');
     const _csrfToken = document.querySelector('#csrfToken').content;
     let timerInterval;
+    let contadorDosMeses = [];
+    let actuales = [];
+    let totalLiquidacion = 0;
 
     casino.addEventListener('change', (e) => {
         const idCasino = e.target.value;
@@ -15,10 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idCasino === '0') {
             divMachines.style.display = 'none';
             limpiarContadores();
+            limpiarLiquidacion();
+            limpiarData();
+            limpiarFormulario();
         } else {
             divMachines.style.display = 'block';
             maquinasCasino(idCasino);
             mostrarContadores();
+            obtenerLiquidacion(idCasino);
         }
     })
 
@@ -31,11 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await request.json();
 
             if (result) {
-                console.log(result);
                 generarHtml(result, id);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
 
     }
@@ -68,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const machineId = e.target.value;
             if (machineId == 0) {
                 limpiarFormulario();
-                nodata();
+                limpiarData();
             } else {
                 ultimosContadores(machineId, casino);
             }
@@ -86,12 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 nodata();
                 addAcountant(id, casinoId);
             } else {
+                contadorDosMeses = result[0];
                 htmlContadotes(result);
                 addAcountant(id, casinoId);
             }
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -134,27 +142,27 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>
             <tr>
                 <td>Cashin - Drop In</td>
-                <td>${cashin}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashin))}</td>
             </tr>
             <tr>
                 <td>Cashout - Cancelled</td>
-                <td>${cashout}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashout))}</td>
             </tr>
             <tr>
                 <td>Bet</td>
-                <td>${bet}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(bet))}</td>
             </tr>
             <tr>
                 <td>Win</td>
-                <td>${win}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(win))}</td>
             </tr>
             <tr>
                 <td>Profit</td>
-                <td>${profit}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(profit))}</td>
             </tr>
             <tr>
                 <td>Jackpot</td>
-                <td>${jackpot}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(jackpot))}</td>
             </tr>
             <tr>
                 <td>Games Played - Juegos Jugados</td>
@@ -162,19 +170,19 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>
             <tr>
                 <td>12% Coljuegos</td>
-                <td>${coljuegos}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(coljuegos))}</td>
             </tr>
             <tr>
                 <td>1% Administracion</td>
-                <td>${admin}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(admin))}</td>
             </tr>
             <tr>
                 <td>Total de la liquidacion</td>
-                <td>${total}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(total))}</td>
             </tr>
             <tr>
                 <td>40% Alfastreet</td>
-                <td>${alfastreet}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(alfastreet))}</td>
             </tr>
         `;
 
@@ -195,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formulario.setAttribute('enctype', 'multipart/form-data');
         formulario.setAttribute('id', 'accountantForm')
         formulario.innerHTML = `
-            <input type="hidden" name="machine_id" value="${id}">
+            <input type="hidden" name="machine_id" id="maquina" value="${id}">
             <input type="hidden" name="casino_id" value="${casino_id}">
             <div class="row mb-4">
                 <div class="col-6">
@@ -229,23 +237,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" name="gamesplayed" class="form-control" required placeholder="Juegos Jugados" aria-required="true" >
                 </div>
             </div>
-            <input type="file" name="image" class="form-control mb-4" accept="image/png,image/jpeg" required aria-required="true">
+            <div class="row mb-4">
+                <div class="col-6">
+                    <input type="file" name="image" class="form-control mb-4" accept="image/png,image/jpeg" required aria-required="true">
+                </div>
+                <div class="col-6">
+                    <select class="form-control" label="false" name="percent" id="porcentaje">
+                        <option value="">Porcentaje de participacion Alfastreet</option>
+                        <option value="0.30">30% de participación</option>
+                        <option value="0.40">40% de participación</option>
+                    </select>
+                </div>
+            </div>
             <button class="btn btn-primary" name="send" type="submit"> Enviar Contador </button>
         `;
         newAccountant.appendChild(formulario);
-        formulario.addEventListener('submit', sendNewAccountant);
+        const maquina = document.querySelector('#maquina');
+        formulario.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendNewAccountant();
+
+            setTimeout(() => {
+                obtenerContadorMes(maquina.value);
+            }, 1000);
+
+            setTimeout(() => {
+                crearLiquidacion(casino.value, contadorDosMeses, actuales);
+            }, 1500);
+
+            setTimeout(() => {
+                obtenerLiquidacion(casino.value);
+            }, 2000);
+        }
+        );
+
     }
 
     // Funcion asincrona para el post de la participacion
-    async function sendNewAccountant(e) {
+    async function sendNewAccountant() {
         const form = document.querySelector('#accountantForm');
-        e.preventDefault();
         const data = new FormData(form);
 
         // Verificar los datos de envio en consola
-        for (let key of data.keys()) {
-            console.log(key, data.get(key));
-        }
+        // for (let key of data.keys()) {
+        //     console.log(key, data.get(key));
+        // };
+
 
         // Solicitud HTTP POST
 
@@ -288,13 +325,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
             swalWithBootstrapButtons.fire(
                 'Ups!!',
                 'Ha ocurrido un error. Intentalo mas tarde :(',
                 'error'
             )
         }
+    }
+
+    async function obtenerContadorMes(machine) {
+        const url = `${window.location.protocol}//${window.location.hostname}/accountants/accountMachine?machineid=${machine}`;
+        const request = await fetch(url);
+        const result = await request.json();
+        actuales = result;
     }
 
     // Mostrar los contadores del mes actual
@@ -305,15 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const request = await fetch(url);
         const result = await request.json();
 
-        console.log(result);
-
         if (result === 'vacio') {
-            console.log('vacio');
             nodatacontadores();
         } else if (result) {
             htmlmesContadores(result);
         } else {
-            console.log('error');
+            console.error('error');
         }
     }
 
@@ -321,13 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Crear HTML para los contadores
     function htmlmesContadores(contadores) {
         limpiarContadores();
-        const titulo = document.createElement('h5');
+        const titulo = document.createElement('H5');
         titulo.setAttribute('class', 'text-center');
-        titulo.innerHTML = 'Participaciones del mes';
-        const tabla = document.createElement('table');
-        tabla.setAttribute('class', 'table table-responsive table-striped table-hover table-sm table-bordered text-center');
+        titulo.textContent = 'Participaciones del mes';
+        const tabla = document.createElement('TABLE');
+        tabla.classList.add('table', 'table-bordered', 'table-striped', 'table-responsive', 'text-center', 'table-hover');
 
-        const thead = document.createElement('thead');
+        const thead = document.createElement('THEAD');
         thead.innerHTML = `
             <tr>
                 <th>Maquina</th>
@@ -350,66 +391,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const contador of contadores) {
             const { admin, alfastreet, bet, cashin, cashout, coljuegos, day_init, day_end, gamesplayed, profit, total, win, jackpot, Machines: { serial } } = contador;
-            const tbody = document.createElement('tbody');
+            const tbody = document.createElement('TBODY');
             tbody.innerHTML = `
                 <tr>
                     <td>${serial}</td>
                     <td>${day_init}</td>
                     <td>${day_end}</td>
-                    <td>${cashin}</td>
-                    <td>${cashout}</td>
-                    <td>${bet}</td>
-                    <td>${win}</td>
-                    <td>${profit}</td>
-                    <td>${jackpot}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashin))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashout))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(bet))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(win))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(profit))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(jackpot))}</td>
                     <td>${gamesplayed}</td>
-                    <td>${coljuegos}</td>
-                    <td>${admin}</td>
-                    <td>${total}</td>
-                    <td>${alfastreet}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(coljuegos))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(admin))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(total))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(alfastreet))}</td>
                 </tr>
             `;
             tabla.appendChild(tbody);
         };
 
-        const buttonConfirm = document.createElement('button');
-        buttonConfirm.setAttribute('class', 'btn btn-primary');
-        buttonConfirm.setAttribute('id', 'createLiquidation');
-        buttonConfirm.textContent = 'Finalizar y enviar Liquidacion de participaciones';
+        contadoresmes.appendChild(titulo);
+        contadoresmes.appendChild(tabla);
+    }
 
-        contadoresmes.appendChild(titulo); 
-        contadoresmes.appendChild(tabla); 
-        contadoresmes.appendChild(buttonConfirm);
-
-        const confirm = document.querySelector('#createLiquidation');
-        confirm.addEventListener('click', advertenciaLiquidacion)
+    // Si no hay datos de Contadores
+    function nodatacontadores() {
+        limpiarContadores();
+        const titulo = document.createElement('H5');
+        titulo.setAttribute('class', 'card-title')
+        titulo.setAttribute('class', 'text-center');
+        titulo.innerHTML = 'No hay datos de Contadores';
+        contadoresmes.appendChild(titulo);
     }
 
 
     // Liquidacion de los contadores
-    function advertenciaLiquidacion(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: '¿Estas Seguro?',
-            text: "Esta Accion no se puede cambiar",
-            icon: 'warning',
-            allowOutsideClick: false,
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, enviar!',
-            cancelButtonText: 'Cancelar',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                crearLiquidacion(casino.value);
-            }
-        })
-    }
 
-    async function crearLiquidacion(casino) {
+    async function crearLiquidacion(casino, last, news) {
+        const porcentaje = document.querySelector('#porcentaje').value
+        const totalcashin = news.cashin - last.cashin;
+        const totalcashout = news.cashout - last.cashout;
+        const totalbet = news.bet - last.bet;
+        const totalwin = news.win - last.win;
+        const totaljackpot = news.jackpot - last.jackpot;
+        const totalprofit = news.profit - last.profit;
+        const games = news.gamesplayed;
+        const machine_id = news.machine_id;
+        const data = new FormData();
+        data.append('machine_id', machine_id);
+        data.append('cashin', totalcashin);
+        data.append('cashout', totalcashout);
+        data.append('bet', totalbet);
+        data.append('win', totalwin);
+        data.append('jackpot', totaljackpot);
+        data.append('profit', totalprofit);
+        data.append('games', games);
+        data.append('percent', porcentaje);
+
         Swal.fire({
-            title: 'Enviando Contadores',
-            html: 'Enviando sus contadores, por favor espere!',
+            title: 'Calculando su liquidacion, por favor espere!',
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading()
@@ -426,22 +469,111 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const url = `${window.location.protocol}//${window.location.hostname}/liquidations/add?casinoid=${casino}`;
-            const request = await fetch(url);
+            const request = await fetch(url, {
+                headers: {
+                    'X-CSRF-Token': _csrfToken,
+                },
+                method: 'POST',
+                body: data,
+            });
             const result = await request.json();
-            console.log(result);
+            if (result === 'ok') {
+                Swal.fire(
+                    'Exito!!',
+                    'Liquidacion de la maquina realizada!!',
+                    'success'
+                );
+                limpiarFormulario();
+                limpiarData();
+            }
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            Swal.fire(
+                'Ups!!',
+                'Hubo un error en la peticion, Intenta de nuevo mas tarde :(',
+                'error'
+            );
         }
+    };
+
+    // Obtener las liquidaciones del casino en el mes
+    async function obtenerLiquidacion(casino) {
+        const url = `${window.location.protocol}//${window.location.hostname}/liquidations/liquidation?casino=${casino}`;
+        const request = await fetch(url);
+        const result = await request.json();
+        if (result) {
+            htmlLiquidacion(result);
+        } else {
+            console.log('vacio');
+        }
+
     }
 
-    // Si no hay datos de Contadores
-    function nodatacontadores() {
-        limpiarContadores();
+    // Html para las liquidaciones
+    function htmlLiquidacion(liquidaciones){
+        limpiarLiquidacion();
         const titulo = document.createElement('H5');
-        titulo.setAttribute('class', 'card-title')
         titulo.setAttribute('class', 'text-center');
-        titulo.innerHTML = 'No hay datos de Contadores';
-        contadoresmes.appendChild(titulo);
+        titulo.textContent = 'Liquidación del mes actual';
+        const tabla = document.createElement('TABLE');
+        tabla.setAttribute('class', 'table table-bordered table-striped table-responsive text-center table-hover');
+        const topTabla = document.createElement('THEAD');
+        topTabla.innerHTML = `
+            <tr>
+                <td>Serial de la maquina</td>
+                <td>Cashin - Dropin</td>
+                <td>Cashout - Cancelled</td>
+                <td>Bet</td>
+                <td>Win</td>
+                <td>Profit</td>
+                <td>Jackpot</td>
+                <td>Coljuegos 12%</td>
+                <td>Administracion 1%</td>
+                <td>Total</td>
+                <td>Alfastreet</td>
+            </tr>
+        `;
+        tabla.appendChild(topTabla);
+
+        for (const liquidacion of liquidaciones) {
+            const { admin, alfastreet, bet, cashin, cashout, coljuegos, profit, total, win, jackpot, Machines: { serial } } = liquidacion;
+            const tbody = document.createElement('TBODY');
+            tbody.innerHTML = `
+                <tr>
+                    <td>${serial}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashin))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashout))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(bet))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(win))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(profit))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(jackpot))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(coljuegos))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(admin))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(total))}</td>
+                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(alfastreet))}</td>
+                </tr>
+            `;
+            tabla.appendChild(tbody);
+        };
+        
+        totalAlfastreet(casino.value);
+
+        // Datos insertados
+        tablaLiquidaciones.appendChild(titulo);
+        tablaLiquidaciones.appendChild(tabla);
+        tablaLiquidaciones.appendChild(totalTitulo);
+    }
+
+    async function totalAlfastreet(casino){
+        const url = `${window.location.protocol}//${window.location.hostname}/liquidations/totalLiquidation?casino=${casino}`;
+        const request = await fetch(url);
+        const result = await request.json();
+
+        const totalTitulo = document.createElement('H5');
+        totalTitulo.classList.add('text-center');
+        totalTitulo.textContent = `Total a Pagar = ${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseInt(result))}`;
+
+        tablaLiquidaciones.appendChild(totalTitulo);
     }
 
 
@@ -470,15 +602,11 @@ document.addEventListener('DOMContentLoaded', () => {
             contadoresmes.removeChild(contadoresmes.firstChild);
         }
     }
+
+    // Limpiar Liquidaciones
+    function limpiarLiquidacion() {
+        while (tablaLiquidaciones.firstChild) {
+            tablaLiquidaciones.removeChild(tablaLiquidaciones.firstChild);
+        }
+    }
 });
-
-
-// Funciones extra para el documento
-function currencyFormatter({ currency, value }) {
-    const formatter = new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        minimumFractionDigits: 2,
-        currency
-    });
-    return formatter.format(value);
-};

@@ -36,6 +36,9 @@
             <div class="mb-4" id="tableAccountant">
                 
             </div>
+            <div class="mb-4" id="liquidations">
+                
+            </div>
         </div>
     </div>
 </div>

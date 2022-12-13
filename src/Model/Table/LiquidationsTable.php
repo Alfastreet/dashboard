@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CasinosTable&\Cake\ORM\Association\BelongsTo $Casinos
  * @property \App\Model\Table\MachinesTable&\Cake\ORM\Association\BelongsTo $Machines
- * @property \App\Model\Table\MonthsTable&\Cake\ORM\Association\BelongsTo $Months
  *
  * @method \App\Model\Entity\Liquidation newEmptyEntity()
  * @method \App\Model\Entity\Liquidation newEntity(array $data, array $options = [])
@@ -69,17 +68,14 @@ class LiquidationsTable extends Table
     {
         $validator
             ->integer('casino_id')
-            ->requirePresence('casino_id', 'create')
             ->notEmptyString('casino_id');
 
         $validator
             ->integer('machine_id')
-            ->requirePresence('machine_id', 'create')
             ->notEmptyString('machine_id');
 
         $validator
             ->integer('month_id')
-            ->requirePresence('month_id', 'create')
             ->notEmptyString('month_id');
 
         $validator
@@ -154,21 +150,5 @@ class LiquidationsTable extends Table
             ->notEmptyString('alfastreet');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
-        $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
-        $rules->add($rules->existsIn('month_id', 'Month'), ['errorField' => 'month_id']);
-
-        return $rules;
     }
 }

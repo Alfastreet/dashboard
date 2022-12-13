@@ -70,7 +70,6 @@ class AccountantsController extends AppController
         $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2])->first()->value;
         $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3])->first()->value;
         $iva = $this->fetchTable('Dataiportants')->find()->where(['id' => 1])->first()->value;
-        $alfaValue = $this->fetchTable('Dataiportants')->find()->where(['id' => 4])->first()->value;
 
         // $casinoid = $this->request->getQuery('casinoid');
         $casinos = $this->fetchTable('Casinos')->find('list', [
@@ -90,12 +89,12 @@ class AccountantsController extends AppController
 
         if ($this->request->is('post')) {
             $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
-
+            $percent = floatval($this->request->getData('percent'));
             $accountant->profit = $accountant->cashin - $accountant->cashout;
             $accountant->coljuegos = $accountant->profit * $coljuegosValue;
             $accountant->admin = $accountant->coljuegos * $adminValue;
             $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - $iva;
-            $accountant->alfastreet = $accountant->total * $alfaValue;
+            $accountant->alfastreet = $accountant->total * $percent;
             $accountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
             $accountant->year = date('Y');
             $image = $_FILES['image'];
@@ -247,6 +246,21 @@ class AccountantsController extends AppController
             echo json_encode('vacio');
             die;
         }
+    }
+
+    public function accountMachine($machineid = null){
+        $machineid = $this->request->getQuery('machineid');
+        $date = Chronos::parse('-1 Month');
+
+        if($machineid === '' || $machineid === null){
+            echo json_encode('error');
+            die; 
+        }
+
+        $query = $this->Accountants->find()->where(['machine_id' => $machineid, 'month_id' => $date->month])->first();
+
+        echo(json_encode($query));
+        die;
     }
 
     public function csv()

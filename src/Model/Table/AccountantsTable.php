@@ -52,10 +52,10 @@ class AccountantsTable extends Table
             'foreignKey' => 'casino_id',
             'joinType' => 'INNER',
         ]);
-        // $this->belongsTo('Months', [
-        //     'foreignKey' => 'month_id',
-        //     'joinType' => 'INNER',
-        // ]);
+        $this->belongsTo('Months', [
+            'foreignKey' => 'month_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

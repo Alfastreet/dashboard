@@ -6,6 +6,13 @@
  *@var string[]|\Cake\Collection\CollectionInterface $machines
  *@var string[]|\Cake\Collection\CollectionInterface $casinos
  */
+
+ $this->Breadcrumbs->add([
+    ['title' => 'Inicio', 'url' => '/'],
+    ['title' => 'Participaciones', 'url' => ['action' => 'general']],
+    ['title' => 'Nueva Liquidación']
+]);
+
 ?>
 <?= $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'), ['id' => 'csrfToken']); ?>
 <div class="col-12">
@@ -33,10 +40,10 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-4" id="tableAccountant">
+            <div class="mb-4 table-responsive" id="tableAccountant">
                 
             </div>
-            <div class="mb-4" id="liquidations">
+            <div class="mb-4 table-responsive" id="liquidations">
                 
             </div>
         </div>

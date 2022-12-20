@@ -28,6 +28,9 @@
                 <li class="nav-item">
                     <?= $this->Html->link('Informe General', ['controller' => 'Accountants', 'action' => 'general'], ['class' => 'nav-link']) ?>
                 </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Nueva Participacion', ['controller' => 'Accountants', 'action' => 'add'], ['class' => 'nav-link']) ?>
+                </li>
             </ul>
         </li>
         <!-- Fin Submenus de navegacion -->

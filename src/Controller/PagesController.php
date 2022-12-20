@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
@@ -61,6 +62,10 @@ class PagesController extends AppController
             $subpage = $path[1];
         }
 
+        $date = Chronos::parse('-1 Month');
+        $totalParticipations = 0;
+        $participacionesFacturadas = 0;
+
         // Query Cotizaciones
         $quotesTotal = $this->fetchTable('Quotes')->find()->count();
         $quotesAproved = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 1])->count();
@@ -68,8 +73,8 @@ class PagesController extends AppController
         $quotesRechazed = $this->fetchTable('Quotes')->find()->select(['*'])->where(['estatus_id' => 3])->count();
 
         // Query Contadores
-        $accountantsTotal = $this->fetchTable('Accountants')->find()->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->count();
-        $accountantsSum = $this->fetchTable('Accountants')->find()->select(['alfastreet'])->where(['month_id' => date('m', strtotime(date('d-m-Y')."- 1 month"))])->all(); 
+        $accountantsTotal = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => Chronos::parse('-1 month')->month])->count();
+        $accountantsSum = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => Chronos::parse('-1 month')->month])->all(); 
 
         //Query Ordenes de trabajo
         $orders = $this->fetchTable('Orders')->find()->count();
@@ -81,8 +86,22 @@ class PagesController extends AppController
         $tickets = $this->fetchTable('Tikets')->find()->count();
         $ticketsApp = $this->fetchTable('Tikets')->find()->where(['status' => 'Completado'])->count();
         $ticketsPending = $this->fetchTable('Tikets')->find()->where(['status' => 'Pendiente'])->count();
+        
+        $dataParticipations = $this->fetchTable('Totalaccountants')->find()->select(['totalLiquidation'])->where(['month_id' => $date->month])->all();
 
-        $this->set(compact('page', 'subpage', 'quotesTotal', 'accountantsTotal', 'accountantsSum', 'quotesAproved', 'quotesPending', 'quotesRechazed', 'orders', 'ordersComplete', 'ordersPending', 'ordersCanceled', 'tickets', 'ticketsPending', 'ticketsApp'));
+        $datatwo = $this->fetchTable('Totalaccountants')->find()->select(['totalLiquidation'])->where(['month_id' => $date->month, 'estatus' => 'Liquidado'])->all();
+
+        foreach($dataParticipations as $alfastreet){
+            $totalParticipations += $alfastreet->totalLiquidation;
+        }        
+
+        foreach($datatwo as $alfas){
+            $participacionesFacturadas += $alfas->totalLiquidation;
+        }
+        $this->set(compact('page', 'subpage', 'quotesTotal', 'quotesAproved', 'quotesPending', 'accountantsTotal', 'accountantsSum', 'quotesRechazed', 'orders', 'ordersComplete', 'ordersPending', 'ordersCanceled', 'tickets', 'ticketsPending', 'ticketsApp'));
+
+        $this->set('totalParticipations', $totalParticipations);
+        $this->set('Liquidadas', $participacionesFacturadas);
 
         try {
             return $this->render(implode('/', $path));

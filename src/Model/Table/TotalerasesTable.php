@@ -48,7 +48,7 @@ class TotalerasesTable extends Table
             'foreignKey' => 'casino_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Month', [
+        $this->belongsTo('Months', [
             'foreignKey' => 'month_id',
             'joinType' => 'INNER',
         ]);
@@ -97,7 +97,7 @@ class TotalerasesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
-        $rules->add($rules->existsIn('month_id', 'Month'), ['errorField' => 'month_id']);
+        $rules->add($rules->existsIn('month_id', 'Months'), ['errorField' => 'month_id']);
 
         return $rules;
     }

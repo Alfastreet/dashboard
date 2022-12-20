@@ -47,7 +47,7 @@ class TotalaccountantsTable extends Table
             'foreignKey' => 'casino_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Month', [
+        $this->belongsTo('Months', [
             'foreignKey' => 'month_id',
             'joinType' => 'INNER',
         ]);

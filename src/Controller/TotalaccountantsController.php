@@ -110,4 +110,32 @@ class TotalaccountantsController extends AppController
 
         $this->set(compact('totalaccountant', 'business'));
     }
+
+    public function updateStatus($id = null, $nfactura = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $this->autoRender = false;
+        $id = $this->request->getQuery('id');
+        $nfactura = $this->request->getQuery('nfactura');
+
+        if($id === null || $id === ''){
+            echo json_encode('error');
+            die;
+        }
+        if($nfactura === null || $nfactura === ''){
+            echo json_encode('error');
+            die;
+        }
+
+        $query = $this->Totalaccountants->query()->update()->set(['nfactura' => $nfactura, 'estatus' => 'Liquidado'])->where(['id' => $id])->execute();
+
+        if($query){
+            echo json_encode('ok');
+            die;
+        } else {
+            echo json_encode('error');
+            die;
+        }
+
+    }
 }

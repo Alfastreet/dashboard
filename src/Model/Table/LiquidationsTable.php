@@ -52,7 +52,7 @@ class LiquidationsTable extends Table
             'foreignKey' => 'machine_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Month', [
+        $this->belongsTo('Months', [
             'foreignKey' => 'month_id',
             'joinType' => 'INNER',
         ]);

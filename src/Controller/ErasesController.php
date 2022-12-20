@@ -59,10 +59,9 @@ class ErasesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add($token = null, $casinoId = null)
+    public function add($machineId = null, $casinoId = null)
     {
         $this->Authorization->skipAuthorization();
-        $token = $this->request->getQuery('token');
         $casinoId = $this->request->getQuery('casinoId');
         $machineId = $this->request->getQuery('machineId');
 
@@ -94,15 +93,9 @@ class ErasesController extends AppController
                 $image->moveTo($destiny);
                 $erase->image = $nameImage;
             }
-
-            if ($this->Erases->save($erase)) {
-
-                return $this->redirect(['action' => 'add', '?' => ['token' => $token, 'casinoId' => $casinoId, 'machineId' => $machineId]]);
-            }
-            $this->Flash->error(__('The erase could not be saved. Please, try again.'));
         }
         $machines = $this->Erases->Machines->find('list')->where(['casino_id' => $casinoId, 'contract_id' => 2])->all();
-        $months = $this->Erases->Month->find('list', ['limit' => 200])->all();
+        $months = $this->Erases->Months->find('list', ['limit' => 200])->all();
         $erases = $this->fetchTable('Erases')->find('all')->where(['casino_id' => $casinoId])->all();
 
         $this->set(compact('erase', 'machines', 'months', 'erases'));

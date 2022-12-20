@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result === 'vacio') {
                 nodata();
                 addAcountant(id, casinoId);
+                contadorDosMeses = 0;
             } else {
                 contadorDosMeses = result[0];
                 htmlContadotes(result);
@@ -249,31 +250,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <button class="btn btn-primary" name="send" type="submit"> Enviar Contador </button>
+            <a href="${window.location.protocol}//${window.location.hostname}/erases/add?casinoId=${casino_id}&machineId=${id}" class="btn btn-warning text-white">Insertar Borrados</a>
         `;
         newAccountant.appendChild(formulario);
         const maquina = document.querySelector('#maquina');
         formulario.addEventListener('submit', (e) => {
             e.preventDefault();
-            sendNewAccountant();
-
-            setTimeout(() => {
-                obtenerContadorMes(maquina.value);
-            }, 1000);
-
-            setTimeout(() => {
-                crearLiquidacion(casino.value, contadorDosMeses, actuales);
-            }, 1500);
-
-            setTimeout(() => {
-                obtenerLiquidacion(casino.value);
-            }, 2000);
+            sendNewAccountant(maquina.value);
         }
         );
 
     }
 
     // Funcion asincrona para el post de la participacion
-    async function sendNewAccountant() {
+    async function sendNewAccountant(maquina) {
         const form = document.querySelector('#accountantForm');
         const data = new FormData(form);
 
@@ -321,6 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     'success'
                 );
                 mostrarContadores();
+                setTimeout(() => {
+                    obtenerContadorMes(maquina);
+                }, 1000);
             }
 
         } catch (error) {
@@ -339,6 +332,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const request = await fetch(url);
         const result = await request.json();
         actuales = result;
+
+        setTimeout(() => {
+            crearLiquidacion(casino.value, contadorDosMeses, actuales);
+        }, 1000);
     }
 
     // Mostrar los contadores del mes actual
@@ -366,8 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titulo.setAttribute('class', 'text-center');
         titulo.textContent = 'Participaciones del mes';
         const tabla = document.createElement('TABLE');
-        tabla.classList.add('table', 'table-bordered', 'table-striped', 'table-responsive', 'text-center', 'table-hover');
-
+        tabla.classList.add('table', 'table-bordered', 'table-striped', 'text-center', 'table-hover');
         const thead = document.createElement('THEAD');
         thead.innerHTML = `
             <tr>
@@ -484,6 +480,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
                 limpiarFormulario();
                 limpiarData();
+
+                setTimeout(() => {
+                    obtenerLiquidacion(casino);
+                }, 1000);
             }
         } catch (error) {
             console.error(error);
@@ -515,21 +515,21 @@ document.addEventListener('DOMContentLoaded', () => {
         titulo.setAttribute('class', 'text-center');
         titulo.textContent = 'Liquidación del mes actual';
         const tabla = document.createElement('TABLE');
-        tabla.setAttribute('class', 'table table-bordered table-striped table-responsive text-center table-hover');
+        tabla.classList.add('table', 'table-bordered', 'table-striped', 'text-center', 'table-hover');
         const topTabla = document.createElement('THEAD');
         topTabla.innerHTML = `
             <tr>
-                <td>Serial de la maquina</td>
-                <td>Cashin - Dropin</td>
-                <td>Cashout - Cancelled</td>
-                <td>Bet</td>
-                <td>Win</td>
-                <td>Profit</td>
-                <td>Jackpot</td>
-                <td>Coljuegos 12%</td>
-                <td>Administracion 1%</td>
-                <td>Total</td>
-                <td>Alfastreet</td>
+                <th>Serial de la maquina</th>
+                <th>Cashin - Dropin</th>
+                <th>Cashout - Cancelled</th>
+                <th>Bet</th>
+                <th>Win</th>
+                <th>Profit</th>
+                <th>Jackpot</th>
+                <th>Coljuegos 12%</th>
+                <th>Administracion 1%</th>
+                <th>Total</th>
+                <th>Alfastreet</th>
             </tr>
         `;
         tabla.appendChild(topTabla);

@@ -16,15 +16,6 @@ use Cake\Datasource\ConnectionManager;
  */
 class AccountantsController extends AppController
 {
-
-    private $db;
-
-    public function initialize(): void
-    {
-        parent::initialize();
-        $this->db = ConnectionManager::get("default");
-    }
-
     /**
      * Index method
      *
@@ -124,6 +115,7 @@ class AccountantsController extends AppController
     public function general()
     {
         $this->Authorization->skipAuthorization();
+        $date = Chronos::parse('-1 Month');
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],
         ];
@@ -132,64 +124,12 @@ class AccountantsController extends AppController
             'maxLimit' => 10000,
         ]);
 
-        $clients = $this->fetchTable('Business')
-            ->find()->select([
-                'id', 'name'
-            ])
-            ->select([
-                'Casinos.id',
-                'Casinos.name',
-            ])
-            ->select([
-                'Machines.id',
-                'Machines.contract_id'
-            ])->join([
-                'Casinos' => [
-                    'table' => 'casinos',
-                    'type' => 'INNER',
-                    'conditions' => 'Casinos.business_id = Business.id'
-                ],
-                'Machines' => [
-                    'table' => 'machines',
-                    'type' => 'INNER',
-                    'conditions' => [
-                        'Machines.casino_id = Casinos.id',
-                        'Machines.contract_id' => 2,
-                    ]
-                ]
-            ])->all();
+        $liquidations = $this->fetchTable('Totalaccountants')->find()->contain(['Casinos', 'Months'])->all();
+        $totalMes = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => $date->month
+        ])->all();
+        $recaudado = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => $date->month, 'estatus' => 'Liquidado'])->all();
 
-        $enero = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 1, 'year' => date('Y')])->first();
-        $febrero = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 2, 'year' => date('Y')])->first();
-        $marzo = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 3, 'year' => date('Y')])->first();
-        $abril = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 4, 'year' => date('Y')])->first();
-        $mayo = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 5, 'year' => date('Y')])->first();
-        $junio = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 6, 'year' => date('Y')])->first();
-        $julio = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 7, 'year' => date('Y')])->first();
-        $agosto = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 8, 'year' => date('Y')])->first();
-        $septiembre = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 9, 'year' => date('Y')])->first();
-        $octubre = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 10, 'year' => date('Y')])->first();
-        $noviembre = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 11, 'year' => date('Y')])->first();
-        $diciembre = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => 12, 'year' => date('Y')])->first();
-
-        $this->set(compact('accountants', 'clients', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'));
-    }
-
-    public function lastvalue($machineid =  null)
-    {
-        $this->autoRender = false;
-
-        $machineid = $this->request->getQuery('machineid');
-
-        $q = $this->db->execute("SELECT cashin, machine_id FROM accountants WHERE machine_id = " . $machineid . " ORDER BY ID DESC LIMIT 1")->fetchAll('obj');
-
-        if ($q) {
-            echo json_encode($q);
-            die;
-        }
-
-        echo json_encode('error');
-        die;
+        $this->set(compact('accountants', 'liquidations', 'totalMes', 'date', 'recaudado'));
     }
 
     public function lastAccountants($machineid = null)
@@ -262,6 +202,33 @@ class AccountantsController extends AppController
         echo(json_encode($query));
         die;
     }
+
+    public function pdf($casino = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $casino = $this->request->getQuery('casino');
+        $date = Chronos::parse('-1 Month');
+
+        $this->viewBuilder()->enableAutoLayout(false);
+
+        $maquinas = $this->fetchTable('Liquidations')->find()->where(['casino_id' => $casino, 'month_id' => $date->month])->all();
+
+        $nameCasino = $this->fetchTable('Casinos')->find()->select(['name'])->where(['id' => $casino])->first();
+
+        $totalLiquidacion = $this->fetchTable('Totalaccountants')->find()->where(['casino_id' => $casino, 'month_id' => $date->month])->first();
+
+        $this->viewBuilder()->setClassName('CakePdf.Pdf');
+        $this->viewBuilder()->setOption(
+            'pdfConfig', [
+                'orientation' => 'portrait',
+                'pageSize' => 'A3',
+                'filename' => 'Liquidación-'.$date->month.'-casino-'.$nameCasino->name.'.pdf',
+                'isHtml5ParserEnabled' => true,
+            ],
+        );
+
+        $this->set(compact('maquinas', 'totalLiquidacion', 'casino', 'nameCasino'));
+    }    
 
     public function csv()
     {

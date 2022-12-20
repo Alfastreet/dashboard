@@ -13,7 +13,6 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <h3 class="card-title mb-0"><?= __('Añadir Borrados') ?></h3>
-                    <input type="hidden" id="token" value="<?= $_GET['token'] ?>">
                     <input type="hidden" id="casinoid" value="<?= $_GET['casinoId'] ?>">
                     <input type="hidden" id="month" value="<?= date('m', strtotime(date('d-m-Y') . "- 1 month")) ?>">
                     <p class="small text-medium-emphasis">&nbsp;</p>

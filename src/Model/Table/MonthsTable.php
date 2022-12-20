@@ -25,7 +25,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Month[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Month[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class MonthTable extends Table
+class MonthsTable extends Table
 {
     /**
      * Initialize method
@@ -37,7 +37,7 @@ class MonthTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('month');
+        $this->setTable('months');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
     }

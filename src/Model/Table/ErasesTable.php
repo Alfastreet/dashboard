@@ -52,7 +52,7 @@ class ErasesTable extends Table
             'foreignKey' => 'casino_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Month', [
+        $this->belongsTo('Months', [
             'foreignKey' => 'month_id',
         ]);
     }
@@ -167,7 +167,7 @@ class ErasesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
-        $rules->add($rules->existsIn('month_id', 'Month'), ['errorField' => 'month_id']);
+        $rules->add($rules->existsIn('month_id', 'Months'), ['errorField' => 'month_id']);
 
         return $rules;
     }

@@ -16,6 +16,7 @@
  */
 
 use Cake\Cache\Cache;
+use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
@@ -31,7 +32,9 @@ if (!Configure::read('debug')) :
     );
 endif;
 
-//Porcentaje Cotizaciones
+$date = Chronos::parse('-1 Month');
+
+$arrayDate = explode(' ', $date->toFormattedDateString());
 
 $percentAproved = 0;
 $percentPending = 0;
@@ -41,6 +44,20 @@ $ordersP = 0;
 $ordersCan = 0;
 $percentTickets = 0;
 $percentTicketsApp = 0;
+$totalAccountants = 0;
+$percentParticipationsLiquidated = 0;
+$percentParticipationsPending = 0;
+$totalPending = 0;
+
+foreach ($accountantsSum as $total) {
+    $totalAccountants += $total->totalLiquidation;
+}
+
+if($totalParticipations !== 0){
+    $percentParticipationsLiquidated = round(($Liquidadas * 100) / $totalParticipations);
+    $percentParticipationsPending = round(100 - $percentParticipationsLiquidated);
+    $totalPending = $totalParticipations - $Liquidadas;
+}
 
 if ($quotesTotal !== 0) {
 
@@ -56,17 +73,18 @@ if ($orders !== 0) {
 }
 
 if ($tickets !== 0) {
-    $percentTickets = round($ticketsPending / $tickets *100);
-    $percentTicketsApp = round($ticketsApp / $tickets *100);
+    $percentTickets = round($ticketsPending / $tickets * 100);
+    $percentTicketsApp = round($ticketsApp / $tickets * 100);
 }
 
 $this->Breadcrumbs->add(
     'Inicio'
-)
+);
 
 ?>
 
 
+<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js') ?>
 
 <h1 class="text-center mb-4"><?= __('Bienvenido ') . $user_init->name . " " . $user_init->lastName ?></h1>
 
@@ -132,13 +150,8 @@ $this->Breadcrumbs->add(
                     <div>
                         <div class="fw-bold"><?= __('Participaciones Totales') ?></div>
                         <div class="fs-4 fw-semibold">
-                            <?= __($accountantsTotal) ?><?php
-                                                        $total = 0;
-                                                        foreach ($accountantsSum as $totalSum) {
-                                                            $total += $totalSum->alfastreet;
-                                                        }
-                                                        ?>
-                            <span class="fs-6 fw-normal"> <?= __('(' . $this->Number->currency($total, 'USD') . ')') ?> </span>
+                            <?= __($accountantsTotal) ?>
+                            <span class="fs-6 fw-normal"> <?= h('(' . $this->Number->currency($totalAccountants, 'COP') . ')') ?> </span>
                             <!-- Aqui ira el total de las participaciones Ingresadas en el año  -->
                         </div>
                     </div>
@@ -265,3 +278,69 @@ $this->Breadcrumbs->add(
     </div>
 
 <?php endif ?>
+
+<div class="col-12">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="grafica">
+                <div class="d-flex justify-content-between">
+                    <div class="">
+                        <h4 class="card-title mb-0"><?= __('Participaciones') ?></h4>
+                        <div class="small text-medium-emphasis"><?= $arrayDate[0]. ' - '. $arrayDate[2] ?></div>
+                    </div>
+                </div>
+                <canvas id="participations"></canvas>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row row-cols-1 row-cols-md-3 text-center">
+                <div class="col mb-sm-2 mb-0">
+                    <div class="text-medium-emphasis"><?= __('Total de participaciones') ?></div>
+                    <div class="fw-semibold"><?= $this->Number->currency($totalParticipations, 'COP') ?><?= __(' (100%)') ?></div>
+                    <div class="progress progress-thin mt-2">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col mb-sm-2 mb-0">
+                    <div class="text-medium-emphasis"><?= __('Total de participaciones Liquidadas') ?></div>
+                    <div class="fw-semibold"><?= $this->Number->currency($Liquidadas, 'COP') ?><?= __(' ('. $percentParticipationsLiquidated .'%)') ?></div>
+                    <div class="progress progress-thin mt-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $percentParticipationsLiquidated ?>%;" aria-valuenow="<?= $percentParticipationsLiquidated ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col mb-sm-2 mb-0">
+                    <div class="text-medium-emphasis"><?= __('Pendientes por Pagar') ?></div>
+                    <div class="fw-semibold"><?= $this->Number->currency($totalPending, 'COP') ?><?= __(' ('. $percentParticipationsPending .'%)') ?></div>
+                    <div class="progress progress-thin mt-2">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentParticipationsPending ?>%;" aria-valuenow="<?= $percentParticipationsPending ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ctx = document.getElementById('participations').getContext('2d');
+    var participacion = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Esperado', 'Total Liquidado', 'Pendiente'],
+            datasets: [{
+                label: 'Total de participaciones',
+                data: [<?= json_encode($totalParticipations) ?>, <?= json_encode($Liquidadas) ?>, <?= json_encode($totalPending) ?>],
+                backgroundColor: [
+                    'rgba(182, 146, 83, 1)',
+                    'rgba(46, 184, 92, 1)',
+                    'rgba(229, 83, 83, 1)',
+                ],
+                borderColor: [
+                    'rgba(182, 146, 83, 1)',
+                    'rgba(46, 184, 92, 1)',
+                    'rgba(229, 83, 83, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+    })
+</script>

@@ -53,7 +53,7 @@ foreach ($accountantsSum as $total) {
     $totalAccountants += $total->totalLiquidation;
 }
 
-if($totalParticipations !== 0){
+if ($totalParticipations !== 0) {
     $percentParticipationsLiquidated = round(($Liquidadas * 100) / $totalParticipations);
     $percentParticipationsPending = round(100 - $percentParticipationsLiquidated);
     $totalPending = $totalParticipations - $Liquidadas;
@@ -282,39 +282,68 @@ $this->Breadcrumbs->add(
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
-            <div class="grafica">
-                <div class="d-flex justify-content-between">
-                    <div class="">
-                        <h4 class="card-title mb-0"><?= __('Participaciones') ?></h4>
-                        <div class="small text-medium-emphasis"><?= $arrayDate[0]. ' - '. $arrayDate[2] ?></div>
-                    </div>
+            <div class="d-flex justify-content-between">
+                <div class="mb-4">
+                    <h4 class="card-title mb-0"><?= __('Participaciones') ?></h4>
+                    <div class="small text-medium-emphasis"><?= __('Datos Actualizados a ') . $arrayDate[0] . ' - ' . $arrayDate[2] ?></div>
                 </div>
-                <canvas id="participations"></canvas>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="row row-cols-1 row-cols-md-3 text-center">
-                <div class="col mb-sm-2 mb-0">
-                    <div class="text-medium-emphasis"><?= __('Total de participaciones') ?></div>
-                    <div class="fw-semibold"><?= $this->Number->currency($totalParticipations, 'COP') ?><?= __(' (100%)') ?></div>
-                    <div class="progress progress-thin mt-2">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true"><?= __('Resumen de Participaciones del mes') ?></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false"><?= __('Resumen de participaciones Mes a Mes') ?></button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false"><?= __('Promedio de participaciones Mes a Mes') ?></button>
+                </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="p-3">
+                        <div class="grafica">
+                            <canvas id="participations"></canvas>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row row-cols-1 row-cols-md-3 text-center">
+                                <div class="col mb-sm-2 mb-0">
+                                    <div class="text-medium-emphasis"><?= __('Total de participaciones') ?></div>
+                                    <div class="fw-semibold"><?= $this->Number->currency($totalParticipations, 'COP') ?><?= __(' (100%)') ?></div>
+                                    <div class="progress progress-thin mt-2">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col mb-sm-2 mb-0">
+                                    <div class="text-medium-emphasis"><?= __('Total de participaciones Liquidadas') ?></div>
+                                    <div class="fw-semibold"><?= $this->Number->currency($Liquidadas, 'COP') ?><?= __(' (' . $percentParticipationsLiquidated . '%)') ?></div>
+                                    <div class="progress progress-thin mt-2">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $percentParticipationsLiquidated ?>%;" aria-valuenow="<?= $percentParticipationsLiquidated ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col mb-sm-2 mb-0">
+                                    <div class="text-medium-emphasis"><?= __('Pendientes por Pagar') ?></div>
+                                    <div class="fw-semibold"><?= $this->Number->currency($totalPending, 'COP') ?><?= __(' (' . $percentParticipationsPending . '%)') ?></div>
+                                    <div class="progress progress-thin mt-2">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentParticipationsPending ?>%;" aria-valuenow="<?= $percentParticipationsPending ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col mb-sm-2 mb-0">
-                    <div class="text-medium-emphasis"><?= __('Total de participaciones Liquidadas') ?></div>
-                    <div class="fw-semibold"><?= $this->Number->currency($Liquidadas, 'COP') ?><?= __(' ('. $percentParticipationsLiquidated .'%)') ?></div>
-                    <div class="progress progress-thin mt-2">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $percentParticipationsLiquidated ?>%;" aria-valuenow="<?= $percentParticipationsLiquidated ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="p-3">
+                        <div class="grafica2">
+                            <canvas id="mesmes"></canvas>
+                        </div>
                     </div>
                 </div>
-                <div class="col mb-sm-2 mb-0">
-                    <div class="text-medium-emphasis"><?= __('Pendientes por Pagar') ?></div>
-                    <div class="fw-semibold"><?= $this->Number->currency($totalPending, 'COP') ?><?= __(' ('. $percentParticipationsPending .'%)') ?></div>
-                    <div class="progress progress-thin mt-2">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentParticipationsPending ?>%;" aria-valuenow="<?= $percentParticipationsPending ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
+                <div class="tab-pane fade show" id="messages" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">...</div>
             </div>
         </div>
     </div>
@@ -341,6 +370,41 @@ $this->Breadcrumbs->add(
                 ],
                 borderWidth: 1
             }]
+        },
+    });
+
+    var ctx2 = document.getElementById('mesmes').getContext('2d');
+    var meses = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['Enero', 'febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            datasets: [{
+                    label: 'Mes',
+                    data: [<?= json_encode($Enero) ?>, <?= json_encode($Febrero) ?>, <?= json_encode($Marzo) ?>, <?= json_encode($Abril) ?>, <?= json_encode($Mayo) ?>, <?= json_encode($Junio) ?>, <?= json_encode($Julio) ?>, <?= json_encode($Agosto) ?>, <?= json_encode($Septiembre) ?>, <?= json_encode($Octubre) ?>, <?= json_encode($Noviembre) ?>, <?= json_encode($Diciembre) ?>],
+                    backgroundColor: [
+                        'rgba(182, 146, 83, 1)',
+                        'rgba(182, 146, 83, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(182, 146, 83, 1)',
+                        'rgba(182, 146, 83, 1)',
+                    ],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Mes Liquidado',
+                    data: [<?= json_encode($EneroLiquidado) ?>, <?= json_encode($FebreroLiquidado) ?>, <?= json_encode($MarzoLiquidado) ?>, <?= json_encode($AbrilLiquidado) ?>, <?= json_encode($MayoLiquidado) ?>, <?= json_encode($JunioLiquidado) ?>, <?= json_encode($JulioLiquidado) ?>, <?= json_encode($AgostoLiquidado) ?>, <?= json_encode($SeptiembreLiquidado) ?>, <?= json_encode($OctubreLiquidado) ?>, <?= json_encode($NoviembreLiquidado) ?>, <?= json_encode($DiciembreLiquidado) ?>],
+                    backgroundColor: [
+                        'rgba(46, 184, 92, 1)',
+                        'rgba(46, 184, 92, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(46, 184, 92, 1)',
+                        'rgba(46, 184, 92, 1)',
+                    ],
+                    borderWidth: 1
+                },
+            ]
         },
     })
 </script>

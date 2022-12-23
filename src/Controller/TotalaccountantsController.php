@@ -64,6 +64,10 @@ class TotalaccountantsController extends AppController
             $totalaccountant->year = $date->year;
             $totalaccountant->estatus = 'Pendiente';
             $totalaccountant->dateliquidation = $dateNow;
+
+            if ($totalaccountant->totalLiquidation < 0) {
+                $totalaccountant->estatus = 'Negativo';
+            }
             
             if ($this->Totalaccountants->save($totalaccountant)) {
                 echo json_encode('ok');

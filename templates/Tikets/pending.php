@@ -1,5 +1,7 @@
 <?php
 
+use Cake\Chronos\Chronos;
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Tiket> $tikets
@@ -9,7 +11,9 @@ $this->Breadcrumbs->add([
     ['title' => 'Inicio', 'url' => '/'],
     ['title' => 'Tickets', 'url' => ['controller' => 'Tikets', 'action' => 'index']],
     ['title' => 'Tickets Pendientes']
-])
+]);
+
+$date = Chronos::now('America/Bogota');
 ?>
 <div class="col-12">
     <div class="card mb-4">
@@ -34,14 +38,14 @@ $this->Breadcrumbs->add([
                         </tr>
                         <tbody>
                             <?php foreach ($tikets as $tiket) : ?>
-                                <tr class="<?= date('d-m-Y', strtotime($tiket->datecreate.' +3 days')) <= date('d-m-Y') ? 'table-danger' : ( date('d-m-Y', strtotime($tiket->datecreate.' +2 days')) <= date('d-m-Y') ? 'table-warning' : '' )  ?>" >
+                                <tr class="<?= $tiket->datecreate->addDays(3)->day <= $date->day ? 'table-danger' : ($tiket->datecreate->addDays(2)->day <= $date->day ? 'table-warning' : ($tiket->status === 'Completado' ? 'table-success' : '')); ?>">
                                     <td><?= $this->Number->format($tiket->id) ?></td>
                                     <td><?= $tiket->has('support') ? $tiket->support->name : '' ?></td>
-                                    <td><?= $tiket->machine_id === 0 ? 'No valido' : ($tiket->has('machine') ? $this->Html->link($tiket->machine->name, ['controller' => 'Machines', 'action' => 'view', $tiket->machine->id]) : '') ?></td>
+                                    <td><?= $tiket->machine_id === null ? 'No valido' : ($tiket->has('machine') ? $this->Html->link($tiket->machine->name, ['controller' => 'Machines', 'action' => 'view', $tiket->machine->id]) : '') ?></td>
                                     <td><?= h($tiket->name_client) ?></td>
                                     <td><?= h($tiket->email) ?></td>
                                     <td><?= h($tiket->phone) ?></td>
-                                    <td><?= h($tiket->datecreate) ?></td>
+                                    <td><?= h($tiket->datecreate->toFormattedDateString()) ?></td>
                                     <td><?= h($tiket->comments) ?></td>
                                     <td class="actions">
                                         <div class="d-grid gap-2 d-md-block">

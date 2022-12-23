@@ -51,14 +51,14 @@ $this->Breadcrumbs->add([
                                 <td><?= $machine->idint === null ? '' : $this->Number->format($machine->idint) ?></td>
                                 <td><?= $machine->serial != 0 ? $machine->serial : 'Serial No Asignado' ?></td>
                                 <td><?= h($machine->name) ?></td>
-                                <td><?= h($machine->yearmodel) ?></td>
-                                <td><?= h($machine->Model['name']) ?></td>
+                                <td><?= h($machine->yearModel) ?></td>
+                                <td><?= $machine->has('model') ? h($machine->model->name) : 'Maquina no Instalada' ?></td>
                                 <td><?= h($machine->warranty) ?></td>
-                                <td><?= $machine->dateInstalling != '' ? $machine->dateInstalling : 'Maquina no instalada' ?></td>
-                                <td><?= $machine->Casino['name']!= 0 ? $machine->Casino['name'] : 'Maquina no instalada'  ?></td>
-                                <td><?= $machine->Owner['name'] != 0 ? $machine->Owner['name'] : 'Maquina no instalada' ?></td>
-                                <td><?= $machine->Company['name'] != 0 ? $machine->Company['name'] : 'Maquina no instalada' ?></td>
-                                <td><?= $machine->Contract['name'] != 0 ? $machine->Contract['name'] : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->dateInstalling != NULL ? $machine->dateInstalling : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->has('casino') ? h($machine->casino->name) : 'Maquina no Instalada' ?></td>
+                                <td><?= $machine->has('owner') ? h($machine->owner->name) : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->has('company') ? h($machine->company->name) : 'Maquina no instalada' ?></td>
+                                <td><?= $machine->has('contract') ? h($machine->contract->name) : 'Maquina no instalada' ?></td>
                                 <td><?= $this->Html->image('Machines/' . $machine->image, ['class' => 'img-thumbnail']) ?></td>
                                 <td><?= $this->Number->currency($machine->value, 'USD') . __(' USD') ?></td>
                                 <td class="actions">

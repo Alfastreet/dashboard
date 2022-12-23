@@ -1,1 +1,218 @@
-const intId=document.querySelector("#intId"),serial=document.querySelector("#serial"),add=document.querySelector("#add"),contrato=document.querySelector("#contrato"),date=document.querySelector("#date"),casino=document.querySelector("#casino"),company=document.querySelector("#company"),owner=document.querySelector("#owner"),name=document.querySelector("#name"),year=document.querySelector("#year"),model=document.querySelector("#model"),maker=document.querySelector("#maker"),warranty=document.querySelector("#warranty"),image=document.querySelector("#image"),height=document.querySelector("#height"),width=document.querySelector("#width"),val=document.querySelector("#val"),_csrfToken=document.getElementsByName("_csrfToken");async function searchIdInt(e){try{const a=`${window.location.protocol}//${window.location.hostname}/machines/searchIdInt?idint=${e}`,n=await fetch(a);"error"===await n.json()&&(Swal.fire("Error","Este Numero interno ya se encuentra en uso!!","error",intId.focus()),add.disabled=!0)}catch(e){add.disabled=!1}}async function searchSerial(e){const a=`${window.location.protocol}//${window.location.hostname}/machines/searchSerial?serial=${e}`,n=await fetch(a);"error"===await n.json()?(Swal.fire("Error","La maquina ya fue registrada!!","error",intId.focus()),add.disabled=!0):add.disabled=!1}async function insertMachine(e,a,n,o,t){const d=new FormData;d.append("idint",intId.value),d.append("serial",t),d.append("name",name.value),d.append("yearModel",year.value),d.append("model_id",model.value),d.append("maker_id",maker.value),d.append("warranty",warranty.value),d.append("image",image.files[0]),d.append("height",height.value),d.append("width",width.value),d.append("dateInstalling",o),d.append("casino_id",e),d.append("owner_id",a),d.append("company_id",n),d.append("cheked",1),d.append("contract_id",contrato.value),d.append("value",val.value),Swal.fire({title:"Ingresando Maquina, por favor espere!",timerProgressBar:!0,allowOutsideClick:!1,allowEscapeKey:!1,didOpen:()=>{Swal.showLoading()},willClose:()=>{clearInterval(void 0)}}).then(e=>{e.dismiss===Swal.DismissReason.timer&&console.log("I was closed by the timer")});try{const e=`${window.location.protocol}//${window.location.hostname}/machines/add`,a=await fetch(e,{headers:{"X-CSRF-Token":_csrfToken[0].value},method:"POST",body:d});"ok"===await a.json()&&Swal.fire("Exito!!","Maquina Guardada con exito!!","success").then(e=>{e.isConfirmed&&window.location.replace(`${window.location.protocol}//${window.location.hostname}/machines/`)})}catch(e){console.log(e)}}intId.addEventListener("change",e=>{searchIdInt(e.target.value)}),serial.addEventListener("change",e=>{searchSerial(e.target.value)}),contrato.addEventListener("change",e=>{"3"===e.target.value?(casino.disabled=!0,owner.disabled=!0,company.disabled=!0,date.disabled=!0,serial.disabled=!0):(casino.disabled=!1,owner.disabled=!1,company.disabled=!1,date.disabled=!1,serial.disabled=!1)}),add.addEventListener("click",e=>{e.preventDefault();let a,n,o,t,d;"3"===contrato.value?(a=0,n=0,o=0,t="",d=0,insertMachine(a,n,o,t,d)):(a=casino.value,n=owner.value,o=company.value,t=date.value,d=serial.value,insertMachine(a,n,o,t,d))});
+"use strict";
+
+document.addEventListener('DOMContentLoaded', () => {
+    const formulario = document.querySelector('#formulario');
+    const format = document.querySelector('#format');
+    const tipoContrato = document.querySelector('[name="contract_id"]');
+    const idInterno = document.querySelector('#idint');
+    const serial = document.querySelector('#serial');
+    const add = document.querySelector('#add');
+    const _csrfToken = document.getElementsByName('_csrfToken');
+
+    // Funciones de verificacion
+    tipoContrato.addEventListener('change', (e) => {
+        const value = e.target.value;
+        const casino = document.querySelector('[name="casino_id"]');
+        const owner = document.querySelector('[name="owner_id"]');
+        const company = document.querySelector('[name="company_id"]');
+        const serial = document.querySelector('[name="serial"]');
+        const date = document.querySelector('[name="dateInstalling"]');
+
+        if (value == 3) {
+            casino.setAttribute('disabled', true);
+            casino.value = 0;
+            casino.style.visibility = 'hidden';
+            owner.setAttribute('disabled', true);
+            owner.value = 0;
+            owner.style.visibility = 'hidden';
+            company.setAttribute('disabled', true);
+            company.value = 0;
+            company.style.visibility = 'hidden';
+            serial.setAttribute('disabled', true);
+            serial.value = 0;
+            serial.style.visibility = 'hidden';
+            date.setAttribute('disabled', true);
+            date.value = '0000-00-00';
+            date.style.visibility = 'hidden';
+        } else {
+            casino.removeAttribute('disabled');
+            casino.value = '';
+            casino.style.visibility = 'visible';
+            owner.removeAttribute('disabled');
+            owner.value = '';
+            owner.style.visibility = 'visible';
+            company.removeAttribute('disabled');
+            company.value = '';
+            company.style.visibility = 'visible';
+            serial.removeAttribute('disabled');
+            serial.value = '';
+            serial.style.visibility = 'visible';
+            date.removeAttribute('disabled');
+            date.value = '';
+            date.style.visibility = 'visible';
+        }
+    });
+
+    idInterno.addEventListener('blur', validarId);
+    serial.addEventListener('blur', validarSerial);
+
+    // Evento para async
+    formulario.addEventListener('submit', verificarDatos);
+
+    function verificarDatos(e) {
+        e.preventDefault();
+
+        const data = new FormData(formulario);
+
+        for (let key of data.keys()) {
+            if (data.get(key) == '') {
+                mostrarAlerta(key);
+            }
+            // console.log(`Llave = ${key}, Valor =  ${data.get(key)}`);
+        };
+
+        sendData(data);
+    }
+
+    // Funciones validadoras
+    function validarId(e) {
+        const valor = e.target.value;
+
+        if (valor.trim() === '') {
+            limpiarAlertas();
+            const alerta = document.createElement('DIV');
+            alerta.classList.add('alert', 'alert-danger');
+            const mensaje = document.createElement('P');
+            mensaje.textContent = `El campo ID interno no puede estar vacio`;
+            add.setAttribute('disabled', true);
+
+            alerta.appendChild(mensaje);
+            format.appendChild(alerta);
+        } else {
+            add.removeAttribute('disabled');
+            validarExistencia(valor);
+        }
+    }
+
+    function validarSerial(e) {
+        const valor = e.target.value;
+
+        if (valor.trim() === '') {
+            limpiarAlertas();
+            const alerta = document.createElement('DIV');
+            alerta.classList.add('alert', 'alert-danger');
+            const mensaje = document.createElement('P');
+            mensaje.textContent = `El campo Serial no puede estar vacio`;
+            add.setAttribute('disabled', true);
+
+            alerta.appendChild(mensaje);
+            format.appendChild(alerta);
+        } else {
+            add.removeAttribute('disabled');
+            validarSerial(valor);
+        }
+    }
+
+    // Funciones Asyncronas
+
+    async function validarExistencia(data) {
+        const url = `${window.location.protocol}//${window.location.hostname}/machines/searchIdInt?idint=${data}`;
+        const request = await fetch(url);
+        const result = await request.json();
+
+        if (result === 'error') {
+            Swal.fire(
+                'Ups!!',
+                'Esta maquina ya se encuentra registrada',
+                'error'
+            )
+            add.setAttribute('disabled', true);
+        } else {
+            add.removeAttribute('disabled');
+        }
+    }
+
+    async function validarSerial(data) {
+        const url = `${window.location.protocol}//${window.location.hostname}/machines/searchSerial?serial=${data}`;
+        const request = await fetch(url);
+        const result = await request.json();
+
+        console.log(result);
+
+        // if (result === 'error') {
+        //     Swal.fire(
+        //         'Ups!!',
+        //         'Este serial ya se encuentra en uso!!',
+        //         'error'
+        //     )
+        //     add.setAttribute('disabled', true);
+        // } else {
+        //     add.removeAttribute('disabled');
+        // }
+    }
+
+    // Post HTTP
+    async function sendData(data) {
+        Swal.fire({
+            title: 'Ingresando Maquina, por favor espere!',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        });
+        try {
+            const url = `${window.location.protocol}//${window.location.hostname}/machines/add`;
+            const request = await fetch(url, {
+                headers: {
+                    'X-CSRF-Token': _csrfToken.value,
+                },
+                method: 'POST',
+                body: data,
+            });
+            const result = await request.json();
+            Swal.fire(
+                'Exito!!',
+                'Maquina agregada!!',
+                'success'
+            );
+            formulario.reset();
+        } catch (error) {
+            console.error(error);
+            swalWithBootstrapButtons.fire(
+                'Ups!!',
+                'Ha ocurrido un error. Intentalo mas tarde :(',
+                'error'
+            );
+        }
+
+    }
+
+    function mostrarAlerta(dato) {
+        limpiarAlertas();
+        const alerta = document.createElement('DIV');
+        alerta.classList.add('alert', 'alert-danger');
+        const mensaje = document.createElement('P');
+        mensaje.textContent = `El campo ${dato} es Requerido`;
+
+        alerta.appendChild(mensaje);
+        format.appendChild(alerta);
+    }
+
+    function limpiarAlertas() {
+        setTimeout(() => {
+            while (format.firstChild) {
+                format.removeChild(format.firstChild)
+            }
+        }, 2500);
+    }
+});

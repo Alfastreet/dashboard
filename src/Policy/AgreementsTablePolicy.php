@@ -14,7 +14,7 @@ class AgreementsTablePolicy
 {
     public function canIndex(IdentityInterface $user, Query $query )
     {
-        return $user->rol_id === 1 || $user->rol_id === 2;;
+        return $user->rol_id === 1 || $user->rol_id === 2;
     }
 
     public function scopeIndex(IdentityInterface $user, Query $query)

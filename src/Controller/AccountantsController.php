@@ -55,9 +55,8 @@ class AccountantsController extends AppController
 
     public function add($casinoid = null, $token = null)
     {
-        $this->Authorization->skipAuthorization();
         $accountant = $this->Accountants->newEmptyEntity();
-
+        $this->Authorization->authorize($accountant);
         $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2])->first()->value;
         $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3])->first()->value;
         $iva = $this->fetchTable('Dataiportants')->find()->where(['id' => 1])->first()->value;
@@ -114,7 +113,8 @@ class AccountantsController extends AppController
 
     public function general()
     {
-        $this->Authorization->skipAuthorization();
+        $query = $this->Accountants->find();
+        $this->Authorization->authorize($query);      
         $date = Chronos::parse('-1 Month');
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],

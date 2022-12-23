@@ -23,64 +23,10 @@ class MachinesController extends AppController
     public function index()
     {
         $this->Authorization->skipAuthorization();
-        $machines = $this->Machines->find()->select([
-            'id',
-            'idint',
-            'serial',
-            'name',
-            'yearmodel',
-            'warranty',
-            'image',
-            'height',
-            'width',
-            'display',
-            'dateInstalling',
-            'value'
-        ])->select([
-            'Casino.name'
-        ])->select([
-            'Model.name'
-        ])->select([
-            'Owner.name'
-        ])->select([
-            'Company.name'
-        ])->select([
-            'Contract.name'
-        ])->select([
-            'Maker.name'
-        ])->join([
-            'Casino' => [
-                'table' => 'casinos',
-                'type' => 'INNER',
-                'conditions' => 'Casino.id = Machines.casino_id'
-            ],
-            'Model' => [
-                'table' => 'model',
-                'type' => 'INNER',
-                'conditions' => 'Model.id = Machines.model_id'
-            ],
-            'Owner' => [
-                'table' => 'owner',
-                'type' => 'INNER',
-                'conditions' => 'Owner.id = Machines.owner_id'
-            ],
-            'Company' => [
-                'table' => 'company',
-                'type' => 'INNER',
-                'conditions' => 'Company.id = Machines.company_id'
-            ],
-            'Contract' => [
-                'table' => 'contract',
-                'type' => 'INNER',
-                'conditions' => 'Contract.id = Machines.contract_id'
-            ],
-            'Maker' => [
-                'table' => 'maker',
-                'type' => 'INNER',
-                'conditions' => 'Maker.id = Machines.maker_id'
-            ]
-        ])->all();
-
+        $this->paginate = [
+            'contain' => ['Casinos', 'Model', 'Owner', 'Maker', 'Company', 'Contract']
+        ];
+        $machines = $this->paginate($this->Machines);
 
         $this->set(compact('machines'));
     }
@@ -116,7 +62,6 @@ class MachinesController extends AppController
             $machine = $this->Machines->patchEntity($machine, $this->request->getData());
             // Add image
             $image = $this->request->getData('image');
-
 
             if ($image) {
                 $time =  FrozenTime::now()->toUnixString();
@@ -254,6 +199,9 @@ class MachinesController extends AppController
             echo json_encode('error');
             die;
         }
+
+        echo json_encode('vacio');
+        die;
     }
 
     public function searchSerial($serial = null)
@@ -268,6 +216,9 @@ class MachinesController extends AppController
             echo json_encode('error');
             die;
         }
+
+        echo json_encode('vacio');
+        die;
     }
 
     public function searchId($id = null)
@@ -284,10 +235,11 @@ class MachinesController extends AppController
         }
     }
 
-    public function participations($casinoid = null) {
+    public function participations($casinoid = null)
+    {
         $casinoid =  $this->request->getQuery('casinoid');
 
-        if($casinoid === '' || $casinoid === null || $casinoid === 0){
+        if ($casinoid === '' || $casinoid === null || $casinoid === 0) {
             echo json_encode('error');
             die;
         }

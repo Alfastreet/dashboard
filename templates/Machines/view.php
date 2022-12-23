@@ -32,11 +32,11 @@ $this->Breadcrumbs->add([
                 <div class="col">
                     <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Serial:') ?></label>
                     <div class="col-sm-4">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($machine->serial) ?>">
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $machine->serial !== null ? h($machine->serial) : 'Serial no Asignado' ?>">
                     </div>
                     <label for="staticEmail" class="col-md-6 col-form-label fw-bold"><?= __('Casino perteneciente:') ?></label>
                     <div class="col-sm-4">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($machine->has('casino') ? h($machine->casino->name) : '') ?>">
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= h($machine->has('casino') ? h($machine->casino->name) : 'Maquina No instalada') ?>">
                     </div>
                 </div>
                 <div class="col">
@@ -97,7 +97,7 @@ $this->Breadcrumbs->add([
                         </div>
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Fecha de Instalacion:') ?></label>
                         <div class="col-sm-4">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= __($machine->dateInstalling) ?>">
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= __($machine->dateInstalling !== null ? $machine->dateInstalling  : 'Maquina no instalada' ) ?>">
                         </div>
                     </div>
                     <div class="col">

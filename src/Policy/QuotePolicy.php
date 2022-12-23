@@ -21,10 +21,7 @@ class QuotePolicy
      */
     public function canAdd(IdentityInterface $user, Quote $quote)
     {
-        if ($user->rol_id === 1) {
-            return true;
-        }
-        if ($user->rol_id === 2) {
+        if ($user->rol_id === 1 || $user->rol_id === 2) {
             return true;
         }
 

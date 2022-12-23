@@ -16,9 +16,11 @@ $this->Breadcrumbs->add([
     <div class="mb-3">
         <aside class="column">
             <div class="d-flex justify-content-between">
-                <div class="d-none d-lg-block">
-                    <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
-                </div>
+                <?php if ($isAdmin || $isTecBoss) : ?>
+                    <div class="d-none d-lg-block">
+                        <?= $this->Html->link(__('Volver'), ['action' => 'index'], ['class' => 'btn btn-primary me-md-2']) ?>
+                    </div>
+                <?php endif ?>
                 <div class="d-block d-lg-none">
                     <a href="/quotes" class="btn btn-primary">
                         <svg class="icon">
@@ -29,7 +31,7 @@ $this->Breadcrumbs->add([
                 <div class="d-none d-lg-block">
                     <?php if ($isAdmin) : ?>
                         <?= $this->Html->link(__('Generar nueva Cotización'), ['action' => 'add'], ['class' => 'btn btn-primary me-md-2']); ?>
-                        <?php if ($quote->estatus_id === 1 ) : ?>
+                        <?php if ($quote->estatus_id === 1) : ?>
                             <?= $installments === NULL ? $this->Html->link('Generar Acta de Entrega', ['controller' => 'installments', 'action' => 'add', '?' => ['quoteid' => $quote->id]], ['class' => 'btn btn-info']) : ''; ?>
                         <?php endif; ?>
                     <?php endif ?>

@@ -231,7 +231,7 @@ class UsersController extends AppController
         $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
-            $redirect = $this->Authentication->getLoginRedirect() ?? '/home';
+            $redirect = $this->Authentication->getLoginRedirect() ?? '/';
             return $this->redirect($redirect);
         }
 

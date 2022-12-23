@@ -63,7 +63,7 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         $this->set('user_init', $this->request->getSession()->read('Auth'));
-        $this->set('isAdmin', $this->request->getSession()->read('Auth.rol_id') === 1 ? true :( $this->request->getSession()->read('Auth.rol_id') === 2 ? true : false));
+        $this->set('isAdmin', $this->request->getSession()->read('Auth.rol_id') === 1 ? true :false );
         $this->set('isTecBoss', $this->request->getSession()->read('Auth.rol_id') === 3 ? true : false );
         $this->set('isTec', $this->request->getSession()->read('Auth.rol_id') === 4 ? true : false );
     }

@@ -30,7 +30,8 @@ class QuotesController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
+        $query = $this->Quotes->find();
+        $this->Authorization->authorize($query);
         $this->paginate = [
             'contain' => ['Users', 'Business', 'Status'],
         ];
@@ -98,7 +99,8 @@ class QuotesController extends AppController
         $users = $this->Quotes->Users->find('list', ['limit' => 200])->all();
         $businesses = $this->Quotes->Business->find('list', ['limit' => 200])->order(['name' => 'ASC'])->all();
         $estatuses = $this->Quotes->Status->find('list', ['limit' => 200])->all();
-        $this->set(compact('quote', 'users', 'businesses', 'estatuses'));
+        $parts = $this->fetchTable('Parts')->find()->contain(['Typeproducts', 'Monies'])->all();
+        $this->set(compact('quote', 'users', 'businesses', 'estatuses', 'parts'));
     }
 
     /**

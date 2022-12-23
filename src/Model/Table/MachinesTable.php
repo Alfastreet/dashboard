@@ -54,6 +54,7 @@ class MachinesTable extends Table
         $this->belongsTo('Model', [
             'foreignKey' => 'model_id',
             'joinType' => 'INNER',
+            
         ]);
         $this->belongsTo('Maker', [
             'foreignKey' => 'maker_id',
@@ -61,26 +62,20 @@ class MachinesTable extends Table
         ]);
         $this->belongsTo('Casinos', [
             'foreignKey' => 'casino_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
+            
         ]);
         $this->belongsTo('Owner', [
             'foreignKey' => 'owner_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
         $this->belongsTo('Company', [
             'foreignKey' => 'company_id',
-            'joinType' => 'INNER',
+            'joinType' => 'LEFT',
         ]);
         $this->belongsTo('Contract', [
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Accountants', [
-            'foreignKey' => 'accountants_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->hasMany('Machinepart', [
-            'foreignKey' => 'machine_id',
         ]);
     }
 
@@ -195,8 +190,6 @@ class MachinesTable extends Table
         $rules->add($rules->existsIn('owner_id', 'Owner'), ['errorField' => 'owner_id']);
         $rules->add($rules->existsIn('company_id', 'Company'), ['errorField' => 'company_id']);
         $rules->add($rules->existsIn('contract_id', 'Contract'), ['errorField' => 'contract_id']);
-        $rules->add($rules->existsIn('accountants_id', 'Accountants'), ['errorField' => 'accountants_id']);
-
         return $rules;
     }
 }

@@ -279,6 +279,7 @@ $this->Breadcrumbs->add(
 
 <?php endif ?>
 
+<?php if($isAdmin): ?>
 <div class="col-12">
     <div class="card mb-4">
         <div class="card-body">
@@ -348,6 +349,7 @@ $this->Breadcrumbs->add(
         </div>
     </div>
 </div>
+<?php endif ?>
 
 <script>
     var ctx = document.getElementById('participations').getContext('2d');

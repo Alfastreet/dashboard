@@ -22,6 +22,9 @@ $this->Breadcrumbs->add([
                 </div>
                 <div class="btn-toolbar d-none d-sm-block" role="toolbar" aria-label="Toolbar with buttons">
                     <?= $this->Html->link(__('Ver todas las Cotizaciones'), ['action' => 'index'], ['class' => 'btn btn-primary']) ?>
+
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><?= __('Lista de Precios') ?></button>
+                    
                 </div>
                 <div class="d-block d-sm-none">
                     <a href="/quotes" class="btn btn-primary">
@@ -59,16 +62,6 @@ $this->Breadcrumbs->add([
                                 <div class="col">
                                     <label for="casino" class="form-label">Casino</label>
                                     <select name="casino" id="casino" class="form-control">
-                                        <!--Contenido mediante AJAX-->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="machine" class="form-label">Maquina (Opcional)</label>
-                                    <select name="machine" id="machine" class="form-control">
                                         <!--Contenido mediante AJAX-->
                                     </select>
                                 </div>
@@ -119,6 +112,7 @@ $this->Breadcrumbs->add([
     </div>
 </div>
 
+
 <!--Table tmp details quote-->
 
 <div class="col-12">
@@ -160,4 +154,42 @@ $this->Breadcrumbs->add([
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Off canvas con el inventario -->
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel"><?= __('Lista de precios Oficial Alfastreet') ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="table-responsive">
+            <table class="display table table-striped table-hover table-sm table-bordered text-center" id="myTable">
+                <thead>
+                    <tr>
+                        <th><?= __('Serial') ?></th>
+                        <th><?= __('Nombre') ?></th>
+                        <th><?= __('Moneda') ?></th>
+                        <th><?= __('Precio') ?></th>
+                        <th><?= __('Tipo de Producto') ?></th>
+                        <th><?= __('Cantidad Disponible') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($parts as $part) : ?>
+                        <tr>
+                            <td><?= h($part->serial) ?></td>
+                            <td><?= h($part->name) ?></td>
+                            <td><?= $part->has('money') ? h($part->money->name) : '' ?></td>
+                            <td><?= $this->Number->currency($part->value, $part->has('money') ? h($part->money->shortcode) : '') ?></td>
+                            <td><?= $part->has('typeproduct') ? h($part->typeproduct->type) : '' ?></td>
+                            <td><?= $this->Number->format($part->amount) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <?= $this->Html->script('quotes') ?>

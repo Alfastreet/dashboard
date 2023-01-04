@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Chronos\Chronos;
+use Exception;
 use Cake\ORM\Query;
-use Cake\Event\EventInterface;
-use Cake\Database\Expression\QueryExpression;
+use GuzzleHttp\Client;
 use Cake\Mailer\Mailer;
+use Cake\Chronos\Chronos;
+use Cake\Event\EventInterface;
+use SendinBlue\Client\Configuration;
+use SendinBlue\Client\Model\SendSmtpEmail;
+use Cake\Database\Expression\QueryExpression;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
 
 /**
  * Tikets Controller
@@ -76,6 +81,15 @@ class TiketsController extends AppController
         $this->Authorization->skipAuthorization();
         $tiket = $this->Tikets->newEmptyEntity();
         $date = Chronos::now('America/Bogota');
+
+        // Configuracion SendinBlue para templates de correo electronico
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+
+        $instance = new TransactionalEmailsApi(
+            new Client(),
+            $config
+        );
+
         if ($this->request->is('post')) {
             $tiket = $this->Tikets->patchEntity($tiket, $this->request->getData());
             $tiket->datecreate = $date;
@@ -107,20 +121,35 @@ class TiketsController extends AppController
                     break;
             }
 
-            $email = new Mailer('default');
-            $from = $tiket->email;
-            $nameFrom = $tiket->name_client;
-            $message = 'Buen dia '. $tiket->name_client . '\n El ticket fue enviado satisfactoriamente, en las proximas horas nuestro equipo se comunicara contigo para resolver tu inquietud \n El resumen del tiquet es el siguiente: \n'. $tiket->comments;
-
             if ($this->Tikets->save($tiket)) {
-                $email->setFrom([$from => $nameFrom])
-                    ->setTo($to, $nameTo)
-                    ->addTo($addTo, $nameaddTo)
-                    ->addCc('gerentedeproducto@alfastreet.co', 'Gerente de Producto Andres Lozano')
-                    ->setSubject('Ticket de Servico Alfastreet')
-                    ->deliver($message);
-                echo json_encode('ok');
-                die;
+
+                $sendSmtpEmail = new SendSmtpEmail([
+                    'subject' => 'Tickets servicio Alfastreet',
+                    'sender' => ['name' => 'Info Alfastreet Colombia S.A.S', 'email' => 'info@alfastreet.co'],
+                    'to' => [['name' => $tiket->name_client, 'email' => $tiket->email]],
+                    // 'cc' => [
+                    //     ['name' => $nameTo, 'email' => $to ],
+                    //     ['name' => $nameaddTo, 'email' => $addTo],
+                    //     ['name' => 'Andres Lozano', 'email' => 'gerentedeproducto@alfastreet.co'],
+                    // ],
+                    'templateId' => 2,
+                    'params' => [
+                        'date' => $date->toFormattedDateString(),
+                        'name' => $tiket->name_client,
+                        'description' => $tiket->comments,
+                        'phone' => $tiket->phone 
+                    ]
+                ]);
+
+                try {
+                    $result = $instance->sendTransacEmail($sendSmtpEmail);
+                    echo json_encode('ok');
+                    die;
+                } catch (Exception $e) {
+                    echo $e->getMessage(),PHP_EOL;
+                    echo json_encode('error');
+                    die;
+                }
             }
             echo json_encode('error');
             die;
@@ -164,14 +193,3 @@ class TiketsController extends AppController
         ]);
     }
 }
-
-
-
-                // $emailTo = $this->request->getData('email');
-
-                // $email = new Mailer('default');
-                // $email->setEmailFormat('both');
-                // $email->setFrom('servicioalcliente@alfastreet.co', 'Servicio al Cliente y Mesa de ayuda Alfastreet Colombia');
-                // $email->setSubject('Creacion de Ticket');
-                // $email->setTo($emailTo);
-                // $email->deliver('Se ha generado el Ticket de Servicio #'.$tiket->id.' En maximo 24 Horas su solicitud sera atendida');

@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\MachinesTable&\Cake\ORM\Association\BelongsTo $Machines
  * @property \App\Model\Table\CasinosTable&\Cake\ORM\Association\BelongsTo $Casinos
+ * @property \App\Model\Table\MonthsTable&\Cake\ORM\Association\BelongsTo $Months
  *
  * @method \App\Model\Entity\Accountant newEmptyEntity()
  * @method \App\Model\Entity\Accountant newEntity(array $data, array $options = [])
@@ -68,29 +69,24 @@ class AccountantsTable extends Table
     {
         $validator
             ->integer('machine_id')
-            ->requirePresence('machine_id', 'create')
             ->notEmptyString('machine_id');
 
         $validator
             ->integer('casino_id')
-            ->requirePresence('casino_id', 'create')
             ->notEmptyString('casino_id');
 
         $validator
-            ->scalar('day_init')
-            ->maxLength('day_init', 255)
+            ->date('day_init')
             ->requirePresence('day_init', 'create')
-            ->notEmptyString('day_init');
+            ->notEmptyDate('day_init');
 
         $validator
-            ->scalar('day_end')
-            ->maxLength('day_end', 255)
+            ->date('day_end')
             ->requirePresence('day_end', 'create')
-            ->notEmptyString('day_end');
+            ->notEmptyDate('day_end');
 
         $validator
             ->integer('month_id')
-            ->requirePresence('month_id', 'create')
             ->notEmptyString('month_id');
 
         $validator
@@ -171,6 +167,12 @@ class AccountantsTable extends Table
             ->requirePresence('image', 'create')
             ->notEmptyFile('image');
 
+        $validator
+            ->scalar('totaldays')
+            ->maxLength('totaldays', 255)
+            ->requirePresence('totaldays', 'create')
+            ->notEmptyString('totaldays');
+
         return $validator;
     }
 
@@ -185,7 +187,7 @@ class AccountantsTable extends Table
     {
         $rules->add($rules->existsIn('machine_id', 'Machines'), ['errorField' => 'machine_id']);
         $rules->add($rules->existsIn('casino_id', 'Casinos'), ['errorField' => 'casino_id']);
-        // $rules->add($rules->existsIn('month_id', 'Months'), ['errorField' => 'month_id']);
+        $rules->add($rules->existsIn('month_id', 'Months'), ['errorField' => 'month_id']);
 
         return $rules;
     }

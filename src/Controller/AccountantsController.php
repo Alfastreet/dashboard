@@ -56,6 +56,7 @@ class AccountantsController extends AppController
     public function add($casinoid = null, $token = null)
     {
         $accountant = $this->Accountants->newEmptyEntity();
+        $date = Chronos::parse('-1 Month');
         $this->Authorization->authorize($accountant);
         $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2])->first()->value;
         $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3])->first()->value;
@@ -79,14 +80,20 @@ class AccountantsController extends AppController
 
         if ($this->request->is('post')) {
             $accountant = $this->Accountants->patchEntity($accountant, $this->request->getData());
+            $dayInit = new Chronos($accountant->day_init);
+            $dayEnd =  new Chronos($accountant->day_end);
+            $diffDays = $dayInit->diffInDays($dayEnd);
             $percent = floatval($this->request->getData('percent'));
+            $accountant->day_init = $dayInit;
+            $accountant->day_end = $dayEnd;
+            $accountant->totaldays = $diffDays;
             $accountant->profit = $accountant->cashin - $accountant->cashout;
             $accountant->coljuegos = $accountant->profit * $coljuegosValue;
             $accountant->admin = $accountant->coljuegos * $adminValue;
             $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - $iva;
             $accountant->alfastreet = $accountant->total * $percent;
-            $accountant->month_id = date('m', strtotime(date('d-m-Y') . "- 1 month"));
-            $accountant->year = date('Y');
+            $accountant->month_id = $date->month;
+            $accountant->year = $date->year;
             $image = $_FILES['image'];
 
             if ($image) {
@@ -163,7 +170,7 @@ class AccountantsController extends AppController
             die;
         };
 
-        $contadores = $this->Accountants->find()->select(['id',  'day_init', 'day_end', 'cashin', 'cashout', 'bet', 'win', 'profit', 'jackpot', 'gamesplayed', 'coljuegos', 'admin', 'total', 'alfastreet'])->select(['Machines.serial'])->join([
+        $contadores = $this->Accountants->find()->select(['id',  'day_init', 'day_end', 'cashin', 'cashout', 'bet', 'win', 'profit', 'jackpot', 'gamesplayed', 'coljuegos', 'admin', 'total', 'alfastreet', 'totaldays'])->select(['Machines.serial'])->join([
             'Machines' => [
                 'table' => 'machines',
                 'type' => 'INNER',

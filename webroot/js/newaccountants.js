@@ -186,10 +186,15 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>
         `;
 
+        const titulo = document.createElement('H5');
+        titulo.classList.add('text-center');
+        titulo.textContent = 'Contadores mes anterior';
+
         tabla.appendChild(thead);
         thead.appendChild(headertable);
         tabla.appendChild(tbody);
 
+        lastAccountant.appendChild(titulo);
         lastAccountant.appendChild(tabla);
 
     }
@@ -207,10 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <input type="hidden" name="casino_id" value="${casino_id}">
             <div class="row mb-4">
                 <div class="col-6">
-                    <input type="number" name="day_init" class="form-control" required placeholder="Dia de inicio del contador" aria-required="true" >
+                    <label class="form-label fw-bolder">Fecha de inicio del contador</label>
+                    <input type="date" name="day_init" class="form-control" required aria-required="true" >
                 </div>
                 <div class="col-6">
-                    <input type="number" name="day_end" class="form-control" required placeholder="Dia de Finalizacion del contador" aria-required="true" >
+                    <label class="form-label fw-bolder">Fecha de Finalizacion del contador</label>
+                    <input type="date" name="day_end" class="form-control" required aria-required="true" >
                 </div>
             </div>
             <div class="row mb-4">
@@ -370,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <th>Maquina</th>
                 <th>Dia Inicio</th>
                 <th>Dia Fin</th>
+                <th>Dias de Liquidación</th>
                 <th>Cashin</th>
                 <th>Cashout</th>
                 <th>Bet</th>
@@ -386,13 +394,14 @@ document.addEventListener('DOMContentLoaded', () => {
         tabla.appendChild(thead);
 
         for (const contador of contadores) {
-            const { admin, alfastreet, bet, cashin, cashout, coljuegos, day_init, day_end, gamesplayed, profit, total, win, jackpot, Machines: { serial } } = contador;
+            const { admin, alfastreet, bet, cashin, cashout, coljuegos, day_init, day_end, gamesplayed, profit, total, win, jackpot, totaldays ,Machines: { serial } } = contador;
             const tbody = document.createElement('TBODY');
             tbody.innerHTML = `
                 <tr>
                     <td>${serial}</td>
                     <td>${day_init}</td>
                     <td>${day_end}</td>
+                    <td>${totaldays} Dias</td>
                     <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashin))}</td>
                     <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(cashout))}</td>
                     <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(parseFloat(bet))}</td>

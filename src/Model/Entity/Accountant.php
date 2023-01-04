@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $machine_id
  * @property int $casino_id
- * @property string $day_init
- * @property string $day_end
+ * @property \Cake\I18n\FrozenDate $day_init
+ * @property \Cake\I18n\FrozenDate $day_end
  * @property int $month_id
  * @property string $year
  * @property string $cashin
@@ -27,6 +27,7 @@ use Cake\ORM\Entity;
  * @property string $total
  * @property string $alfastreet
  * @property string $image
+ * @property string $totaldays
  *
  * @property \App\Model\Entity\Machine $machine
  * @property \App\Model\Entity\Casino $casino
@@ -62,6 +63,7 @@ class Accountant extends Entity
         'total' => true,
         'alfastreet' => true,
         'image' => true,
+        'totaldays' => true,
         'machine' => true,
         'casino' => true,
         'month' => true,

@@ -27,7 +27,7 @@ class AccountantsTableTest extends TestCase
         'app.Accountants',
         'app.Machines',
         'app.Casinos',
-        'app.Month',
+        'app.Months',
     ];
 
     /**

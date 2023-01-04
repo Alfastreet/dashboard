@@ -22,8 +22,8 @@ class AccountantsFixture extends TestFixture
                 'id' => 1,
                 'machine_id' => 1,
                 'casino_id' => 1,
-                'day_init' => 'Lorem ipsum dolor sit amet',
-                'day_end' => 'Lorem ipsum dolor sit amet',
+                'day_init' => '2023-01-04',
+                'day_end' => '2023-01-04',
                 'month_id' => 1,
                 'year' => 'Lorem ipsum dolor sit amet',
                 'cashin' => 'Lorem ipsum dolor sit amet',
@@ -38,6 +38,7 @@ class AccountantsFixture extends TestFixture
                 'total' => 'Lorem ipsum dolor sit amet',
                 'alfastreet' => 'Lorem ipsum dolor sit amet',
                 'image' => 'Lorem ipsum dolor sit amet',
+                'totaldays' => 'Lorem ipsum dolor sit amet',
             ],
         ];
         parent::init();

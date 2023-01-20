@@ -91,7 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result === 'vacio') {
                 nodata();
                 addAcountant(id, casinoId);
-                contadorDosMeses = 0;
+                contadorDosMeses = {
+                    cashin: 0,
+                    cashout: 0,
+                    bet: 0,
+                    win: 0,
+                    jackpot: 0,
+                    profit: 0,
+                };
             } else {
                 contadorDosMeses = result[0];
                 htmlContadotes(result);
@@ -394,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tabla.appendChild(thead);
 
         for (const contador of contadores) {
-            const { admin, alfastreet, bet, cashin, cashout, coljuegos, day_init, day_end, gamesplayed, profit, total, win, jackpot, totaldays ,Machines: { serial } } = contador;
+            const { admin, alfastreet, bet, cashin, cashout, coljuegos, day_init, day_end, gamesplayed, profit, total, win, jackpot, totaldays, Machines: { serial } } = contador;
             const tbody = document.createElement('TBODY');
             tbody.innerHTML = `
                 <tr>

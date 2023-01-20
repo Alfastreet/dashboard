@@ -137,18 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const request = await fetch(url);
         const result = await request.json();
 
-        console.log(result);
-
-        // if (result === 'error') {
-        //     Swal.fire(
-        //         'Ups!!',
-        //         'Este serial ya se encuentra en uso!!',
-        //         'error'
-        //     )
-        //     add.setAttribute('disabled', true);
-        // } else {
-        //     add.removeAttribute('disabled');
-        // }
+        if (result === 'error') {
+            Swal.fire(
+                'Ups!!',
+                'Este serial ya se encuentra en uso!!',
+                'error'
+            )
+            add.setAttribute('disabled', true);
+        } else {
+            add.removeAttribute('disabled');
+        }
     }
 
     // Post HTTP

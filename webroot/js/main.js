@@ -330,14 +330,13 @@ cargarReloj();
 //TRM Dolar
 
 (async () => {
-  const url = `https://www.datos.gov.co/resource/5bav-b4z5.json`;
+  const url = `https://www.datos.gov.co/resource/x76j-2zn8.json`;
   const request = await fetch(url);
   const result = await request.json();
 
   const trm = document.querySelector('#trm');
 
   result.forEach(data => {
-
     // Formatear fechas
     const dateString = data.vigenciahasta;
     const date = new Date(dateString);

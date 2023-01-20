@@ -1,12 +1,21 @@
+# Instrucciones de uso
 
+Gracias por la colaboración en creacion y mejoras de nuevos modulos de este sistema. Este sistema se encuentra en produccion en un servidor donde no es posible actualizar los cambios mediante Git, se recomienda la instalacion de un servidor FTP como WinSCP (https://winscp.net/eng/downloads.php).
 
+Esta aplicacion esta construida con el Framework PHP CakePHP en su version 4.X, gracias a las mejoras que cada dia salen en el framework, es mas facil su mantenimiento y actualizacion, se recomienda mucho leer la documentacion y apoyarse en la gran comunidad de este framework, en su mayoria, alojada en Stack Overflow, ademas de ello, esta aplicion tambien utiliza las ultimas tecnologias de Javascript, como los son las promesas, Programacion Async/Await, herramientas de optimización como GULP.js, node.js, Fetch API, JSON Structures, JWT y canvas. Cualquier otra tecnologia en pro de mejoras en este sistema siempre sera bienvenida
 
+Este pequeño proyecto utiliza tambien tecnologias API REST externas como:
+1. SendinBlue para el envio masivo de correos electronicos utilizado mediante Arreglos asociativos (Objetos en PHP), data dinamica traida con MySql y JWT para la autenticación dela API REST.
 
+2. PdfMonkey para la generacion de Pdf dimaicos gracias a plantillas ya construidas.
 
+Nota: Cualquier otra API REST dirigida a las mejoras en el sistema es bienvenida.
 
+Este proyecto puede utilizar tambien el servidor Apache integrado en CakePHP Pero se recomienda trabajar en XAMPP para evitar conflictos con los plugins instalados
 
-
-
+Plugins Instalados: 
+1. Authentication Service CakePHP 
+2. Authorization Services (Uso tanto para la tabla como para la entidad en cuestion de permisos)
 
 
 

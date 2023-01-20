@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Date;
 use Cake\I18n\FrozenTime;
 use Cake\Event\EventInterface;
+use Exception;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
+use UnexpectedValueException;
 
 /**
  * Machines Controller
@@ -248,6 +252,28 @@ class MachinesController extends AppController
 
         echo json_encode($machines);
         die;
+    }
+
+    public function updateinstalation($machine = null)
+    {
+        $this->Authorization->skipAuthorization();
+
+        $machine = intval($this->request->getQuery('machineid'));
+        $date = new Date('now');
+
+        if ($machine == null || $machine == '') {
+            throw new UnexpectedValueException('Maquina no especificada');
+        };
+
+        $query = $this->Machines->query()->update()->set(['dateInstalling' => $date])->where(['id' => $machine])->execute();
+
+        if ($query) {
+            echo json_encode('ok');
+            die;
+        } else {
+            echo json_encode('error');
+            die;
+        }
     }
 
     public function beforeFilter(EventInterface $event)

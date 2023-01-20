@@ -4,9 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\FrozenTime;
+use Cake\Chronos\Date;
 use Cake\Chronos\Chronos;
+use Cake\I18n\FrozenTime;
+use Cake\Http\CallbackStream;
 use Cake\Datasource\ConnectionManager;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Conditional;
 
 /**
  * Accountants Controller
@@ -56,7 +65,7 @@ class AccountantsController extends AppController
     public function add($casinoid = null, $token = null)
     {
         $accountant = $this->Accountants->newEmptyEntity();
-        $date = Chronos::parse('-1 Month');
+
         $this->Authorization->authorize($accountant);
         $coljuegosValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 2])->first()->value;
         $adminValue =  $this->fetchTable('Dataiportants')->find()->where(['id' => 3])->first()->value;
@@ -87,13 +96,13 @@ class AccountantsController extends AppController
             $accountant->day_init = $dayInit;
             $accountant->day_end = $dayEnd;
             $accountant->totaldays = $diffDays;
-            $accountant->profit = $accountant->cashin - $accountant->cashout;
+            $accountant->profit = $accountant->cashin - $accountant->cashout - $accountant->profit;
             $accountant->coljuegos = $accountant->profit * $coljuegosValue;
             $accountant->admin = $accountant->coljuegos * $adminValue;
             $accountant->total = $accountant->profit - $accountant->coljuegos - $accountant->admin - $iva;
             $accountant->alfastreet = $accountant->total * $percent;
-            $accountant->month_id = $date->month;
-            $accountant->year = $date->year;
+            $accountant->month_id = $dayEnd->modify('-1 Month')->month;
+            $accountant->year = $dayEnd->modify('-1 Month')->year;
             $image = $_FILES['image'];
 
             if ($image) {
@@ -121,7 +130,7 @@ class AccountantsController extends AppController
     public function general()
     {
         $query = $this->Accountants->find();
-        $this->Authorization->authorize($query);      
+        $this->Authorization->authorize($query);
         $date = Chronos::parse('-1 Month');
         $this->paginate = [
             'contain' => ['Machines', 'Casinos'],
@@ -132,7 +141,8 @@ class AccountantsController extends AppController
         ]);
 
         $liquidations = $this->fetchTable('Totalaccountants')->find()->contain(['Casinos', 'Months'])->all();
-        $totalMes = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => $date->month
+        $totalMes = $this->fetchTable('Totalaccountants')->find()->where([
+            'month_id' => $date->month
         ])->all();
         $recaudado = $this->fetchTable('Totalaccountants')->find()->where(['month_id' => $date->month, 'estatus' => 'Liquidado'])->all();
 
@@ -161,11 +171,12 @@ class AccountantsController extends AppController
         }
     }
 
-    public function liquidations($casinoid = null) {
+    public function liquidations($casinoid = null)
+    {
         $casinoid = intval($this->request->getQuery('casinoid'));
         $date = Chronos::parse('-1 Month');
 
-        if($casinoid === null || $casinoid === ''){
+        if ($casinoid === null || $casinoid === '') {
             echo json_encode('vacio');
             die;
         };
@@ -175,7 +186,7 @@ class AccountantsController extends AppController
                 'table' => 'machines',
                 'type' => 'INNER',
                 'conditions' => 'Machines.id = Accountants.machine_id'
-            ], 
+            ],
             'Casinos' => [
                 'table' => 'casinos',
                 'type' => 'INNER',
@@ -186,7 +197,7 @@ class AccountantsController extends AppController
             ],
         ])->where(['month_id' => $date->month, 'year' => $date->year, 'Casinos.id' => $casinoid])->all();
 
-        if(sizeof($contadores) > 0){
+        if (sizeof($contadores) > 0) {
             echo json_encode($contadores);
             die;
         } else {
@@ -195,18 +206,19 @@ class AccountantsController extends AppController
         }
     }
 
-    public function accountMachine($machineid = null){
+    public function accountMachine($machineid = null)
+    {
         $machineid = $this->request->getQuery('machineid');
         $date = Chronos::parse('-1 Month');
 
-        if($machineid === '' || $machineid === null){
+        if ($machineid === '' || $machineid === null) {
             echo json_encode('error');
-            die; 
+            die;
         }
 
         $query = $this->Accountants->find()->where(['machine_id' => $machineid, 'month_id' => $date->month])->first();
 
-        echo(json_encode($query));
+        echo (json_encode($query));
         die;
     }
 
@@ -226,16 +238,17 @@ class AccountantsController extends AppController
 
         $this->viewBuilder()->setClassName('CakePdf.Pdf');
         $this->viewBuilder()->setOption(
-            'pdfConfig', [
+            'pdfConfig',
+            [
                 'orientation' => 'portrait',
                 'pageSize' => 'A3',
-                'filename' => 'Liquidación-'.$date->month.'-casino-'.$nameCasino->name.'.pdf',
+                'filename' => 'Liquidación-' . $date->month . '-casino-' . $nameCasino->name . '.pdf',
                 'isHtml5ParserEnabled' => true,
             ],
         );
 
         $this->set(compact('maquinas', 'totalLiquidacion', 'casino', 'nameCasino'));
-    }    
+    }
 
     public function csv()
     {
@@ -246,5 +259,100 @@ class AccountantsController extends AppController
         $this->viewBuilder()
             ->setClassName('CsvView.Csv')
             ->setOption('serialize', 'data');
+    }
+
+    public function excel($month = null, $year = null)
+    {
+        $this->Authorization->skipAuthorization();
+        $month = $this->request->getQuery('month');
+        $year = $this->request->getQuery('year');
+
+        // Cargar el template
+        // Cargar de un .xlsx template
+        $reader = IOFactory::createReader('Xlsx');
+        $templateFile = WWW_ROOT . 'template.xlsx';
+        $spreadSheet = $reader->load($templateFile);
+        // Add Content
+
+        $data = $this->fetchTable('Liquidations')->find('all', ['contain' => ['Casinos' => ['Business'], 'Machines' => ['Model'], 'Months']])->where(['month_id' => $month, 'year' => $year])->toList();
+
+        $contentStartRow = 3;
+        $currentContentRow = 4;
+        $totalLiquidation = 0;
+
+        foreach ($data as $v) {
+            $totalLiquidation += $v->alfastreet;
+        }
+
+
+
+        // Colocar la data en el Sheet
+        for ($i = 0; $i < count($data); $i++) {
+            $spreadSheet->getActiveSheet()->insertNewRowBefore($currentContentRow + 1, 1);
+
+            // // Data
+            $spreadSheet->getActiveSheet()
+                ->setCellValue('A' . $currentContentRow, $data[$i]->casino->busines->name)
+                ->setCellValue('B' . $currentContentRow, $data[$i]->casino->name)
+                ->setCellValue('C' . $currentContentRow, $data[$i]->month->month)
+                ->setCellValue('D' . $currentContentRow, $data[$i]->machine->serial)
+                ->setCellValue('E' . $currentContentRow, $data[$i]->machine->model->name)
+                ->setCellValue('F' . $currentContentRow, $data[$i]->cashin)
+                ->setCellValue('G' . $currentContentRow, $data[$i]->cashout)
+                ->setCellValue('H' . $currentContentRow, $data[$i]->jackpot)
+                ->setCellValue('I' . $currentContentRow, $data[$i]->bet)
+                ->setCellValue('J' . $currentContentRow, $data[$i]->profit)
+                ->setCellValue('K' . $currentContentRow, $data[$i]->win)
+                ->setCellValue('L' . $currentContentRow, $data[$i]->games)
+                ->setCellValue('M' . $currentContentRow, $data[$i]->coljuegos)
+                ->setCellValue('N' . $currentContentRow, $data[$i]->admin)
+                ->setCellValue('O' . $currentContentRow, 144415)
+                ->setCellValue('P' . $currentContentRow, $data[$i]->total)
+                ->setCellValue('Q' . $currentContentRow, $data[$i]->alfastreet);
+
+            $currentContentRow++;
+        }
+        $spreadSheet->getActiveSheet()->setCellValue('Q' . ($currentContentRow + 2), $totalLiquidation);
+
+        // Eliminar las columnas sobrantes
+        $spreadSheet->getActiveSheet()->removeRow($currentContentRow, 2);
+
+        // Condiciones
+        $condition = new Conditional();
+
+        // Si el profit es Negativo
+        $condition->setConditionType(Conditional::CONDITION_CELLIS)
+            ->setOperatorType(Conditional::OPERATOR_LESSTHAN)
+            ->addCondition(0);
+
+        // Estilo de la condicion
+        $condition->getStyle()->getFill()->setFillType(Fill::FILL_SOLID)
+            ->getEndColor(Color::COLOR_RED);
+
+        $condition->getStyle()->getFont()->getColor()->setARGB(Color::COLOR_YELLOW);
+
+        // Aplicar la condicion
+        $contentEndRow = $currentContentRow - 1;
+        $conditionalStyles = $spreadSheet->getActiveSheet()
+            ->getStyle('G' . $contentStartRow . ':G' . $contentEndRow)
+            ->getConditionalStyles();
+
+        array_push($conditionalStyles, $condition);
+        $spreadSheet->getActiveSheet()->getStyle('G' . $contentStartRow . ':G' . $contentEndRow)
+            ->setConditionalStyles($conditionalStyles);
+
+
+        $writer = new Xlsx($spreadSheet);
+
+        $stream = new CallbackStream(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $filename = 'Participaciones Generales Alfastreet '. $month . ' - '. $year;
+        $response = $this->response;
+
+        return $response->withType('xlsx')
+            ->withHeader('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"")
+            ->withBody($stream);
     }
 }

@@ -76,7 +76,11 @@ class PaymentsController extends AppController
         }
 
         $destinies = $this->Payments->Destinies->find('list', ['limit' => 200])->all();
-        $banks = $this->Payments->Banks->find('list', ['limit' => 200])->all();
+        $banks = $this->Payments->Banks->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'razonsocial',
+            'limit' => 200]
+            )->all();
         $this->set(compact('payment', 'agreements', 'destinies', 'wallet', 'banks', 'seguimientoPagos'));
     }
 

@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use GuzzleHttp\Client;
+use App\Controller\AppController;
+use PDFGeneratorAPI\Configuration;
+use PDFGeneratorAPI\Api\DocumentsApi;
 use Cake\Datasource\ConnectionManager;
+use Exception;
 
 /**
  * Quotes Controller

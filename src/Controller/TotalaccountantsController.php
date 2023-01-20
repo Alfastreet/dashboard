@@ -4,8 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Chronos\Date;
 use Cake\Chronos\Chronos;
+use Cake\Http\CallbackStream;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Cake\Controller\Exception\MissingActionException;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Conditional;
 
 /**
  * Totalaccountants Controller
@@ -24,7 +33,7 @@ class TotalaccountantsController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->paginate = [
-            'contain' => ['Casinos', 'Month'],
+            'contain' => ['Casinos', 'Months'],
         ];
         $totalaccountants = $this->paginate($this->Totalaccountants);
 
@@ -68,7 +77,7 @@ class TotalaccountantsController extends AppController
             if ($totalaccountant->totalLiquidation < 0) {
                 $totalaccountant->estatus = 'Negativo';
             }
-            
+
             if ($this->Totalaccountants->save($totalaccountant)) {
                 echo json_encode('ok');
                 die;
@@ -122,24 +131,25 @@ class TotalaccountantsController extends AppController
         $id = $this->request->getQuery('id');
         $nfactura = $this->request->getQuery('nfactura');
 
-        if($id === null || $id === ''){
+        if ($id === null || $id === '') {
             echo json_encode('error');
             die;
         }
-        if($nfactura === null || $nfactura === ''){
+        if ($nfactura === null || $nfactura === '') {
             echo json_encode('error');
             die;
         }
 
         $query = $this->Totalaccountants->query()->update()->set(['nfactura' => $nfactura, 'estatus' => 'Liquidado'])->where(['id' => $id])->execute();
 
-        if($query){
+        if ($query) {
             echo json_encode('ok');
             die;
         } else {
             echo json_encode('error');
             die;
         }
-
     }
+
+    
 }

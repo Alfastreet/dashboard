@@ -83,7 +83,7 @@ class TiketsController extends AppController
         $date = Chronos::now('America/Bogota');
 
         // Configuracion SendinBlue para templates de correo electronico
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
 
         $instance = new TransactionalEmailsApi(
             new Client(),
@@ -123,21 +123,26 @@ class TiketsController extends AppController
 
             if ($this->Tikets->save($tiket)) {
 
+                $idTicket = $this->Tikets->find()->contain(['Supports'])->order(['Tikets.id' => 'DESC'])->first();
+
                 $sendSmtpEmail = new SendSmtpEmail([
                     'subject' => 'Tickets servicio Alfastreet',
                     'sender' => ['name' => 'Info Alfastreet Colombia S.A.S', 'email' => 'info@alfastreet.co'],
                     'to' => [['name' => $tiket->name_client, 'email' => $tiket->email]],
-                    // 'cc' => [
-                    //     ['name' => $nameTo, 'email' => $to ],
-                    //     ['name' => $nameaddTo, 'email' => $addTo],
-                    //     ['name' => 'Andres Lozano', 'email' => 'gerentedeproducto@alfastreet.co'],
-                    // ],
+                    'cc' => [
+                        ['name' => $nameTo, 'email' => $to],
+                        ['name' => $nameaddTo, 'email' => $addTo],
+                        ['name' => 'Andres Lozano', 'email' => 'gerentedeproducto@alfastreet.co'],
+                    ],
                     'templateId' => 2,
                     'params' => [
+                        'idTicket' => $idTicket->id,
                         'date' => $date->toFormattedDateString(),
                         'name' => $tiket->name_client,
                         'description' => $tiket->comments,
-                        'phone' => $tiket->phone 
+                        'phone' => $tiket->phone,
+                        'year' => $date->year,
+                        'supportName' => $idTicket->support->name,
                     ]
                 ]);
 
@@ -146,8 +151,8 @@ class TiketsController extends AppController
                     echo json_encode('ok');
                     die;
                 } catch (Exception $e) {
-                    echo $e->getMessage(),PHP_EOL;
                     echo json_encode('error');
+                    // echo ('Exception when calling TransactionalEmailsApi->sendTransacEmail: '. $e->getMessage(). PHP_EOL);
                     die;
                 }
             }
@@ -176,8 +181,37 @@ class TiketsController extends AppController
         $query = $tikets->query()->update()->set(['resolved' => $resolved, 'status' => 'Completado', 'user_id' => $userid, 'dateresolved' => $dateresolved])->where(['id' => $id])->execute();
 
         if ($query) {
-            echo json_encode('ok');
-            die;
+
+            $ticket = $this->Tikets->find()->contain(['Supports'])->where(['Tikets.id' => $id])->first();
+
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+
+            $instance = new TransactionalEmailsApi(
+                new Client(),
+                $config
+            );
+
+            $sendSmtpEmail = new SendSmtpEmail([
+                'subject' => 'Información Alfastreet Colombia',
+                'sender' => ['name' => 'Info Alfastreet Colombia S.A.S', 'email' => 'info@alfastreet.co'],
+                'to' => [['name' => $ticket->name_client, 'email' => $ticket->email]],
+                'templateId' => 4,
+                'params' => [
+                    'name' => $ticket->name_client,
+                    'year' => $date->year,
+                    'idTicket' => $ticket->id,
+                ]
+            ]);
+
+            try {
+                $result = $instance->sendTransacEmail($sendSmtpEmail);
+                echo json_encode('ok');
+                die;
+            } catch (Exception $e) {
+                // echo json_encode('error');
+                echo ('Exception when calling TransactionalEmailsApi->sendTransacEmail: ' . $e->getMessage() . PHP_EOL);
+                die;
+            }
         }
 
         echo json_encode('error');
@@ -186,7 +220,6 @@ class TiketsController extends AppController
 
     public function beforeFilter(EventInterface $event)
     {
-
         parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'add'

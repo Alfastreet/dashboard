@@ -46,6 +46,7 @@ foreach ($paymentinitials as $pay) {
                         <label for="staticEmail" class="col-sm-6 col-form-label fw-bold"><?= __('Serial de la Maquina:') ?></label>
                         <div class="col-sm-4">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $agreement->has('machine') ? ($agreement->machine->name) : '' ?>">
+                            <input type="hidden" id="machine" value="<?= $agreement->machine_id ?>">
                         </div>
                         <label for="staticEmail" class="col-md-6 col-form-label fw-bold"><?= __('Diferido a :') ?></label>
                         <div class="col-sm-4">

@@ -64,7 +64,7 @@ $this->Breadcrumbs->add([
                                 <td class="<?= $liquidation->totalLiquidation < 0 ? 'table-danger' : '' ?>"><?= $this->Number->currency($liquidation->totalLiquidation, 'COP') ?></td>
                                 <td><?= h($liquidation->estatus) ?></td>
                                 <td><?= h($liquidation->dateliquidation->toFormattedDateString()) ?></td>
-                                <td><?= $liquidation->nfactura === null ? 'FACTURA NO PAGADA' : ($liquidation->nfactura < 0 ? 'Liquidacion Negativa' : $liquidation->nfactura  ) ?></td>
+                                <td><?= $liquidation->nfactura === null ? 'FACTURA NO PAGADA' : ($liquidation->nfactura < 0 ? 'Liquidacion Negativa' : $liquidation->nfactura) ?></td>
                                 <td>
                                     <?= $this->Html->link('Descargar', ['action' => 'pdf', '?' => ['casino' => $liquidation->casino_id]], ['class' => 'btn btn-primary']) ?>
                                 </td>
@@ -74,8 +74,13 @@ $this->Breadcrumbs->add([
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-end">
+                <?= $this->Html->link('Generar informe de Liquidaciones', ['action' => 'excel'], ['class' => 'btn btn-success', 'id' => 'download']) ?>
+            </div>
         </div>
     </div>
 </div>
 
+
 <?= $this->Html->script('confirmedParticipations') ?>
+<?= $this->Html->script('downloadmonthsParticipations') ?>

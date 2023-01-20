@@ -63,19 +63,20 @@ class AgreementsController extends AppController
     {
         $agreement = $this->Agreements->newEmptyEntity();
         $this->Authorization->authorize($agreement);
+
         if ($this->request->is('post')) {
             $agreement = $this->Agreements->patchEntity($agreement, $this->request->getData());
             $agreement->agreementstatus_id = 2;
             $agreement->datesigned = null;
-            // echo json_encode($agreement);
-            // die;
             if ($this->Agreements->save($agreement)) {
                 echo json_encode('ok');
                 die;
+            } else {
+                echo json_encode('error');
+                die;
             }
-            echo json_encode('error');
-            die;
         }
+        
         $machines = $this->Agreements->Machines->find('list', ['limit' => 200])->where(['contract_id' => 3])->all();
         $clients = $this->Agreements->Client->find('list', ['limit' => 200])->all();
         $business = $this->Agreements->Business->find('list', ['limit' => 200])->order(['name' => 'ASC'])->all();
